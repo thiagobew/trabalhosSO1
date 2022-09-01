@@ -1,44 +1,40 @@
 #ifndef cpu_h
 #define cpu_h
 
-#include <ucontext.h>
-#include <iostream>
 #include "traits.h"
+#include <iostream>
+#include <stack>
+#include <ucontext.h>
 
 __BEGIN_API
 
-class CPU
-{
-    public:
+class CPU {
+public:
+  class Context {
+  private:
+    static const unsigned int STACK_SIZE = Traits<CPU>::STACK_SIZE;
 
-        class Context
-        {
-        private:
-            static const unsigned int STACK_SIZE = Traits<CPU>::STACK_SIZE;
-        public:
-            Context() { _stack = 0; }
+  public:
+    Context() { _stack = 0; }
 
-            template<typename ... Tn>
-            Context(void (* func)(Tn ...), Tn ... an);
+    template <typename... Tn> Context(void (*func)(Tn...), Tn... an);
 
-            ~Context();
+    ~Context();
 
-            void save();
-            void load();
+    void save();
+    void load();
 
-        private:            
-            char *_stack;
-        public:
-            ucontext_t _context;
-        };
+  private:
+    char *_stack;
 
-    public:
+  public:
+    ucontext_t _context;
+  };
 
-        static void switch_context(Context *from, Context *to);
-
+public:
+  static void switch_context(Context *from, Context *to);
 };
 
 __END_API
 
 #endif
-
