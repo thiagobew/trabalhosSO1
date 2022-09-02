@@ -3,7 +3,6 @@
 
 #include "traits.h"
 #include <iostream>
-#include <stack>
 #include <ucontext.h>
 
 __BEGIN_API
@@ -15,9 +14,20 @@ public:
     static const unsigned int STACK_SIZE = Traits<CPU>::STACK_SIZE;
 
   public:
-    Context() { _stack = 0; }
+    Context() {
+      _stack = (char *)malloc(STACK_SIZE);
 
-    template <typename... Tn> Context(void (*func)(Tn...), Tn... an);
+      if (!_stack) {
+        std::cerr << "Error: could not allocate stack for context" << std::endl;
+        exit(1);
+      }
+    }
+
+    template <typename... Tn> Context(void (*func)(Tn...), Tn... an) {
+      Context();
+      getcontext(&_context);
+      makecontext(&_context, (void (*)())(func), sizeof...(Tn), an...);
+    };
 
     ~Context();
 

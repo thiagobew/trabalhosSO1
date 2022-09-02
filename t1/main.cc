@@ -1,14 +1,12 @@
 #include "cpu.h"
-#include <iostream>
 #include "main_class.h"
+#include <iostream>
 
-__USING_API 
+__USING_API
 
+int main(void) {
 
-int main(void)
-{
+  Main::run();
 
-    Main::run();
-
-    return 0;
+  return 0;
 }
