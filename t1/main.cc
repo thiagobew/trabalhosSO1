@@ -6,7 +6,7 @@ __USING_API
 
 int main(void) {
 
-  Main::run();
+    Main::run();
 
-  return 0;
+    return 0;
 }

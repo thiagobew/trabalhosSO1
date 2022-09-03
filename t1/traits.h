@@ -13,10 +13,12 @@ class CPU; // declaração das classes criadas nos trabalhos devem ser colocadas
            // aqui
 
 // declaração da classe Traits
-template <typename T> struct Traits {};
+template <typename T>
+struct Traits {};
 
-template <> struct Traits<CPU> {
-  enum { STACK_SIZE = 0x10000 }; // 1 MB de pilha para cada contexto
+template <>
+struct Traits<CPU> {
+    enum { STACK_SIZE = 0x10000 }; // 1 MB de pilha para cada contexto
 };
 
 __END_API
