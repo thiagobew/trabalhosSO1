@@ -13,30 +13,33 @@ public:
     private:
         static const unsigned int STACK_SIZE = Traits<CPU>::STACK_SIZE;
         char *_stack;
+        void DefaultConstructor() {
+            getcontext(&this->_context);
+            this->_context.uc_link = 0;
+            this->_context.uc_stack.ss_sp = malloc(this->STACK_SIZE);
+            this->_context.uc_stack.ss_size = this->STACK_SIZE;
+            this->_context.uc_stack.ss_flags = 0;
+        }
 
     public:
-        Context() {
-            _stack = (char *)malloc(STACK_SIZE);
+        ucontext_t _context;
 
-            if (!_stack) {
-                std::cerr << "Error: could not allocate stack for context" << std::endl;
-                exit(1);
-            }
+        Context() {
+            this->DefaultConstructor();
         }
 
         template <typename... Tn>
-        Context(void (*func)(Tn...), Tn... an) {
-            Context();
-            getcontext(&_context);
-            makecontext(&_context, (void (*)())(func), sizeof...(Tn), an...);
+        Context(void (*func)(Tn...), Tn... args) {
+            this->DefaultConstructor();
+
+            makecontext(&this->_context, (void (*)())(func), sizeof...(Tn), args...);
         };
 
         ~Context();
 
         void save();
-        void load();
 
-        ucontext_t _context;
+        void load();
     };
 
     static void switch_context(Context *from, Context *to);

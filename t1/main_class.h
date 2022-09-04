@@ -18,6 +18,7 @@ public:
         ping_name = "ping";
         pong_name = "pong";
 
+        // Passa a função principal do contexto e uma string que será passada como arg para essa mesma função
         ping = new CPU::Context(func_ping, (char *)ping_name.data());
         pong = new CPU::Context(func_pong, (char *)pong_name.data());
 
