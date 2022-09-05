@@ -5,18 +5,16 @@ CFLAGS = -Wall -g
 
 # Primeira linha são as dependências que irão causar a sequência de alterações abaixo
 main: main.o main_class.o cpu.o
-	echo "Aoba"
-	$(CC) $(CFLAGS) main.o main_class.o cpu.o –o main
+	$(CC) $(CFLAGS) main.o main_class.o cpu.o -o main
 
 main.o: main.cc main_class.h cpu.h
-	echo "Eae"
-	g++ –c main.cc
+	$(CC) $(CFLAGS) -c main.cc $<
 
 main_class.o: main_class.cc main_class.h
-	$(CC) $(CFLAGS) -c main_class.cc
+	$(CC) $(CFLAGS) -c main_class.cc $<
 
 cpu.o: cpu.cc cpu.h
-	$(CC) $(CFLAGS) -c cpu.cc
+	$(CC) $(CFLAGS) -c cpu.cc $<
 
 clean:
 	rm *.o main
