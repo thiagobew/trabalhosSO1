@@ -8,7 +8,7 @@ void CPU::Context::save() { getcontext(&_context); }
 
 void CPU::Context::load() { setcontext(&_context); }
 
-CPU::Context::~Context() { free(_context.uc_stack.ss_sp); }
+CPU::Context::~Context() { delete _stack; }
 
 void CPU::switch_context(Context *from, Context *to) {
   swapcontext(&from->_context, &to->_context);
