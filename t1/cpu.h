@@ -15,6 +15,12 @@ public:
     char *_stack;
     void DefaultConstructor() {
       this->_stack = new char[this->STACK_SIZE];
+
+      if (!this->_stack) {
+        std::cout << "Erro ao alocar pilha\n";
+        exit(1);
+      }
+
       getcontext(&this->_context);
       this->_context.uc_link = 0;
       this->_context.uc_stack.ss_sp = (void *)_stack;
