@@ -19,7 +19,6 @@ struct Traits {};
 template <>
 struct Traits<CPU> {
     static const int STACK_SIZE = 0x10000;
-    // enum { STACK_SIZE = 0x10000 }; // 1 MB de pilha para cada contexto
 };
 
 __END_API
