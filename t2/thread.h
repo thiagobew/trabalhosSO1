@@ -63,7 +63,7 @@ private:
     /*
      * Qualquer outro atributo que você achar necessário para a solução.
      */
-    static int _next_id;
+    static unsigned int _next_id;
     static Thread *_mainThread;
 };
 
@@ -72,8 +72,8 @@ inline Thread::Thread(void (*entry)(Tn...), Tn... an) {
     this->_context = new Context(entry, an...);
     this->_id = _next_id++;
 
-    if (!_mainThread) {
-        _mainThread = this;
+    if (!this->_mainThread) {
+        this->_mainThread = this;
     }
 };
 
