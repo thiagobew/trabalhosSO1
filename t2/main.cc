@@ -1,11 +1,10 @@
-#include "thread.h"
-#include "system.h"
 #include "main_class.h"
+#include "system.h"
+#include "thread.h"
 
-__USING_API 
+__USING_API
 
-int main(void)
-{
+int main(void) {
     System::init();
     Main *m = new Main();
     delete m;

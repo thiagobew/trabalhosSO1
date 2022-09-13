@@ -7,7 +7,7 @@ CFLAGS = -Wall -g
 main: main.o main_class.o cpu.o debug.o thread.o system.o
 	$(CC) $(CFLAGS) main.o main_class.o cpu.o debug.o thread.o system.o -o main
 
-main.o: main.cc main_class.h cpu.h
+main.o: main.cc main_class.h
 	$(CC) $(CFLAGS) -c main.cc $<
 
 main_class.o: main_class.cc main_class.h
@@ -21,6 +21,9 @@ thread.o: thread.cc thread.h
 
 debug.o: debug.cc debug.h
 	$(CC) $(CFLAGS) -c debug.cc $<
+
+system.o: system.cc system.h
+	$(CC) $(CFLAGS) -c system.cc $<
 
 clean:
 	rm *.o main
