@@ -63,7 +63,7 @@ private:
    * Qualquer outro atributo que você achar necessário para a solução.
    */
   static int _next_id;
-  static Thread *_mainThread = nullptr;
+  static Thread *_mainThread;
 };
 
 template <typename... Tn> Thread(void (*entry)(Tn...), Tn... an) {

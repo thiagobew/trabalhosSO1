@@ -13,7 +13,7 @@ int Thread::switch_context(Thread *prev, Thread *next) {
 
 void Thread::thread_exit(int exit_code) {
   switch_context(this, _mainThread);
-  delete this;
+  this->~Thread();
 };
 
 int Thread::id() { return _id; }
