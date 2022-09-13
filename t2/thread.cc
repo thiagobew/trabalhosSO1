@@ -7,13 +7,13 @@ __BEGIN_API
 int Thread::_next_id = 0;
 
 int Thread::switch_context(Thread *prev, Thread *next) {
-  _running = next;
-  CPU::switch_context(prev->context(), next->context());
+    _running = next;
+    CPU::switch_context(prev->context(), next->context());
 };
 
 void Thread::thread_exit(int exit_code) {
-  switch_context(this, _mainThread);
-  this->~Thread();
+    switch_context(this, _mainThread);
+    this->~Thread();
 };
 
 int Thread::id() { return _id; }
