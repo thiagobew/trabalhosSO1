@@ -22,7 +22,7 @@ class System;
 // específicas está ocorrendo um override
 template <typename T>
 struct Traits {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template <>
@@ -34,7 +34,7 @@ template <>
 struct Traits<Debug> : public Traits<void> {
     static const bool error = false;
     static const bool warning = false;
-    static const bool info = false;
+    static const bool info = true;
     static const bool trace = true;
 };
 

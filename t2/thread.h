@@ -53,7 +53,10 @@ public:
      */
     Context *context() { return _context; }
 
-    ~Thread() { delete _context; }
+    ~Thread() {
+        if (this->_context)
+            delete this->_context;
+    }
 
 private:
     int _id;
@@ -70,10 +73,13 @@ private:
 template <typename... Tn>
 inline Thread::Thread(void (*entry)(Tn...), Tn... an) {
     this->_context = new Context(entry, an...);
-    this->_id = _next_id++;
+    this->_id = Thread::_next_id++;
 
-    if (!this->_mainThread) {
-        this->_mainThread = this;
+    db<Thread>(INF) << "Thread created\n";
+
+    if (!Thread::_mainThread) {
+        db<Thread>(INF) << "Main thread reference created\n";
+        Thread::_mainThread = this;
     }
 };
 

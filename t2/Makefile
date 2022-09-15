@@ -4,7 +4,7 @@ CC = g++
 CFLAGS = -Wall -g
 
 # Primeira linha são as dependências que irão causar a sequência de alterações abaixo
-main: main.o main_class.o cpu.o debug.o thread.o system.o
+main: main.o main_class.o cpu.o debug.o thread.o system.o traits.h
 	$(CC) $(CFLAGS) main.o main_class.o cpu.o debug.o thread.o system.o -o main
 
 main.o: main.cc main_class.h

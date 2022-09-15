@@ -21,7 +21,8 @@ int Thread::switch_context(Thread *prev, Thread *next) {
 };
 
 void Thread::thread_exit(int exit_code) {
-    switch_context(this, Thread::_mainThread);
+    if (Thread::_mainThread)
+        switch_context(this, Thread::_mainThread);
 };
 
 int Thread::id() { return _id; }
