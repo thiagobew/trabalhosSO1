@@ -16,13 +16,13 @@ main_class.o: main_class.cc main_class.h
 cpu.o: cpu.cc cpu.h
 	$(CC) $(CFLAGS) -c cpu.cc $<
 
-thread.o: thread.cc thread.h
+thread.o: thread.cc thread.h debug.h traits.h
 	$(CC) $(CFLAGS) -c thread.cc $<
 
 debug.o: debug.cc debug.h
 	$(CC) $(CFLAGS) -c debug.cc $<
 
-system.o: system.cc system.h
+system.o: system.cc system.h debug.h traits.h
 	$(CC) $(CFLAGS) -c system.cc $<
 
 clean:
