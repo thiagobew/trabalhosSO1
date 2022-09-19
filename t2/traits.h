@@ -17,29 +17,35 @@ class Thread;
 
 class System;
 
-// declaração da classe Traits
-// Verificar se essa variável está sendo settada para todas as classes e nas declarações
-// específicas está ocorrendo um override
 template <typename T>
 struct Traits {
+    // Booleano para permitir o print das mensagens ou não, por padrão está bloqueado para todas as classes
     static const bool debugged = false;
 };
 
 template <>
 struct Traits<CPU> {
     static const int STACK_SIZE = 0x10000;
+    static const bool debugged = true;
 };
 
 template <>
 struct Traits<Debug> : public Traits<void> {
+    // Em Debug podemos habilitar ou desabilitar os tipos de debug, nesse caso somente tipos INF serão printados
     static const bool error = false;
     static const bool warning = false;
     static const bool info = true;
-    static const bool trace = true;
+    static const bool trace = false;
 };
 
 template <>
 struct Traits<System> : public Traits<void> {
+    static const bool debugged = true;
+};
+
+template <>
+struct Traits<Thread> : public Traits<void> {
+    // Nessa classe ocorre um override, permitindo print de mensagens dentro de Thread
     static const bool debugged = true;
 };
 
