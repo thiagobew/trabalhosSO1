@@ -14,11 +14,8 @@ CPU::Context::~Context() {
 }
 
 int CPU::switch_context(Context *from, Context *to) {
-    if (from && to) {
-        swapcontext(&from->_context, &to->_context);
-        return 0;
-    }
-
+    if (from && to)
+        return swapcontext(&from->_context, &to->_context);
     return -1;
 }
 

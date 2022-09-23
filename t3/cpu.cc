@@ -13,8 +13,10 @@ CPU::Context::~Context() {
         delete _stack;
 }
 
-void CPU::switch_context(Context *from, Context *to) {
-    swapcontext(&from->_context, &to->_context);
+int CPU::switch_context(Context *from, Context *to) {
+    if (from && to)
+        return swapcontext(&from->_context, &to->_context);
+    return -1;
 }
 
 __END_API
