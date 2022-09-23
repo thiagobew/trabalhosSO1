@@ -22,6 +22,8 @@ public:
 
         CPU::switch_context(mainContext, ThreadMain->context());
 
+        db<Main>(INF) << "Main sendo deletada\n";
+
         delete mainContext;
     }
 
@@ -33,6 +35,7 @@ public:
 
         std::cout << arg << ": fim\n";
 
+        // Retorna a execução da thread main para o contexto anterior
         CPU::switch_context(ThreadMain->context(), mainContext);
     }
 

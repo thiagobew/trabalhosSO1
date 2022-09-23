@@ -12,15 +12,19 @@ Thread *Thread::_running;
 Thread *Thread::_mainThread;
 
 int Thread::switch_context(Thread *prev, Thread *next) {
+    // "Valor de retorno é negativo se houve erro, ou zero."
     if (!prev || !next || !prev->context() || !next->context())
-        return 0;
+        return -1;
 
     Thread::_running = next;
     CPU::switch_context(prev->context(), next->context());
-    return 1;
+    return 0;
 };
 
 void Thread::thread_exit(int exit_code) {
+    if (this->_context)
+        delete this->_context;
+
     if (Thread::_mainThread)
         switch_context(this, Thread::_mainThread);
 };

@@ -17,6 +17,8 @@ class Thread;
 
 class System;
 
+class Main;
+
 template <typename T>
 struct Traits {
     // Booleano para permitir o print das mensagens ou não, por padrão está bloqueado para todas as classes
@@ -30,12 +32,17 @@ struct Traits<CPU> {
 };
 
 template <>
+struct Traits<Main> {
+    static const bool debugged = true;
+};
+
+template <>
 struct Traits<Debug> : public Traits<void> {
     // Em Debug podemos habilitar ou desabilitar os tipos de debug, nesse caso somente tipos INF serão printados
     static const bool error = false;
     static const bool warning = false;
     static const bool info = true;
-    static const bool trace = false;
+    static const bool trace = true;
 };
 
 template <>

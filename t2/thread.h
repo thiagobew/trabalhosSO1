@@ -53,11 +53,6 @@ public:
      */
     Context *context() { return _context; }
 
-    ~Thread() {
-        if (this->_context)
-            delete this->_context;
-    }
-
 private:
     int _id;
     Context *volatile _context;
