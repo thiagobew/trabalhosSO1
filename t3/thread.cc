@@ -23,9 +23,57 @@ int Thread::switch_context(Thread *prev, Thread *next) {
 // Este método irá então criar a Thread main, passando como parâmetro para o contexto o
 // ponteiro da função main recebido como argumento
 void Thread::init(void (*main)(void *)) {
-    Thread::_main = Thread(main, (char *)"Ao");
-    Thread::_dispatcher = Thread(Thread::dispatcher);
-    Thread::_ready = new Ready_Queue();
+    // Cria a main thread
+    Thread::_main = new Thread::Thread(main);
+    Thread::_running = &Thread::_main;
+    Thread::_main_context = *Thread::_main.context();
+
+    Thread::_dispatcher = new Thread::Thread(Thread::dispatcher);
+
+    Thread::_main.context()->load();
+};
+
+int Thread::getTimestamp() {
+  return (std::chrono::duration_cast<std::chrono::microseconds>
+    (std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+}
+
+void Thread::dispatcher() {
+    Thread::_ready.begin();
+    while (Thread::_ready.size() > 1) {
+        Thread *next = Thread::_ready.remove_head()->object();
+        Thread::_dispatcher._state = Thread::READY;
+
+        // insert insere ordenado (importante para manter prioridade)
+        Thread::_ready.insert(&Thread::_dispatcher._link);
+        Thread::_running = next;
+        next->_state = Thread::RUNNING;
+        Thread::switch_context(&Thread::_dispatcher, next);
+
+        if (Thread::_ready.head()->object()->_state == Thread::FINISHING) {
+            Thread::_ready.remove_head();
+        }
+    }
+
+    Thread::_dispatcher._state = Thread::FINISHING;
+    Thread::_ready.remove(&Thread::_dispatcher);
+    Thread::switch_context(&Thread::_dispatcher, &Thread::_main);
+}
+
+void Thread::yield() {
+    Thread* next = Thread::_ready.remove_head()->object();
+    Thread* prev = Thread::_running;
+    if (Thread::_running != &Thread::_main || Thread::_running->_state == Thread::FINISHING)
+      Thread::_running->_link.rank(Thread::getTimestamp());
+
+    if (Thread::_running->_state != Thread::FINISHING) {
+      Thread::_running->_state = Thread::READY;
+      Thread::_ready.insert(&Thread::_running->_link);
+    }
+
+    Thread::_running = next;
+    next->_state = Thread::RUNNING;
+    Thread::switch_context(prev, next);
 }
 
 void Thread::thread_exit(int exit_code) {

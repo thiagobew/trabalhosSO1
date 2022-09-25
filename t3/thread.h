@@ -93,6 +93,7 @@ public:
      * Qualquer outro método que você achar necessário para a solução.
      */
     int threads_quant() { return Thread::_next_id; }
+    static int getTimestamp();
 
 private:
     int _id;
@@ -118,7 +119,7 @@ private:
 // O que está após os dois pontos se chama Initialization Lists, e servem para chamar construtores de base ou para instanciar atributos antes do construtuor começar
 // Um exemplo é para setar variáveis const para cada instância da classe, essa ação só pode ser feita com initialization lists
 template <typename... Tn>
-inline Thread::Thread(void (*entry)(Tn...), Tn... an) : _link(this, (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count())) {
+inline Thread::Thread(void (*entry)(Tn...), Tn... an) : _link(this, Thread::getTimestamp()) {
     this->_context = new Context(entry, an...);
     this->_id = Thread::_next_id++;
     this->_state = Thread::State::READY;
