@@ -10,7 +10,10 @@ unsigned int Thread::_next_id = 0;
 // https://stackoverflow.com/questions/9110487/undefined-reference-to-a-static-member
 // Precisamos declarar as variáveis staticas no arquivo .cpp
 Thread *Thread::_running;
-Thread *Thread::_mainThread;
+Thread Thread::_main;
+CPU::Context Thread::_main_context;
+Thread Thread::_dispatcher;
+Thread::Ready_Queue Thread::_ready;
 
 int Thread::switch_context(Thread *prev, Thread *next) {
     Thread::_running = next;
