@@ -9,7 +9,7 @@ void System::init(void (*main)(void *)) {
     db<System>(INF) << "System::init() chamado\n";
     setvbuf(stdout, 0, _IONBF, 0);
 
-    // main()
+    Thread::init(main)
 }
 
 __END_API

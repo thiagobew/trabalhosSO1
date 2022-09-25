@@ -19,6 +19,8 @@ class System;
 
 class Main;
 
+class Lists;
+
 template <typename T>
 struct Traits {
     // Booleano para permitir o print das mensagens ou não, por padrão está bloqueado para todas as classes
@@ -33,6 +35,11 @@ struct Traits<CPU> {
 
 template <>
 struct Traits<Main> {
+    static const bool debugged = true;
+};
+
+template <>
+struct Traits<Lists> {
     static const bool debugged = true;
 };
 

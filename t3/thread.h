@@ -61,7 +61,7 @@ public:
     /*
      * Retorna o ID da thread.
      */
-    int id();
+    int id() { return this->_id; }
 
     /*
      * NOVO MÉTODO DESTE TRABALHO.
@@ -114,10 +114,16 @@ private:
     Context *context() { return _context; }
 };
 
+// https://stackoverflow.com/questions/1272680/what-does-a-colon-following-a-c-constructor-name-do
+// O que está após os dois pontos se chama Initialization Lists, e servem para chamar construtores de base ou para instanciar atributos antes do construtuor começar
+// Um exemplo é para setar variáveis const para cada instância da classe, essa ação só pode ser feita com initialization lists
 template <typename... Tn>
-inline Thread::Thread(void (*entry)(Tn...), Tn... an) : /* inicialização de _link */
-{
-    // IMPLEMENTAÇÃO DO CONSTRUTOR
+inline Thread::Thread(void (*entry)(Tn...), Tn... an) : _link(this, (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count())) {
+    this->_context = new Context(entry, an...);
+    this->_id = Thread::_next_id++;
+    this->_state = Thread::State::READY;
+
+    db<Thread>(INF) << "Thread created\n";
 }
 
 __END_API

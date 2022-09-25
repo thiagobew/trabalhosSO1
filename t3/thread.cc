@@ -20,6 +20,14 @@ int Thread::switch_context(Thread *prev, Thread *next) {
     return CPU::switch_context(prev->context(), next->context());
 };
 
+// Este método irá então criar a Thread main, passando como parâmetro para o contexto o
+// ponteiro da função main recebido como argumento
+void Thread::init(void (*main)(void *)) {
+    Thread::_main = Thread(main, (char *)"Ao");
+    Thread::_dispatcher = Thread(Thread::dispatcher);
+    Thread::_ready = new Ready_Queue();
+}
+
 void Thread::thread_exit(int exit_code) {
     if (this->_context)
         delete this->_context;
@@ -27,7 +35,5 @@ void Thread::thread_exit(int exit_code) {
     // Decrementa o next_id para saber quantas Threads ativas existem no SO
     Thread::_next_id -= 1;
 };
-
-int Thread::id() { return _id; }
 
 __END_API
