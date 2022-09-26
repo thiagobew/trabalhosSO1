@@ -124,7 +124,7 @@ inline Thread::Thread(void (*entry)(Tn...), Tn... an) : _link(this, Thread::getT
     this->_id = Thread::_next_id++;
     this->_state = Thread::State::READY;
 
-    db<Thread>(INF) << "Thread created\n";
+    db<Thread>(TRC) << "Thread created\n";
 }
 
 __END_API
