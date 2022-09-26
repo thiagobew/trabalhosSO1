@@ -25,11 +25,11 @@ int Thread::switch_context(Thread *prev, Thread *next) {
 void Thread::init(void (*main)(void *)) {
     // Cria a main thread
     std::string name = "Main";
-    Thread::_main = new Thread(main, (void *)&name);
+    Thread::_main = *new Thread(main, (void *)&name);
     Thread::_running = &Thread::_main;
     Thread::_main_context = *Thread::_main.context();
 
-    Thread::_dispatcher = new Thread(&Thread::dispatcher);
+    Thread::_dispatcher = *new Thread(&Thread::dispatcher);
 
     Thread::_main.context()->load();
 };
@@ -77,6 +77,8 @@ void Thread::yield() {
     next->_state = Thread::RUNNING;
     Thread::switch_context(prev, next);
 }
+
+Thread::~Thread() {}
 
 void Thread::thread_exit(int exit_code) {
     if (this->_context)
