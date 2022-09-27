@@ -21,16 +21,15 @@ int Thread::switch_context(Thread *prev, Thread *next) {
 
 // Este método irá então criar a Thread main, passando como parâmetro para o contexto o
 // ponteiro da função main recebido como argumento
-// TODO: adicionar placement new para evitar memory leak
 void Thread::init(void (*main)(void *)) {
     // Cria a main thread
-    _main = *new Thread(main, (void *)"Main");
+    new (&_main) Thread(main, (void *)"Main");
     _running = &_main;
-	_main._state = RUNNING;
-	// apenas para poder trocar para main
-    _main_context = *new CPU::Context();
-
-    _dispatcher = *new Thread(&dispatcher);
+    _main._state = RUNNING;
+    // Cria o dispatcher
+    new (&_dispatcher) Thread(&dispatcher);
+    // Pega contexto atual para passar a Main
+    new (&_main_context) CPU::Context();
 
     CPU::switch_context(&_main_context, _main.context());
 };
@@ -41,7 +40,7 @@ int Thread::getTimestamp() {
 
 void Thread::dispatcher() {
     while (_ready.size() > 0) {
-		db<Thread>(TRC) << "List size: " << _ready.size() << "\n";
+        db<Thread>(TRC) << "List size: " << _ready.size() << "\n";
         // Retira próxima thread a ser executada
         Thread *next = _ready.remove_head()->object();
         // Altera o estado do escalonador
@@ -57,7 +56,7 @@ void Thread::dispatcher() {
             _ready.remove_head();
         }
     }
-	db<Thread>(TRC) << "Out of dispatcher while\n";
+    db<Thread>(TRC) << "Out of dispatcher while\n";
     _dispatcher._state = FINISHING;
     switch_context(&_dispatcher, &_main);
 }
@@ -65,31 +64,32 @@ void Thread::dispatcher() {
 void Thread::yield() {
     Thread *next = _ready.remove_head()->object();
     Thread *prev = _running;
-	db<Thread>(TRC) << "Running state: " << prev->_state << "\n";
+    db<Thread>(TRC) << "Running state: " << prev->_state << "\n";
     if (_running != &_main && _running->_state != FINISHING) {
         _running->_link.rank(getTimestamp());
         _running->_state = READY;
         _ready.insert(&_running->_link);
-		db<Thread>(TRC) << "Thread " << _running->_id << " reinserted in list" << "\n";
+        db<Thread>(TRC) << "Thread " << _running->_id << " reinserted in list"
+                        << "\n";
     }
 
     _running = next;
     next->_state = RUNNING;
-	db<Thread>(TRC) << "Switch " << prev->id() << " -> " << next->id() << "\n";
+    db<Thread>(TRC) << "Switch " << prev->id() << " -> " << next->id() << "\n";
     switch_context(prev, next);
 }
 
 Thread::~Thread() {
-	_ready.remove(&this->_link);
-	if (this->_context)
+    _ready.remove(&this->_link);
+    if (this->_context)
         delete this->_context;
 }
 
 void Thread::thread_exit(int exit_code) {
     // Decrementa o next_id para saber quantas Threads ativas existem no SO
     _next_id -= 1;
-	this->_state = FINISHING;
-	yield();
+    this->_state = FINISHING;
+    yield();
 };
 
 __END_API
