@@ -32,7 +32,7 @@ void Thread::init(void (*main)(void *)) {
 
     Thread::_dispatcher = *new Thread(&Thread::dispatcher);
 
-    Thread::_main.context()->load();
+    Thread::_main_context.load();
 };
 
 int Thread::getTimestamp() {
@@ -66,10 +66,8 @@ void Thread::yield() {
     db<Thread>(TRC) << Thread::_ready.size() << " threads in the ready queue";
     Thread *next = Thread::_ready.remove_head()->object();
     Thread *prev = Thread::_running;
-    if (Thread::_running != &Thread::_main || Thread::_running->_state == Thread::FINISHING)
+    if (Thread::_running != &Thread::_main || Thread::_running->_state == Thread::FINISHING) {
         Thread::_running->_link.rank(Thread::getTimestamp());
-
-    if (Thread::_running->_state != Thread::FINISHING) {
         Thread::_running->_state = Thread::READY;
         Thread::_ready.insert(&Thread::_running->_link);
     }

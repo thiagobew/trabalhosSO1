@@ -40,7 +40,7 @@ struct Traits<Main> {
 
 template <>
 struct Traits<Lists> {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template <>
@@ -60,7 +60,7 @@ struct Traits<System> : public Traits<void> {
 template <>
 struct Traits<Thread> : public Traits<void> {
     // Nessa classe ocorre um override, permitindo print de mensagens dentro de Thread
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 __END_API
