@@ -27,6 +27,7 @@ void Thread::init(void (*main)(void *)) {
     std::string name = "Main";
     Thread::_main = *new Thread(main, (void *)&name);
     Thread::_running = &Thread::_main;
+	Thread::_main._state = Thread::RUNNING;
     Thread::_main_context = *Thread::_main.context();
 
     Thread::_dispatcher = *new Thread(&Thread::dispatcher);
@@ -39,7 +40,6 @@ int Thread::getTimestamp() {
 }
 
 void Thread::dispatcher() {
-    Thread::_ready.begin();
     while (Thread::_ready.size() > 1) {
         // Retira próxima thread a ser executada
         Thread *next = Thread::_ready.remove_head()->object();
@@ -63,6 +63,7 @@ void Thread::dispatcher() {
 }
 
 void Thread::yield() {
+    db<Thread>(TRC) << Thread::_ready.size() << " threads in the ready queue";
     Thread *next = Thread::_ready.remove_head()->object();
     Thread *prev = Thread::_running;
     if (Thread::_running != &Thread::_main || Thread::_running->_state == Thread::FINISHING)

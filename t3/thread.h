@@ -123,8 +123,9 @@ inline Thread::Thread(void (*entry)(Tn...), Tn... an) : _link(this, Thread::getT
     this->_context = new Context(entry, an...);
     this->_id = Thread::_next_id++;
     this->_state = Thread::State::READY;
+    Thread::_ready.insert(&_link);
 
-    db<Thread>(TRC) << "Thread created\n";
+    db<Thread>(TRC) << "Thread " << this->_id << " created\n";
 }
 
 __END_API
