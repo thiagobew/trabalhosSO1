@@ -21,7 +21,8 @@ public:
     enum State {
         RUNNING,
         READY,
-        FINISHING
+        FINISHING,
+        SUSPENDED
     };
 
     /*
@@ -95,6 +96,12 @@ public:
     int threads_quant() { return Thread::_next_id; }
     static int getTimestamp();
 
+    int join();
+
+    void suspend();
+
+    void resume();
+
 private:
     int _id;
     Context *volatile _context;
@@ -111,6 +118,8 @@ private:
      * Qualquer outro atributo que você achar necessário para a solução.
      */
     static unsigned int _next_id;
+    Thread* _awaitsJoin = nullptr;
+    int _exit_code;
 
     Context *context() { return _context; }
 };

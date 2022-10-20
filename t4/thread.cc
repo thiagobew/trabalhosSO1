@@ -15,6 +15,33 @@ CPU::Context Thread::_main_context;
 Thread Thread::_dispatcher;
 Thread::Ready_Queue Thread::_ready;
 
+int Thread::join() {
+    // Se a thread que está sendo executada não é a main, então ela pode ser esperada
+    if (this->_id != 0) {
+        // Se a thread que está sendo executada não está esperando ninguém, então ela pode esperar
+        if (this->_awaitsJoin == nullptr) {
+            // A thread que está sendo executada passa a esperar a thread que chamou o join
+            this->_awaitsJoin = Thread::_running;
+            // A thread em execução é suspensa
+            Thread::_running->suspend();
+            // Retorna o código de saída da thread que está sendo executada
+            return this->_exit_code;
+        }
+    }
+    // Se a thread que está sendo executada é a main, ou se ela já está esperando outra thread, então retorna -1
+    return -1;
+}
+
+void Thread::suspend() {
+  this->_state = SUSPENDED;
+  yield();
+}
+
+void Thread::resume() {
+  this->_state = READY;
+  _ready.insert(&_link);
+}
+
 int Thread::switch_context(Thread *prev, Thread *next) {
     return CPU::switch_context(prev->context(), next->context());
 };
@@ -65,7 +92,7 @@ void Thread::yield() {
     Thread *next = _ready.remove_head()->object();
     Thread *prev = _running;
     db<Thread>(TRC) << "Running state: " << prev->_state << "\n";
-    if (_running != &_main && _running->_state != FINISHING) {
+    if (_running != &_main && _running->_state != FINISHING && _running->_state != SUSPENDED) {
         _running->_link.rank(getTimestamp());
         _running->_state = READY;
         _ready.insert(&_running->_link);
@@ -89,6 +116,10 @@ void Thread::thread_exit(int exit_code) {
     // Decrementa o next_id para saber quantas Threads ativas existem no SO
     _next_id -= 1;
     this->_state = FINISHING;
+    this->_exit_code = exit_code;
+    if (this->_awaitsJoin != nullptr) {
+        this->_awaitsJoin->resume();
+    }
     yield();
 };
 
