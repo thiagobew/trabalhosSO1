@@ -16,20 +16,22 @@ Thread Thread::_dispatcher;
 Thread::Ready_Queue Thread::_ready;
 
 int Thread::join() {
-    // Se a thread que está sendo executada não é a main, então ela pode ser esperada
-    if (this->_id != 0) {
-        // Se a thread que está sendo executada não está esperando ninguém, então ela pode esperar
-        if (this->_awaitsJoin == nullptr) {
-            // A thread que está sendo executada passa a esperar a thread que chamou o join
-            this->_awaitsJoin = Thread::_running;
-            // A thread em execução é suspensa
-            Thread::_running->suspend();
-            // Retorna o código de saída da thread que está sendo executada
-            return this->_exit_code;
-        }
+    if (_running == this) {
+        db<Thread>(WRN) << "Thread::join: trying to join itself!" << "\n";
+        return -1;
     }
-    // Se a thread que está sendo executada é a main, ou se ela já está esperando outra thread, então retorna -1
-    return -1;
+
+    if (_awaitsJoin) {
+        db<Thread>(WRN) << "Thread::join: thread already waiting for join!" << "\n";
+        return -1;
+    }
+
+    if (_state != FINISHING) {
+      _awaitsJoin = _running;
+      _running->suspend();
+    }
+
+    return _exit_code;
 }
 
 void Thread::suspend() {
@@ -38,8 +40,10 @@ void Thread::suspend() {
 }
 
 void Thread::resume() {
-  this->_state = READY;
-  _ready.insert(&_link);
+  if (_state == SUSPENDED) {
+    _state = READY;
+    _ready.insert(&_link);
+  }
 }
 
 int Thread::switch_context(Thread *prev, Thread *next) {
@@ -119,6 +123,7 @@ void Thread::thread_exit(int exit_code) {
     this->_exit_code = exit_code;
     if (this->_awaitsJoin != nullptr) {
         this->_awaitsJoin->resume();
+        this->_awaitsJoin = nullptr;
     }
     yield();
 };
