@@ -120,6 +120,7 @@ private:
     static unsigned int _next_id;
     Thread* _awaitsJoin = nullptr;
     int _exit_code;
+    static Ready_Queue _suspended;
 
     Context *context() { return _context; }
 };

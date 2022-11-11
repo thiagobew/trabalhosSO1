@@ -27,7 +27,7 @@ private:
     void wakeup_all();
 
 private:
-    //DECLARAÇÃO DOS ATRIBUTOS DO SEMÁFORO
+    volatile int _value;
 };
 
 __END_API

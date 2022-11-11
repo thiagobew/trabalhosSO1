@@ -14,6 +14,7 @@ Thread Thread::_main;
 CPU::Context Thread::_main_context;
 Thread Thread::_dispatcher;
 Thread::Ready_Queue Thread::_ready;
+Thread::Ready_Queue Thread::_suspended;
 
 int Thread::join() {
     if (_running == this) {
@@ -36,14 +37,19 @@ int Thread::join() {
 
 void Thread::suspend() {
   this->_state = SUSPENDED;
-  yield();
+  _suspended.insert(&_link);
+  if (this != _running) {
+    _ready.remove(&_link);
+  } else {
+    yield();
+  }
 }
 
 void Thread::resume() {
-  if (_state == SUSPENDED) {
+    // remove se estiver na fila (senão não faz nada)
+    _suspended.remove(this);
     _state = READY;
     _ready.insert(&_link);
-  }
 }
 
 int Thread::switch_context(Thread *prev, Thread *next) {
