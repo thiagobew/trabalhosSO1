@@ -22,7 +22,8 @@ public:
         RUNNING,
         READY,
         FINISHING,
-        SUSPENDED
+        SUSPENDED,
+        WAITING
     };
 
     /*
@@ -101,6 +102,12 @@ public:
     void suspend();
 
     void resume();
+
+    // Método para fazer uma thread dormir, é static pois irá colocar a running para dormir
+    static void sleep();
+
+    // Acorda uma thread que estava dormindo 
+    void wakeup();
 
 private:
     int _id;

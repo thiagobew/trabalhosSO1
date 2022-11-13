@@ -102,7 +102,7 @@ void Thread::yield() {
     Thread *next = _ready.remove_head()->object();
     Thread *prev = _running;
     db<Thread>(TRC) << "Running state: " << prev->_state << "\n";
-    if (_running != &_main && _running->_state != FINISHING && _running->_state != SUSPENDED) {
+    if (_running != &_main && _running->_state != FINISHING && _running->_state != SUSPENDED && _running->_state != WAITING) {
         _running->_link.rank(getTimestamp());
         _running->_state = READY;
         _ready.insert(&_running->_link);
@@ -120,6 +120,22 @@ Thread::~Thread() {
     _ready.remove(&this->_link);
     if (this->_context)
         delete this->_context;
+}
+
+// Método static
+void Thread::sleep() {
+    // Coloca a thread running como WAITING e faz o yield para passar a execução para a próxima
+    _running->_state = WAITING;
+    yield();
+}
+
+// Método não static
+void Thread::wakeup() {
+    // Seta o state como READY e o recoloca na fila de Ready
+    this->_state = READY;
+    this->_link.rank(getTimestamp());
+    this->_ready.insert(&this->_link);
+
 }
 
 void Thread::thread_exit(int exit_code) {

@@ -6,8 +6,8 @@ CFLAGS = -Wall -g
 # Primeira linha são as dependências que irão causar a sequência de alterações abaixo
 # Verificar a consistência do Makefile pois alterações no traits.h não são refletidas no projeto sem ocorrer um make clean e depois um make
 # Mesmo que as alterações levem a uma nova compilação
-main: main.o main_class.o cpu.o debug.o thread.o system.o traits.h
-	$(CC) $(CFLAGS) main.o main_class.o cpu.o debug.o thread.o system.o traits.h -o main
+main: main.o main_class.o cpu.o debug.o thread.o system.o semaphore.o traits.h 
+	$(CC) $(CFLAGS) main.o main_class.o cpu.o debug.o thread.o system.o semaphore.o traits.h -o main
 
 main.o: main.cc main_class.h
 	$(CC) $(CFLAGS) -c main.cc $<
@@ -26,6 +26,9 @@ debug.o: debug.cc debug.h
 
 system.o: system.cc system.h debug.h traits.h
 	$(CC) $(CFLAGS) -c system.cc $<
+
+semaphore.o: semaphore.cc semaphore.h
+	$(CC) $(CFLAGS) -c semaphore.cc $<
 
 clean:
 	rm *.o main

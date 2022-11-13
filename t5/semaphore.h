@@ -25,8 +25,13 @@ private:
     void sleep();
     void wakeup();
     void wakeup_all();
+    int getTimestamp();
 
 private:
+    // Lista de threads sleeping no semáforo
+    Ready_Queue _sleeping;
+    // Elento da Ready_Queue
+    Ready_Queue::Element _link;
     volatile int _value;
 };
 

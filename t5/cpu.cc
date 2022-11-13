@@ -19,4 +19,8 @@ int CPU::switch_context(Context *from, Context *to) {
     return -1;
 }
 
+void CPU::finc(volatile int & number) {}
+
+void CPU::fdec(volatile int &number) {}
+
 __END_API
