@@ -5,10 +5,6 @@
 __BEGIN_API
 // https://stackoverflow.com/questions/2545720/error-default-argument-given-for-parameter-1
 // Parâmetros default só são definidos na declaração do método, não na implementação 
-Semaphore::Semaphore(int v) {
-    // Inicializa o semáforo com o valor v
-    _value = v;
-}
 
 Semaphore::~Semaphore() {
     // Se o semáforo não estiver livre, então ele está bloqueado
@@ -44,14 +40,15 @@ void Semaphore::sleep() {
     // Pega uma referência da Thread running, a qual chamou esse método e irá dormir
     Thread* running = Thread::running();
     // A coloca na lista de threads dormindo
-    // _sleeping.insert(&running->_link);
+    _sleeping.push(*running);
     // Chama o método sleep de Thread que irá fazer as ações necessárias
     Thread::sleep();
 }
 
 void Semaphore::wakeup() {
     // Retira a primeria thread da fila de waiting
-    Thread *sleepingThread = _sleeping.remove_head()->object();
+    Thread *sleepingThread = &_sleeping.front();
+    _sleeping.pop();
     // Acorda a thread
     sleepingThread->wakeup();
 }
@@ -59,7 +56,8 @@ void Semaphore::wakeup() {
 void Semaphore::wakeup_all() {
     // Faz wakeUp de todas as threads que estão na fila de WAITING do semáforo
     while (_sleeping.size() > 0) {
-        Thread* sleepingThread = _sleeping.remove_head()->object();
+        Thread* sleepingThread = &_sleeping.front();
+        _sleeping.pop();
         sleepingThread->wakeup();
     }
 }

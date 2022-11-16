@@ -5,13 +5,17 @@
 #include "thread.h"
 #include "traits.h"
 #include "debug.h"
+#include <queue>
 
 __BEGIN_API
 
 class Semaphore
 {
 public:
-    Semaphore(int v = 1);
+    typedef std::queue<Thread> Sleeping_Queue;
+    Semaphore(int v = 1) : _value(v) {
+            db<Semaphore>(TRC) << "Semaphore::Semaphore(" << v << ")\n";
+    };
     ~Semaphore();
 
     void p();
@@ -29,9 +33,7 @@ private:
 
 private:
     // Lista de threads sleeping no semáforo
-    Ready_Queue _sleeping;
-    // Elento da Ready_Queue
-    Ready_Queue::Element _link;
+    Sleeping_Queue _sleeping;
     volatile int _value;
 };
 

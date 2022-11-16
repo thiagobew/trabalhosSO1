@@ -41,7 +41,7 @@ public:
         ping_pong_threads[2] = new Thread(body, (char *) ping_name.data(), 2);
         ping_pong_threads[3] = new Thread(body, (char *) pong_name.data(), 3);
         ping_pong_threads[4] = new Thread(body, (char *) pung_name.data(), 4);
-
+        
         sem = new Semaphore();
 
         for (int i = 0; i < 2; i++) {

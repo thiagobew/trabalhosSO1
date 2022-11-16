@@ -108,8 +108,9 @@ public:
 
     // Acorda uma thread que estava dormindo 
     void wakeup();
+    Ready_Queue::Element link() { return _link; }
 
-private:
+  private:
     int _id;
     Context *volatile _context;
     static Thread *_running;
