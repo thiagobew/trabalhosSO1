@@ -103,8 +103,8 @@ public:
 
     void resume();
 
-    // Método para fazer uma thread dormir, é static pois irá colocar a running para dormir
-    static void sleep();
+    // Método para fazer a thread dormir
+    void sleep();
 
     // Acorda uma thread que estava dormindo 
     void wakeup();

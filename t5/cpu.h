@@ -29,9 +29,9 @@ public:
         void load();
     };
 
-    static void finc(volatile int & number);
+    static int finc(volatile int & number);
 
-    static void fdec(volatile int & number);
+    static int fdec(volatile int & number);
 
     static int switch_context(Context *from, Context *to);
 };

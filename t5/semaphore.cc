@@ -3,8 +3,6 @@
 #include "cpu.h"
 
 __BEGIN_API
-// https://stackoverflow.com/questions/2545720/error-default-argument-given-for-parameter-1
-// Parâmetros default só são definidos na declaração do método, não na implementação 
 
 Semaphore::~Semaphore() {
     // Se o semáforo não estiver livre, então ele está bloqueado
@@ -16,24 +14,24 @@ Semaphore::~Semaphore() {
 
 // Tenta pegar o semáforo
 void Semaphore::p() {
-    // Decrementa o valor do semáforo
-    CPU::fdec(_value);
+    db<Semaphore>(TRC) << "Semaphore before p(): " << _value << "\n";
     // Se o valor do semáforo for menor que 1, então o semáforo está bloqueado
-    if (_value < 1) {
+    if (CPU::fdec(_value) < 1) {
         // Bloqueia a thread
         sleep();
     }
+    db<Semaphore>(TRC) << "Semaphore after p(): " << _value << "\n";
 }
 
 // Libera o semáforo
 void Semaphore::v() {
-    asm("lock xadd %0, %2" : "=r"(_value) : "0"(1), "m"(_value));
+    db<Semaphore>(TRC) << "Semaphore before v(): " << _value << "\n";
     // Incrementa o valor do semáforo
-    CPU::finc(_value);
-    if (_value < 0) {
+    if (CPU::finc(_value) < 0) {
         // Desbloqueia a thread
         wakeup();
     }
+    db<Semaphore>(TRC) << "Semaphore after v(): " << _value << "\n";
 }
 
 void Semaphore::sleep() {
@@ -42,7 +40,7 @@ void Semaphore::sleep() {
     // A coloca na lista de threads dormindo
     _sleeping.push(*running);
     // Chama o método sleep de Thread que irá fazer as ações necessárias
-    Thread::sleep();
+    running->sleep();
 }
 
 void Semaphore::wakeup() {

@@ -99,6 +99,9 @@ void Thread::dispatcher() {
 }
 
 void Thread::yield() {
+    db<Semaphore>(TRC) << "ReadyQueue size: " << _ready.size() << "\n";
+    // Segfault devido a edge case onde a main está suspensa, as outras threads estão na fila do semaforo
+    // ou seja, ready.size() == 0
     Thread *next = _ready.remove_head()->object();
     Thread *prev = _running;
     db<Thread>(TRC) << "Running state: " << prev->_state << "\n";
@@ -122,14 +125,16 @@ Thread::~Thread() {
         delete this->_context;
 }
 
-// Método static
 void Thread::sleep() {
     // Coloca a thread running como WAITING e faz o yield para passar a execução para a próxima
-    _running->_state = WAITING;
+    _state = WAITING;
+    if (_running != this) {
+      _ready.remove(&_link);
+    }
+
     yield();
 }
 
-// Método não static
 void Thread::wakeup() {
     // Seta o state como READY e o recoloca na fila de Ready
     this->_state = READY;
