@@ -13,9 +13,7 @@ class Semaphore
 {
 public:
     typedef std::queue<Thread> Sleeping_Queue;
-    Semaphore(int v = 1) : _value(v) {
-            db<Semaphore>(TRC) << "Semaphore::Semaphore(" << v << ")\n";
-    };
+    Semaphore(int v = 1) : _value(v) {};
     ~Semaphore();
 
     void p();
