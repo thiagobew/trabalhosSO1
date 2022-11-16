@@ -76,7 +76,7 @@ int Thread::getTimestamp() {
 }
 
 void Thread::dispatcher() {
-    while (_ready.size() > 0) {
+    while (!_ready.empty()) {
         db<Thread>(TRC) << "List size: " << _ready.size() << "\n";
         // Retira próxima thread a ser executada
         Thread *next = _ready.remove_head()->object();
@@ -89,7 +89,7 @@ void Thread::dispatcher() {
         next->_state = RUNNING;
         switch_context(&_dispatcher, next);
 
-        if (_ready.size() > 0 && _ready.head()->object()->_state == FINISHING) {
+        if (!_ready.empty() > 0 && _ready.head()->object()->_state == FINISHING) {
             _ready.remove_head();
         }
     }

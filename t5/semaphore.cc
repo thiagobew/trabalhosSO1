@@ -52,7 +52,7 @@ void Semaphore::sleep() {
 }
 
 void Semaphore::wakeup() {
-    if (_sleeping.size() == 0)
+    if (_sleeping.empty())
         return;
 
     // Pega uma referência da primeira da fila
@@ -65,7 +65,7 @@ void Semaphore::wakeup() {
 
 void Semaphore::wakeup_all() {
     // Faz wakeUp de todas as threads que estão na fila de WAITING do semáforo
-    while (_sleeping.size() > 0) {
+    while (!_sleeping.empty()) {
         Thread* sleepingThread = _sleeping.front();
         _sleeping.pop();
         sleepingThread->wakeup();

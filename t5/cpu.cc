@@ -20,13 +20,13 @@ int CPU::switch_context(Context *from, Context *to) {
 }
 
 int CPU::finc(volatile int &number) {
-  int old = 1;
+  register int old = 1;
   asm("lock xadd %0, %2" : "=a" (old) : "a" (old), "m" (number));
   return old;
 }
 
 int CPU::fdec(volatile int &number) {
-  int old = -1;
+  register int old = -1;
   asm("lock xadd %0, %2" : "=a" (old) : "a" (old), "m" (number));
   return old;
 }
