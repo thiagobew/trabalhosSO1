@@ -99,10 +99,6 @@ void Thread::dispatcher() {
 }
 
 void Thread::yield() {
-    db<Semaphore>(TRC) << "Dispatcher state: " << _dispatcher._state << "\n";
-    // Segfault devido a edge case onde a main está suspensa, as outras threads estão na fila do semaforo
-    // ou seja, ready.size() == 0
-    // onde está o dispatcher???
     Thread *next = _ready.remove_head()->object();
     Thread *prev = _running;
     db<Thread>(TRC) << "Running state: " << prev->_state << "\n";
@@ -131,9 +127,10 @@ void Thread::sleep() {
     _state = WAITING;
     if (_running != this) {
       _ready.remove(&_link);
+    } else {
+        yield();
     }
 
-    yield();
 }
 
 void Thread::wakeup() {

@@ -42,7 +42,7 @@ struct Traits<Main> {
 
 template <>
 struct Traits<Semaphore> {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template <>
