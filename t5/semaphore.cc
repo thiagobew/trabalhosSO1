@@ -6,7 +6,7 @@ __BEGIN_API
 
 Semaphore::~Semaphore() {
     // Se o semáforo não estiver livre, então ele está bloqueado
-    if (_value < 0) {
+    if (!_sleeping.empty()) {
         // Desbloqueia todos os threads que estão esperando
         wakeup_all();
     }
@@ -16,7 +16,7 @@ Semaphore::~Semaphore() {
 void Semaphore::p() {
     db<Semaphore>(TRC) << "Semaphore before p(): " << _value << "\n";
     // Se o valor do semáforo for menor que 1, então o semáforo está bloqueado
-    if (_value <= 0) {
+    if (CPU::fdec(_value) < 0) {
         // Verificar utilidade do retorno
         // Bloqueia a thread
         sleep();
@@ -30,13 +30,10 @@ void Semaphore::p() {
 void Semaphore::v() {
     db<Semaphore>(TRC) << "Semaphore before v(): " << _value << "\n";
     // Caso semáforo esteja bloqueado
-    if (_value <= 0) {
+    if (CPU::finc(_value) < 1) {
         // Incrementa o valor do semáforo
-        CPU::finc(_value);
         // Desbloqueia a thread
         wakeup();
-    } else {
-        CPU::finc(_value);
     }
 
     db<Semaphore>(TRC) << "Semaphore after v(): " << _value << "\n";
