@@ -138,7 +138,7 @@ void Thread::wakeup() {
     this->_state = READY;
     this->_link.rank(getTimestamp());
     this->_ready.insert(&this->_link);
-
+    yield();
 }
 
 void Thread::thread_exit(int exit_code) {
