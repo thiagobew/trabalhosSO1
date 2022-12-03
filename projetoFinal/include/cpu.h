@@ -1,7 +1,7 @@
 #ifndef cpu_h
 #define cpu_h
 
-#include "traits.h"
+#include "./traits.h"
 #include <iostream>
 #include <ucontext.h>
 

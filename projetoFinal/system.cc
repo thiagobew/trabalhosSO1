@@ -1,7 +1,7 @@
-#include "system.h"
-#include "debug.h"
-#include "thread.h"
-#include "traits.h"
+#include "include/system.h"
+#include "include/debug.h"
+#include "include/thread.h"
+#include "include/traits.h"
 #include <iostream>
 
 __BEGIN_API

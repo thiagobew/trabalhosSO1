@@ -1,5 +1,5 @@
-#include "Vector.h"
-#include "Point.h"
+#include "include/Vector.h"
+#include "include/Point.h"
 #include <ctime>
 #include <cstdlib>
 

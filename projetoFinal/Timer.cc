@@ -6,7 +6,7 @@
  * @bug
  */
 
-#include "Timer.h"
+#include "include/Timer.h"
 #include <iostream>
 #include <stdexcept>
 

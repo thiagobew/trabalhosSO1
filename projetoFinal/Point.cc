@@ -1,5 +1,5 @@
-#include "Point.h"
-#include "Vector.h"
+#include "include/Point.h"
+#include "include/Vector.h"
 
 Point::Point() {
    x = 0.0;

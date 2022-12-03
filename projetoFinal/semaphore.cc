@@ -1,4 +1,4 @@
-#include "semaphore.h"
+#include "include/semaphore.h"
 #include "threads.h"
 #include "cpu.h"
 
