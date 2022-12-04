@@ -1,7 +1,7 @@
 /**
  * @file Point.h
  * @brief Definition of the Point struct
- *  
+ *
  * This contains the public member variables of the Point struct
  * describes a position on a grid
  *
@@ -12,9 +12,12 @@
 #ifndef _POINT_H
 #define _POINT_H
 
+#include "traits.h"
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
+
+__BEGIN_API
 
 struct Vector;
 
@@ -22,30 +25,31 @@ struct Vector;
  * @struct Point
  * @brief represents a position on the display (grid)
  */
-struct Point {
+struct Point
+{
    /**
     * @var double x
     * represents the x coordinate
     */
    double x;
-      
+
    /**
     * @var double y
     * represents the y coordinate
-    */   
+    */
    double y;
 
    Point();
-   
+
    /**
     * @fn Point(double a, double b)
     * @brief Constructor
-    * @param 
+    * @param
     */
    Point(double a, double b);
 
    ~Point();
-   
+
    /**
     * @fn Point operator + (Vector v)
     * @brief adds the value of member x of v to this objects member x, and
@@ -60,7 +64,8 @@ struct Point {
    void rollRandom();
    void rollRandomX();
    void rollRandomY();
-   
 };
+
+__END_API
 
 #endif

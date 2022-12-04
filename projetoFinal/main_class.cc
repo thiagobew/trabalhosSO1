@@ -2,7 +2,12 @@
 
 __BEGIN_API
 
-Thread *Main::threads[5];
-Semaphore *Main::sem;
+Thread *engineThread;
+Thread *windowThread;
+Thread *keyboardThread;
+
+Engine *engineObj;
+Window *windowObj;
+KeyboardHandler *kbObj;
 
 __END_API

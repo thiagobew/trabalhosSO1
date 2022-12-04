@@ -6,12 +6,10 @@
 #include "thread.h"
 #include "semaphore.h"
 #include "Window.h"
+#include "KbHandler.h"
 #include "Engine.h"
+#include "GameConfigs.h"
 #include <iostream>
-#include <allegro5/allegro.h>
-#include <ctime>
-#include <cstdlib>
-#include <string>
 
 __BEGIN_API
 
@@ -24,32 +22,42 @@ public:
     // Essa função será passada para Thread::init()
     static void run(void *name)
     {
-        std::cout << (char *)name << ": inicio\n";
+        engineThread = new Thread(engineFunc);
+        windowThread = new Thread(windowFunc);
+        keyboardThread = new Thread(keyBoardFunc);
 
-        threads[0] = new Thread(engineThread);
-        threads[1] = new Thread(windowThread);
-        
-        threads[0]->join();
-        threads[0]->join();
+        engineThread->join();
+        windowThread->join();
+        keyboardThread->join();
 
-
-        delete threads[0];
+        delete engineThread;
+        delete windowThread;
+        delete keyboardThread;
     }
 
 private:
-    static void windowThread();
-
-    static void engineThread()
+    static void windowFunc()
     {
-        srand(time(0));
-        // Cria a engine
-        Engine shooty(800, 600, 60);
-        shooty.init();
-        shooty.run();
+        Main::windowObj->run();
     }
 
-    static Thread *threads[5];
-    static Semaphore *sem;
+    static void engineFunc()
+    {
+        Main::engineObj->run();
+    }
+
+    static void keyBoardFunc()
+    {
+        Main::kbObj->run();
+    }
+
+    static Thread *engineThread;
+    static Thread *windowThread;
+    static Thread *keyboardThread;
+
+    static Engine *engineObj;
+    static Window *windowObj;
+    static KeyboardHandler *kbObj;
 };
 
 __END_API

@@ -1,9 +1,13 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-namespace act {
+#include "traits.h"
 
-   enum action {
+namespace act
+{
+
+   enum GameAction
+   {
       NO_ACTION,
       MOVE_UP,
       MOVE_RIGHT,

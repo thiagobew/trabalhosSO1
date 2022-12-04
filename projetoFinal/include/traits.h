@@ -3,7 +3,9 @@
 
 // Não alterar as 3 declarações abaixo
 
-#define __BEGIN_API namespace SOLUTION {
+#define __BEGIN_API    \
+    namespace SOLUTION \
+    {
 #define __END_API }
 #define __USING_API using namespace SOLUTION;
 
@@ -23,35 +25,47 @@ class Lists;
 
 class Semaphore;
 
+class Engine;
+
+class KeyboardHandler;
+
+class Window;
+
 template <typename T>
-struct Traits {
+struct Traits
+{
     // Booleano para permitir o print das mensagens ou não, por padrão está bloqueado para todas as classes
     static const bool debugged = false;
 };
 
 template <>
-struct Traits<CPU> {
+struct Traits<CPU>
+{
     static const int STACK_SIZE = 0x10000;
     static const bool debugged = true;
 };
 
 template <>
-struct Traits<Main> {
+struct Traits<Main>
+{
     static const bool debugged = true;
 };
 
 template <>
-struct Traits<Semaphore> {
+struct Traits<Semaphore>
+{
     static const bool debugged = false;
 };
 
 template <>
-struct Traits<Lists> {
+struct Traits<Lists>
+{
     static const bool debugged = false;
 };
 
 template <>
-struct Traits<Debug> : public Traits<void> {
+struct Traits<Debug> : public Traits<void>
+{
     // Em Debug podemos habilitar ou desabilitar os tipos de debug, nesse caso somente tipos INF serão printados
     static const bool error = false;
     static const bool warning = false;
@@ -60,12 +74,14 @@ struct Traits<Debug> : public Traits<void> {
 };
 
 template <>
-struct Traits<System> : public Traits<void> {
+struct Traits<System> : public Traits<void>
+{
     static const bool debugged = true;
 };
 
 template <>
-struct Traits<Thread> : public Traits<void> {
+struct Traits<Thread> : public Traits<void>
+{
     // Nessa classe ocorre um override, permitindo print de mensagens dentro de Thread
     static const bool debugged = false;
 };

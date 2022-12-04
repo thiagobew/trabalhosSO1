@@ -10,28 +10,32 @@
 
 #include <allegro5/allegro.h>
 
-class Timer {
+__BEGIN_API
 
-  public:
-   Timer(int fps);
-   ~Timer();
+class Timer
+{
 
-   void create();
+public:
+  Timer(int fps);
+  ~Timer();
 
-   void startTimer();
-   void stopTimer();
-   void resetCount();
+  void create();
 
-   void srsTimer(); // stop, reset, start
-   
-   int getCount() const;
-   bool isRunning() const;
-   bool isCreated() const;
+  void startTimer();
+  void stopTimer();
+  void resetCount();
 
-  private:
-   ALLEGRO_TIMER* _timer;
-   int _fps;
-   
+  void srsTimer(); // stop, reset, start
+
+  int getCount() const;
+  bool isRunning() const;
+  bool isCreated() const;
+
+private:
+  ALLEGRO_TIMER *_timer;
+  int _fps;
 };
+
+__END_API
 
 #endif
