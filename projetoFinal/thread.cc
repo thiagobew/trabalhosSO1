@@ -93,7 +93,7 @@ void Thread::dispatcher()
 {
 	while (!_ready.empty())
 	{
-		db<Thread>(TRC) << "List size: " << _ready.size() << "\n";
+		db<Thread>(TRC) << "Dispatcher is now running. Ready List Size: " << _ready.size() << "\n";
 		// Retira próxima thread a ser executada
 		Thread *next = _ready.remove_head()->object();
 		// Altera o estado do escalonador
@@ -103,6 +103,7 @@ void Thread::dispatcher()
 		_ready.insert(&_dispatcher._link);
 		_running = next;
 		next->_state = RUNNING;
+		db<Thread>(TRC) << "Switching to -> " << next->id() << "\n";
 		switch_context(&_dispatcher, next);
 
 		if (!_ready.empty() > 0 && _ready.head()->object()->_state == FINISHING)
@@ -110,7 +111,8 @@ void Thread::dispatcher()
 			_ready.remove_head();
 		}
 	}
-	db<Thread>(TRC) << "Out of dispatcher while\n";
+
+	db<Thread>(TRC) << "Dispatcher finishing\n";
 	_dispatcher._state = FINISHING;
 	switch_context(&_dispatcher, &_main);
 }
@@ -131,7 +133,7 @@ void Thread::yield()
 
 	_running = next;
 	next->_state = RUNNING;
-	db<Thread>(TRC) << "Switch " << prev->id() << " -> " << next->id() << "\n";
+	db<Thread>(TRC) << "Switching thread " << prev->id() << " to " << next->id() << "\n";
 	switch_context(prev, next);
 }
 

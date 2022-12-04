@@ -86,6 +86,7 @@ void Window::drawBackground()
 // initialize Allegro, the _display window, the addons, the timers, and event sources
 void Window::init()
 {
+    db<Window>(TRC) << "Window Init started\n";
     // initialize allegro
     al_init();
 

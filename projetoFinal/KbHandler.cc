@@ -4,6 +4,12 @@ __BEGIN_API
 
 KeyboardHandler::KeyboardHandler()
 {
+    if ((this->_eventQueue = al_create_event_queue()) == NULL)
+    {
+        std::cout << "error, could not create event queue\n";
+        exit(1);
+    }
+
     // install keyboard
     if (!al_install_keyboard())
     {

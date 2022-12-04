@@ -10,7 +10,8 @@
 
 __BEGIN_API
 
-class Thread {
+class Thread
+{
 protected:
     typedef CPU::Context Context;
 
@@ -18,7 +19,8 @@ public:
     typedef Ordered_List<Thread> Ready_Queue;
 
     // Thread State
-    enum State {
+    enum State
+    {
         RUNNING,
         READY,
         FINISHING,
@@ -106,11 +108,11 @@ public:
     // Método para fazer a thread dormir
     void sleep();
 
-    // Acorda uma thread que estava dormindo 
+    // Acorda uma thread que estava dormindo
     void wakeup();
     Ready_Queue::Element link() { return _link; }
 
-  private:
+private:
     int _id;
     Context *volatile _context;
     static Thread *_running;
@@ -126,7 +128,7 @@ public:
      * Qualquer outro atributo que você achar necessário para a solução.
      */
     static unsigned int _next_id;
-    Thread* _awaitsJoin = nullptr;
+    Thread *_awaitsJoin = nullptr;
     int _exit_code;
     static Ready_Queue _suspended;
 
@@ -137,11 +139,13 @@ public:
 // O que está após os dois pontos se chama Initialization Lists, e servem para chamar construtores de base ou para instanciar atributos antes do construtuor começar
 // Um exemplo é para setar variáveis const para cada instância da classe, essa ação só pode ser feita com initialization lists
 template <typename... Tn>
-inline Thread::Thread(void (*entry)(Tn...), Tn... an) : _link(this, Thread::getTimestamp()) {
+inline Thread::Thread(void (*entry)(Tn...), Tn... an) : _link(this, Thread::getTimestamp())
+{
     this->_context = new Context(entry, an...);
     this->_id = Thread::_next_id++;
     this->_state = Thread::State::READY;
-    if (this->_id != 0) {
+    if (this->_id != 0)
+    {
         Thread::_ready.insert(&_link);
     }
 

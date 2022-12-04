@@ -22,9 +22,9 @@ public:
     // Essa função será passada para Thread::init()
     static void run(void *name)
     {
-        engineThread = new Thread(engineFunc);
         windowThread = new Thread(windowFunc);
         keyboardThread = new Thread(keyBoardFunc);
+        engineThread = new Thread(engineFunc);
 
         engineThread->join();
         windowThread->join();
@@ -38,17 +38,20 @@ public:
 private:
     static void windowFunc()
     {
-        Main::windowObj->run();
+        windowObj = new Window(GameConfigs::windowWidth, GameConfigs::windowHeight, GameConfigs::fps);
+        windowObj->run();
     }
 
     static void engineFunc()
     {
-        Main::engineObj->run();
+        engineObj = new Engine();
+        engineObj->run();
     }
 
     static void keyBoardFunc()
     {
-        Main::kbObj->run();
+        kBoardObj = new KeyboardHandler();
+        kBoardObj->run();
     }
 
     static Thread *engineThread;
@@ -57,7 +60,7 @@ private:
 
     static Engine *engineObj;
     static Window *windowObj;
-    static KeyboardHandler *kbObj;
+    static KeyboardHandler *kBoardObj;
 };
 
 __END_API

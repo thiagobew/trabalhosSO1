@@ -35,7 +35,7 @@ template <typename T>
 struct Traits
 {
     // Booleano para permitir o print das mensagens ou não, por padrão está bloqueado para todas as classes
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template <>
@@ -67,8 +67,8 @@ template <>
 struct Traits<Debug> : public Traits<void>
 {
     // Em Debug podemos habilitar ou desabilitar os tipos de debug, nesse caso somente tipos INF serão printados
-    static const bool error = false;
-    static const bool warning = false;
+    static const bool error = true;
+    static const bool warning = true;
     static const bool info = true;
     static const bool trace = true;
 };
@@ -83,7 +83,25 @@ template <>
 struct Traits<Thread> : public Traits<void>
 {
     // Nessa classe ocorre um override, permitindo print de mensagens dentro de Thread
-    static const bool debugged = false;
+    static const bool debugged = true;
+};
+
+template <>
+struct Traits<Window> : public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template <>
+struct Traits<Engine> : public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template <>
+struct Traits<KeyboardHandler> : public Traits<void>
+{
+    static const bool debugged = true;
 };
 
 __END_API

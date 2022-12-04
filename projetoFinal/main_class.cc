@@ -8,6 +8,6 @@ Thread *Main::keyboardThread;
 
 Engine *Main::engineObj;
 Window *Main::windowObj;
-KeyboardHandler *Main::kbObj;
+KeyboardHandler *Main::kBoardObj;
 
 __END_API

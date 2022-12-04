@@ -26,6 +26,7 @@ void Engine::run()
 {
 	while (!GameConfigs::finished)
 	{
+		db<Engine>(TRC) << "Engine loop\n";
 		Thread::yield();
 	}
 }
