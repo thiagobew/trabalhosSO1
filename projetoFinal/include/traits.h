@@ -25,9 +25,9 @@ class Lists;
 
 class Semaphore;
 
-class Engine;
+class PlayerShip;
 
-class KeyboardHandler;
+class Keyboard;
 
 class Window;
 
@@ -83,7 +83,7 @@ template <>
 struct Traits<Thread> : public Traits<void>
 {
     // Nessa classe ocorre um override, permitindo print de mensagens dentro de Thread
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template <>
@@ -93,13 +93,13 @@ struct Traits<Window> : public Traits<void>
 };
 
 template <>
-struct Traits<Engine> : public Traits<void>
+struct Traits<PlayerShip> : public Traits<void>
 {
     static const bool debugged = true;
 };
 
 template <>
-struct Traits<KeyboardHandler> : public Traits<void>
+struct Traits<Keyboard> : public Traits<void>
 {
     static const bool debugged = true;
 };

@@ -2,12 +2,12 @@
 
 __BEGIN_API
 
-Thread *Main::engineThread;
+Thread *Main::playerShipThread;
 Thread *Main::windowThread;
 Thread *Main::keyboardThread;
 
-Engine *Main::engineObj;
+PlayerShip *Main::playerShipObj;
 Window *Main::windowObj;
-KeyboardHandler *Main::kBoardObj;
+Keyboard *Main::kBoardObj;
 
 __END_API

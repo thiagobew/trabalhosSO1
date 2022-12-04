@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 
+#include "PlayerShip.h"
 #include "traits.h"
 #include "thread.h"
 #include "Sprite.h"
@@ -21,22 +22,32 @@ public:
     Window(int width, int height, int fps);
     ~Window();
 
-    void draw();
+    // Função para atualizar a referência que Window precisa ter de PlayerShip
+    // Por enquanto há uma necessidade de Window ser criada antes que PlayerShip para carregar as bibliotecas
+    void setPlayerShip(PlayerShip *playerShip)
+    {
+        _playerShip = playerShip;
+    }
+
     void run();
 
 private:
     // Methods
     void init();
+    void draw();
     void loadSprites();
     void drawBackground();
     void handleEventQueue();
     void update(double diffTime);
 
     // Window variables
-    int _displayWidth = 800;
-    int _displayHeight = 600;
-    int _fps = 60;
-    bool redraw = true;
+    int _displayWidth;
+    int _displayHeight;
+    int _fps;
+    bool mustRedraw;
+
+    // Game object
+    PlayerShip *_playerShip;
 
     // Time variables
     float previousTime;

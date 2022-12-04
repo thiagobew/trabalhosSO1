@@ -6,8 +6,8 @@
 #include "thread.h"
 #include "semaphore.h"
 #include "Window.h"
-#include "KbHandler.h"
-#include "Engine.h"
+#include "KeyBoard.h"
+#include "PlayerShip.h"
 #include "GameConfigs.h"
 #include <iostream>
 
@@ -24,13 +24,13 @@ public:
     {
         windowThread = new Thread(windowFunc);
         keyboardThread = new Thread(keyBoardFunc);
-        engineThread = new Thread(engineFunc);
+        playerShipThread = new Thread(playerShipFunc);
 
-        engineThread->join();
+        playerShipThread->join();
         windowThread->join();
         keyboardThread->join();
 
-        delete engineThread;
+        delete playerShipThread;
         delete windowThread;
         delete keyboardThread;
     }
@@ -42,25 +42,26 @@ private:
         windowObj->run();
     }
 
-    static void engineFunc()
+    static void playerShipFunc()
     {
-        engineObj = new Engine();
-        engineObj->run();
+        playerShipObj = new PlayerShip(Main::kBoardObj);
+        windowObj->setPlayerShip(playerShipObj);
+        playerShipObj->run();
     }
 
     static void keyBoardFunc()
     {
-        kBoardObj = new KeyboardHandler();
+        kBoardObj = new Keyboard();
         kBoardObj->run();
     }
 
-    static Thread *engineThread;
+    static Thread *playerShipThread;
     static Thread *windowThread;
     static Thread *keyboardThread;
 
-    static Engine *engineObj;
+    static PlayerShip *playerShipObj;
     static Window *windowObj;
-    static KeyboardHandler *kBoardObj;
+    static Keyboard *kBoardObj;
 };
 
 __END_API

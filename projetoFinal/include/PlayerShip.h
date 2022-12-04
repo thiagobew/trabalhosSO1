@@ -1,14 +1,15 @@
 /**
- * @file Engine.h
+ * @file PlayerShip.h
  * @brief
  *
  * @author
  * @bug
  */
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef PLAYERSHIP_H
+#define PLAYERSHIP_H
 
 #include "GameConfigs.h"
+#include "KeyBoard.h"
 #include "Sprite.h"
 #include "Vector.h"
 #include "Action.h"
@@ -22,32 +23,36 @@ __BEGIN_API
 class Menu;
 class Root;
 
-class Engine
+class PlayerShip
 {
 
 public:
-	Engine();
-	~Engine();
+	PlayerShip();
+	PlayerShip(Keyboard *kBoardHandler);
+	~PlayerShip();
 
 	void init();
 	void run();
 	void draw();
-	void update(double dt);
-
-	void processAction(act::GameAction action);
+	void update(double diffTime);
 
 private:
-	void loadSprites();
-
-	// Spaceship data
+	// Logic methods
 	void checkExceedingWindowLimit();
 	void updateShipAnimation();
-	std::shared_ptr<Sprite> engineSprite;
+	void processAction();
+
+	// Action variables
+	Keyboard *_kBoardHandler;
+
+	// Draw information
+	std::shared_ptr<Sprite> shipSprite;
 	Point shipPosition;		/**< ship position */
-	ALLEGRO_COLOR color;	/**< ship color */
 	SOLUTION::Vector speed; /**< movement speed in any direction */
 	int row;				/**<row of animation to be played */
 	int col;				/**< column of animation to be played */
+	void loadSprites();
+	bool spritesLoaded = false;
 };
 
 __END_API

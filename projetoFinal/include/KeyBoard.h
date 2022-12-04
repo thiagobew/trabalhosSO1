@@ -1,12 +1,12 @@
-#ifndef KBHANDLER_H
-#define KBHANDLER_H
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
 
 #include <allegro5/allegro.h>
 #include <memory>
 #include <string>
 
 #include "GameConfigs.h"
-#include "Engine.h"
+#include "PlayerShip.h"
 #include "traits.h"
 #include "Sprite.h"
 #include "Vector.h"
@@ -15,28 +15,29 @@
 
 __BEGIN_API
 
-class KeyboardHandler
+class Keyboard
 {
 
 public:
-    KeyboardHandler();
-    ~KeyboardHandler();
+    typedef act::GameAction GameAction;
+
+    Keyboard();
+    ~Keyboard();
 
     void init();
     void run();
-
-    void setPlayerShip(Engine *newPlayerShip)
+    GameAction getCurrentAction()
     {
-        this->playerShip = newPlayerShip;
+        return this->currentAction;
     }
 
 private:
+    // Action variables
+    GameAction currentAction;
+
     // Methods
     void handleIO();
-    act::GameAction convertInputToAction();
-
-    // Objects reference
-    Engine *playerShip;
+    void updateCurrentAction();
 
     // Time variables
     float startTime = 0;

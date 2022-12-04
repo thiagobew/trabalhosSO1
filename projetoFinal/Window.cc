@@ -34,10 +34,11 @@ Window::~Window()
 
 void Window::run()
 {
+    Thread::yield(); // TODO
     while (!GameConfigs::finished)
     {
+        db<Window>(TRC) << ">>>> WINDOW starting loop\n";
         this->handleEventQueue();
-        this->draw();
         Thread::yield();
     }
 }
@@ -53,7 +54,7 @@ void Window::handleEventQueue()
     // Close display
     if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
     {
-        std::cout << "Program should end\n";
+        GameConfigs::finished = true;
         return;
     }
 
@@ -61,21 +62,43 @@ void Window::handleEventQueue()
     if (event.type == ALLEGRO_EVENT_TIMER)
     {
         currentTime = al_current_time();
-        this->update(currentTime - this->previousTime);
+        double diffTime = currentTime - this->previousTime;
+
+        this->update(diffTime);
         this->previousTime = currentTime;
-        this->redraw = true;
+        this->mustRedraw = true;
+    }
+
+    if (this->mustRedraw)
+    {
+        this->draw();
     }
 }
 
 void Window::draw()
 {
     // Checa se é para desenhar e se a eventQueue está vazia
-    if (this->redraw && al_is_event_queue_empty(this->_eventQueue))
+    if (this->mustRedraw && al_is_event_queue_empty(this->_eventQueue))
     {
-        this->redraw = false;
+        this->mustRedraw = false;
         this->drawBackground();
+
+        if (this->_playerShip != nullptr)
+            this->_playerShip->draw();
+
         al_flip_display();
     }
+}
+
+// Update the game time
+void Window::update(double dt)
+{
+    this->bgMid = this->bgMid + this->bgSpeed * dt;
+    if (bgMid.x >= 800)
+        bgMid.x = 0;
+
+    if (this->_playerShip != nullptr)
+        this->_playerShip->update(dt);
 }
 
 void Window::drawBackground()
@@ -122,16 +145,6 @@ void Window::init()
     al_start_timer(this->_timer);
 
     this->loadSprites();
-}
-
-// Update the game time
-void Window::update(double dt)
-{
-    this->bgMid = this->bgMid + this->bgSpeed * dt;
-    if (bgMid.x >= 800)
-    {
-        bgMid.x = 0;
-    }
 }
 
 void Window::loadSprites()
