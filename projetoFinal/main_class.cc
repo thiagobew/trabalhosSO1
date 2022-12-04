@@ -2,12 +2,12 @@
 
 __BEGIN_API
 
-Thread *engineThread;
-Thread *windowThread;
-Thread *keyboardThread;
+Thread *Main::engineThread;
+Thread *Main::windowThread;
+Thread *Main::keyboardThread;
 
-Engine *engineObj;
-Window *windowObj;
-KeyboardHandler *kbObj;
+Engine *Main::engineObj;
+Window *Main::windowObj;
+KeyboardHandler *Main::kbObj;
 
 __END_API

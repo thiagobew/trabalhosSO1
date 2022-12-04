@@ -1,6 +1,10 @@
 #ifndef window_h
 #define window_h
 
+#include <allegro5/allegro.h>
+#include <memory>
+#include <string>
+
 #include "traits.h"
 #include "thread.h"
 #include "Sprite.h"
@@ -8,10 +12,6 @@
 #include <stdio.h>
 
 __BEGIN_API
-
-#include <allegro5/allegro.h>
-#include <memory>
-#include <string>
 
 // Classe para desenhar as coisas na tela
 class Window

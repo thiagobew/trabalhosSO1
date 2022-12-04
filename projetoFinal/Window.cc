@@ -1,4 +1,12 @@
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+
 #include "include/Window.h"
+#include "include/GameConfigs.h"
 
 __BEGIN_API
 
@@ -22,12 +30,11 @@ Window::~Window()
         al_destroy_display(this->_display);
 
     bgSprite.reset();
-    engineSprite.reset();
 }
 
 void Window::run()
 {
-    while (!Configs::finished)
+    while (!GameConfigs::finished)
     {
         this->handleEventQueue();
         this->draw();
@@ -128,10 +135,6 @@ void Window::update(double dt)
 
 void Window::loadSprites()
 {
-    // Create Ship
-    shipPosition = Point(215, 245);
-    color = al_map_rgb(0, 200, 0);
-
     // represents the middle of the image width-wise, and top height-wise
     bgMid = Point(0, 0);
     fgMid = Point(800, 0);
@@ -145,8 +148,7 @@ void Window::loadSprites()
     al_change_directory(al_path_cstr(path, '/'));
 
     // sprites
-    engineSprite = std::make_shared<Sprite>("Sprite2.png"); // espaçonave do usuário
-    bgSprite = std::make_shared<Sprite>("BGstars.png");     // fundo da tela - background
+    bgSprite = std::make_shared<Sprite>("BGstars.png"); // fundo da tela - background
 
     // delete path
     al_destroy_path(path);

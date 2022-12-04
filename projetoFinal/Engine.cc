@@ -1,8 +1,8 @@
-#include "include/Engine.h"
-
 #include <stdexcept>
 #include <iostream>
 
+#include "include/Engine.h"
+#include "include/GameConfigs.h"
 #include "include/Timer.h"
 
 __BEGIN_API

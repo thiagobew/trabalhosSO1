@@ -1,9 +1,16 @@
+/**
+ * @file GameConfig.h
+ * @brief
+ *
+ * @author
+ * @bug
+ */
+#ifndef GAMECONFIGS_H
+#define GAMECONFIGS_H
+
 #include "./traits.h"
 #include <iostream>
 #include <ucontext.h>
-
-#ifndef GAMECONFIGS_H
-#define GAMECONFIGS_H
 
 __BEGIN_API
 

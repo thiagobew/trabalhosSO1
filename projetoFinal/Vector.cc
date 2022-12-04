@@ -3,6 +3,8 @@
 #include <ctime>
 #include <cstdlib>
 
+__BEGIN_API
+
 Vector::Vector()
 {
 	x = 0.0;
@@ -78,3 +80,5 @@ void Vector::flip()
 	x = y;
 	y = temp;
 }
+
+__END_API

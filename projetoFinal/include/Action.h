@@ -3,6 +3,8 @@
 
 #include "traits.h"
 
+__BEGIN_API
+
 namespace act
 {
 
@@ -17,6 +19,8 @@ namespace act
       FIRE_SECONDARY,
       QUIT_GAME
    };
-
 }
+
+__END_API
+
 #endif
