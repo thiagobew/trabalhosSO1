@@ -10,15 +10,9 @@
 
 __BEGIN_API
 
-Window::Window()
-{
-    this->init();
-}
+Window::Window() { this->init(); }
 
-Window::Window(int width, int height, int fps) : _displayWidth(width), _displayHeight(height), _fps(fps)
-{
-    this->init();
-}
+Window::Window(int width, int height, int fps) : _displayWidth(width), _displayHeight(height), _fps(fps) { this->init(); }
 
 Window::~Window()
 {
@@ -34,7 +28,6 @@ Window::~Window()
 
 void Window::run()
 {
-    Thread::yield(); // TODO
     while (!GameConfigs::finished)
     {
         db<Window>(TRC) << ">>>> WINDOW starting loop\n";
@@ -46,7 +39,6 @@ void Window::run()
 void Window::handleEventQueue()
 {
     ALLEGRO_EVENT event;
-    float currentTime;
 
     // Get event
     al_wait_for_event(this->_eventQueue, &event);
@@ -60,51 +52,50 @@ void Window::handleEventQueue()
 
     // Timer
     if (event.type == ALLEGRO_EVENT_TIMER)
-    {
-        currentTime = al_current_time();
-        double diffTime = currentTime - this->previousTime;
-
-        this->update(diffTime);
-        this->previousTime = currentTime;
-        this->mustRedraw = true;
-    }
-
-    if (this->mustRedraw)
-    {
         this->draw();
-    }
 }
 
 void Window::draw()
 {
     // Checa se é para desenhar e se a eventQueue está vazia
-    if (this->mustRedraw && al_is_event_queue_empty(this->_eventQueue))
+    if (al_is_event_queue_empty(this->_eventQueue))
     {
-        this->mustRedraw = false;
+        // Atualiza o timer
+        float currentTime = al_current_time();
+        double diffTime = currentTime - this->previousTime;
+        this->previousTime = currentTime;
+
+        // Update e draw
+        this->updateBackGround(diffTime);
         this->drawBackground();
 
         if (this->_playerShip != nullptr)
+        {
+            this->_playerShip->update(diffTime);
             this->_playerShip->draw();
+        }
+
+        // Para cada item para desenhar faz update e desenha
+        for (auto listItem = this->drawableItens.begin(); listItem != this->drawableItens.end(); listItem++)
+        {
+            Drawable *drawableItem = *listItem;
+            drawableItem->update(diffTime);
+            drawableItem->draw();
+        }
 
         al_flip_display();
     }
 }
 
 // Update the game time
-void Window::update(double dt)
+void Window::updateBackGround(double dt)
 {
     this->bgMid = this->bgMid + this->bgSpeed * dt;
     if (bgMid.x >= 800)
         bgMid.x = 0;
-
-    if (this->_playerShip != nullptr)
-        this->_playerShip->update(dt);
 }
 
-void Window::drawBackground()
-{
-    bgSprite->draw_parallax_background(bgMid.x, 0);
-}
+void Window::drawBackground() { bgSprite->draw_parallax_background(bgMid.x, 0); }
 
 // initialize Allegro, the _display window, the addons, the timers, and event sources
 void Window::init()

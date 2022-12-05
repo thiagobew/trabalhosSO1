@@ -25,56 +25,36 @@ void Keyboard::run()
     while (!GameConfigs::finished)
     {
         db<Keyboard>(TRC) << ">>>> KEYBOARD starting loop\n";
-        this->handleIO();
+        this->updateKeyboardStatus();
         Thread::yield();
     }
 }
 
-void Keyboard::handleIO()
+bool Keyboard::getKbKeyIsPressed(KbKey key)
 {
-    // Get the input
-    al_get_keyboard_state(&this->kBoard);
-    // Identifica e atualiza a action atual
-    this->updateCurrentAction();
+    if (key == KbKey::MOVE_UP)
+        return al_key_down(&this->kBoard, ALLEGRO_KEY_UP);
+    else if (key == KbKey::MOVE_DOWN)
+        return al_key_down(&this->kBoard, ALLEGRO_KEY_DOWN);
+    else if (key == KbKey::MOVE_LEFT)
+        return al_key_down(&this->kBoard, ALLEGRO_KEY_LEFT);
+    else if (key == KbKey::MOVE_RIGHT)
+        return al_key_down(&this->kBoard, ALLEGRO_KEY_RIGHT);
+    else if (key == KbKey::ESC)
+        return al_key_down(&this->kBoard, ALLEGRO_KEY_ESCAPE);
+    else if (key == KbKey::NUM_1)
+        return al_key_down(&this->kBoard, ALLEGRO_KEY_1);
+    else if (key == KbKey::SPACE)
+        return al_key_down(&this->kBoard, ALLEGRO_KEY_SPACE);
+    else
+        std::cout << "Cannot map this key;\n";
+    return false;
 }
 
-void Keyboard::updateCurrentAction()
+void Keyboard::updateKeyboardStatus()
 {
-    if (al_key_down(&this->kBoard, ALLEGRO_KEY_UP))
-    {
-        this->currentAction = GameAction::MOVE_UP;
-    }
-    else if (al_key_down(&this->kBoard, ALLEGRO_KEY_RIGHT))
-    {
-        this->currentAction = GameAction::MOVE_RIGHT;
-    }
-    else if (al_key_down(&this->kBoard, ALLEGRO_KEY_DOWN))
-    {
-        this->currentAction = GameAction::MOVE_DOWN;
-    }
-    else if (al_key_down(&this->kBoard, ALLEGRO_KEY_LEFT))
-    {
-        this->currentAction = GameAction::MOVE_LEFT;
-    }
-    else if (al_key_down(&this->kBoard, ALLEGRO_KEY_1))
-    {
-        std::cout << "missel\n";
-        this->currentAction = GameAction::FIRE_PRIMARY;
-    }
-    else if (al_key_down(&this->kBoard, ALLEGRO_KEY_SPACE))
-    {
-        std::cout << "tiro normal\n";
-        this->currentAction = GameAction::FIRE_SECONDARY;
-    }
-    else if (al_key_down(&this->kBoard, ALLEGRO_KEY_ESCAPE))
-    {
-        this->currentAction = GameAction::QUIT_GAME;
-        std::cout << "sair\n";
-    }
-    else
-    {
-        this->currentAction = GameAction::NO_ACTION;
-    }
+    // update the state of the keyboard variable
+    al_get_keyboard_state(&this->kBoard);
 }
 
 __END_API

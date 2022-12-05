@@ -8,13 +8,20 @@ __BEGIN_API
 namespace act
 {
 
+   enum KbKey
+   {
+      MOVE_UP,
+      MOVE_DOWN,
+      MOVE_RIGHT,
+      MOVE_LEFT,
+      SPACE,
+      NUM_1,
+      ESC
+   };
+
    enum GameAction
    {
       NO_ACTION,
-      MOVE_UP,
-      MOVE_RIGHT,
-      MOVE_DOWN,
-      MOVE_LEFT,
       FIRE_PRIMARY,
       FIRE_SECONDARY,
       QUIT_GAME

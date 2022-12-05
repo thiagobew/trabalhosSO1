@@ -89,7 +89,7 @@ struct Traits<Thread> : public Traits<void>
 template <>
 struct Traits<Window> : public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template <>
@@ -101,7 +101,7 @@ struct Traits<PlayerShip> : public Traits<void>
 template <>
 struct Traits<Keyboard> : public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 __END_API

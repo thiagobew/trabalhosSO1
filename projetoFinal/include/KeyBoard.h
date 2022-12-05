@@ -19,25 +19,18 @@ class Keyboard
 {
 
 public:
-    typedef act::GameAction GameAction;
+    typedef act::KbKey KbKey;
 
     Keyboard();
     ~Keyboard();
 
     void init();
     void run();
-    GameAction getCurrentAction()
-    {
-        return this->currentAction;
-    }
+    bool getKbKeyIsPressed(KbKey key);
 
 private:
-    // Action variables
-    GameAction currentAction;
-
     // Methods
-    void handleIO();
-    void updateCurrentAction();
+    void updateKeyboardStatus();
 
     // Time variables
     float startTime = 0;

@@ -8,13 +8,13 @@ __BEGIN_API
 
 PlayerShip::PlayerShip()
 {
-	this->init();
+	this->loadSprites();
 }
 
 PlayerShip::PlayerShip(Keyboard *kBoardHandler)
 {
 	this->_kBoardHandler = kBoardHandler;
-	this->init();
+	this->loadSprites();
 }
 
 PlayerShip::~PlayerShip()
@@ -22,17 +22,13 @@ PlayerShip::~PlayerShip()
 	shipSprite.reset();
 }
 
-void PlayerShip::init()
-{
-	this->loadSprites();
-}
-
-// repeatedly call the state manager function until the _state is EXIT
 void PlayerShip::run()
 {
 	while (!GameConfigs::finished)
 	{
-		db<PlayerShip>(TRC) << ">>>> PLAYER SHIP starting loop\n";
+		// db<PlayerShip>(TRC) << ">>>> PLAYER SHIP starting loop\n";
+		db<PlayerShip>(TRC) << this->shipPosition.x << " - " << this->shipPosition.y << "\n";
+
 		this->processAction();
 		Thread::yield();
 	}
@@ -40,11 +36,9 @@ void PlayerShip::run()
 
 void PlayerShip::draw()
 {
-	db<PlayerShip>(TRC) << "Ship Draw\n";
 	this->shipSprite->draw_region(this->row, this->col, 47.0, 40.0, this->shipPosition, 0);
 }
 
-// update the game mode
 void PlayerShip::update(double diffTime)
 {
 	this->shipPosition = this->shipPosition + this->speed * diffTime;
@@ -57,9 +51,28 @@ void PlayerShip::processAction()
 {
 	if (this->_kBoardHandler == nullptr)
 		return;
+	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::MOVE_UP))
+		this->speed.y -= 250;
+	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::MOVE_DOWN))
+		this->speed.y += 250;
+	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::MOVE_LEFT))
+		this->speed.x -= 250;
+	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::MOVE_RIGHT))
+		this->speed.x += 250;
+	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::NUM_1))
+		this->handleStrongAttack();
+	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::SPACE))
+		this->handleWeakAttack();
+}
 
-	act::GameAction action = this->_kBoardHandler->getCurrentAction();
-	db<PlayerShip>(TRC) << "Current Action: " << action << "\n";
+void PlayerShip::handleWeakAttack()
+{
+	std::cout << "Ataque normal\n";
+}
+
+void PlayerShip::handleStrongAttack()
+{
+	std::cout << "Missel\n";
 }
 
 void PlayerShip::updateShipAnimation()
@@ -99,6 +112,18 @@ void PlayerShip::checkExceedingWindowLimit()
 	else if (this->shipPosition.y < 16)
 		this->shipPosition.y = 16;
 }
+
+Point PlayerShip::getBottomLeftPoint() { return Point(this->shipPosition.x - 8, this->shipPosition.y + 8); }
+
+Point PlayerShip::getTopLeftPoint() { return Point(this->shipPosition.x - 8, this->shipPosition.y - 8); }
+
+Point PlayerShip::getBottomRightPoint() { return Point(this->shipPosition.x + 8, this->shipPosition.y + 8); }
+
+Point PlayerShip::getTopRightPoint() { return Point(this->shipPosition.x + 8, this->shipPosition.y - 8); }
+
+Point PlayerShip::getMidPoint() { return this->shipPosition; }
+
+bool PlayerShip::inWindow() { return true; }
 
 void PlayerShip::loadSprites()
 {

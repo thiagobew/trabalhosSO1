@@ -14,33 +14,42 @@
 #include "Vector.h"
 #include "Action.h"
 #include "thread.h"
+#include "Point.h"
 #include "traits.h"
+#include "Drawable.h"
 #include <memory>
 
 __BEGIN_API
 
-// forward declarations
-class Menu;
-class Root;
-
-class PlayerShip
+class PlayerShip : public Drawable
 {
 
 public:
+	typedef act::KbKey KbKey;
+
 	PlayerShip();
 	PlayerShip(Keyboard *kBoardHandler);
 	~PlayerShip();
 
-	void init();
 	void run();
 	void draw();
 	void update(double diffTime);
+
+	// Drawable methods
+	bool inWindow();
+	Point getMidPoint();
+	Point getTopLeftPoint();
+	Point getTopRightPoint();
+	Point getBottomLeftPoint();
+	Point getBottomRightPoint();
 
 private:
 	// Logic methods
 	void checkExceedingWindowLimit();
 	void updateShipAnimation();
 	void processAction();
+	void handleWeakAttack();
+	void handleStrongAttack();
 
 	// Action variables
 	Keyboard *_kBoardHandler;

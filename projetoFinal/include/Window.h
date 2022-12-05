@@ -6,48 +6,48 @@
 #include <string>
 
 #include "PlayerShip.h"
+#include "KeyBoard.h"
 #include "traits.h"
 #include "thread.h"
 #include "Sprite.h"
 #include "Vector.h"
 #include <stdio.h>
+#include <list> // Implementação de Lista ligada
 
 __BEGIN_API
 
-// Classe para desenhar as coisas na tela
 class Window
 {
 public:
     Window();
     Window(int width, int height, int fps);
     ~Window();
-
-    // Função para atualizar a referência que Window precisa ter de PlayerShip
-    // Por enquanto há uma necessidade de Window ser criada antes que PlayerShip para carregar as bibliotecas
-    void setPlayerShip(PlayerShip *playerShip)
-    {
-        _playerShip = playerShip;
-    }
-
     void run();
 
+    void setPlayerShip(PlayerShip *playerShip) { _playerShip = playerShip; }
+    void setKeyboard(Keyboard *keyBoard) { _keyBoard = keyBoard; }
+    void addDrawableItem(Drawable *item) { this->drawableItens.push_front(item); }
+    void removeDrawableItem(Drawable *item) { this->drawableItens.remove(item); }
+
 private:
+    std::list<Drawable *> drawableItens;
+
     // Methods
     void init();
     void draw();
     void loadSprites();
     void drawBackground();
     void handleEventQueue();
-    void update(double diffTime);
+    void updateBackGround(double diffTime);
 
     // Window variables
     int _displayWidth;
     int _displayHeight;
     int _fps;
-    bool mustRedraw;
 
     // Game object
     PlayerShip *_playerShip;
+    Keyboard *_keyBoard;
 
     // Time variables
     float previousTime;
