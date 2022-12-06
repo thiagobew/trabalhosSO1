@@ -1,7 +1,7 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-#include "traits.h"
+#include "threads/traits.h"
 #include "Drawable.h"
 
 __BEGIN_API

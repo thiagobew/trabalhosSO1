@@ -8,11 +8,11 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include "Point.h"
-#include "traits.h"
-
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include "threads/traits.h"
+
+#include "Point.h"
 
 __BEGIN_API
 

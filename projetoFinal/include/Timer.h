@@ -9,7 +9,7 @@
 #define TIMER_H
 
 #include <allegro5/allegro.h>
-#include "traits.h"
+#include "threads/traits.h"
 
 __BEGIN_API
 

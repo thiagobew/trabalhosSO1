@@ -8,16 +8,17 @@
 #ifndef PLAYERSHIP_H
 #define PLAYERSHIP_H
 
+#include <memory>
+#include "threads/thread.h"
+#include "threads/traits.h"
+
 #include "GameConfigs.h"
 #include "KeyBoard.h"
 #include "Sprite.h"
 #include "Vector.h"
 #include "Action.h"
-#include "thread.h"
 #include "Point.h"
-#include "traits.h"
 #include "Drawable.h"
-#include <memory>
 
 __BEGIN_API
 

@@ -10,7 +10,7 @@
 #ifndef _VECTOR_H
 #define _VECTOR_H
 
-#include "traits.h"
+#include "threads/traits.h"
 
 __BEGIN_API
 

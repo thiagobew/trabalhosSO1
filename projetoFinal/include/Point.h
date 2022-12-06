@@ -12,10 +12,10 @@
 #ifndef _POINT_H
 #define _POINT_H
 
-#include "traits.h"
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
+#include "threads/traits.h"
 
 __BEGIN_API
 

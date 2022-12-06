@@ -1,7 +1,7 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include "traits.h"
+#include "threads/traits.h"
 
 __BEGIN_API
 

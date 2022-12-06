@@ -8,7 +8,7 @@
 #ifndef GAMECONFIGS_H
 #define GAMECONFIGS_H
 
-#include "./traits.h"
+#include "threads/traits.h"
 #include <iostream>
 #include <ucontext.h>
 

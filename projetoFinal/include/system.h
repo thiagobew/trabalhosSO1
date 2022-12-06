@@ -1,12 +1,13 @@
 #ifndef system_h
 #define system_h
 
-#include "traits.h"
 #include <stdio.h>
+#include "threads/traits.h"
 
 __BEGIN_API
 
-class System {
+class System
+{
 public:
     /*
      * Este método irá realizar a inicialização de todas as variáveis internas do SO.

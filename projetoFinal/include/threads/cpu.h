@@ -1,15 +1,17 @@
 #ifndef cpu_h
 #define cpu_h
 
-#include "./traits.h"
+#include "traits.h"
 #include <iostream>
 #include <ucontext.h>
 
 __BEGIN_API
 
-class CPU {
+class CPU
+{
 public:
-    class Context {
+    class Context
+    {
     private:
         static const unsigned int STACK_SIZE = Traits<CPU>::STACK_SIZE;
         char *_stack;
@@ -29,18 +31,20 @@ public:
         void load();
     };
 
-    static int finc(volatile int & number);
+    static int finc(volatile int &number);
 
-    static int fdec(volatile int & number);
+    static int fdec(volatile int &number);
 
     static int switch_context(Context *from, Context *to);
 };
 
 template <typename... Tn>
-inline CPU::Context::Context(void (*func)(Tn...), Tn... args) {
+inline CPU::Context::Context(void (*func)(Tn...), Tn... args)
+{
     this->_stack = new char[this->STACK_SIZE];
 
-    if (!this->_stack) {
+    if (!this->_stack)
+    {
         std::cout << "Error in creating stack\n";
         exit(-1);
     }

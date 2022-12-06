@@ -1,15 +1,16 @@
 #ifndef main_class_h
 #define main_class_h
 
-#include "cpu.h"
-#include "traits.h"
-#include "thread.h"
-#include "semaphore.h"
+#include <iostream>
+#include "threads/cpu.h"
+#include "threads/traits.h"
+#include "threads/thread.h"
+#include "threads/semaphore.h"
+
 #include "Window.h"
 #include "KeyBoard.h"
 #include "PlayerShip.h"
 #include "GameConfigs.h"
-#include <iostream>
 
 __BEGIN_API
 

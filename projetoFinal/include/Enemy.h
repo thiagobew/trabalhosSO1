@@ -1,7 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "traits.h"
+#include "threads/traits.h"
 
 __BEGIN_API
 

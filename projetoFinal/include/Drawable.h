@@ -1,7 +1,7 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
 
-#include "traits.h"
+#include "threads/traits.h"
 #include "Point.h"
 
 __BEGIN_API

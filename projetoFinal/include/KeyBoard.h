@@ -4,13 +4,13 @@
 #include <allegro5/allegro.h>
 #include <memory>
 #include <string>
+#include "threads/thread.h"
+#include "threads/traits.h"
 
 #include "GameConfigs.h"
 #include "PlayerShip.h"
-#include "traits.h"
 #include "Sprite.h"
 #include "Vector.h"
-#include "thread.h"
 #include "Action.h"
 
 __BEGIN_API

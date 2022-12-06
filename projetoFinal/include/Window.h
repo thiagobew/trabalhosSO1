@@ -4,15 +4,15 @@
 #include <allegro5/allegro.h>
 #include <memory>
 #include <string>
+#include <stdio.h>
+#include <list> // Implementação de Lista ligada
+#include "threads/thread.h"
+#include "threads/traits.h"
 
 #include "PlayerShip.h"
 #include "KeyBoard.h"
-#include "traits.h"
-#include "thread.h"
 #include "Sprite.h"
 #include "Vector.h"
-#include <stdio.h>
-#include <list> // Implementação de Lista ligada
 
 __BEGIN_API
 
