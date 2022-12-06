@@ -19,6 +19,9 @@
 #include "Action.h"
 #include "Point.h"
 #include "Drawable.h"
+#include "Window.h"
+#include "Laser.h"
+#include "Timer.h"
 
 __BEGIN_API
 
@@ -32,19 +35,30 @@ public:
 	PlayerShip(Keyboard *kBoardHandler);
 	~PlayerShip();
 
+	void setWindowReference(Window *window) { _window = window; }
+
 	void run();
 	void draw();
+	void hit();
+	bool isDead();
+	bool stillLive();
 	void update(double diffTime);
 
 	// Drawable methods
-	bool inWindow();
-	Point getMidPoint();
-	Point getTopLeftPoint();
-	Point getTopRightPoint();
-	Point getBottomLeftPoint();
-	Point getBottomRightPoint();
+	int getSize();
+	Point getPosition();
 
 private:
+	// Logic variables
+	static int HALF_PLAYER_SIZE;
+	static int PLAYER_SIZE;
+	static int PLAYER_TRAVEL_SPEED;
+	static int WEAK_ATTACK_DELAY;
+	static int STRONG_ATTACK_DELAY;
+	static Vector PLAYER_PROJECTILE_SPEED;
+	static ALLEGRO_COLOR PLAYER_COLOR;
+	std::shared_ptr<Timer> laserTimer;
+
 	// Logic methods
 	void checkExceedingWindowLimit();
 	void updateShipAnimation();
@@ -52,8 +66,11 @@ private:
 	void handleWeakAttack();
 	void handleStrongAttack();
 
-	// Action variables
+	int life = 3;
+
+	// Objects variables
 	Keyboard *_kBoardHandler;
+	Window *_window;
 
 	// Draw information
 	std::shared_ptr<Sprite> shipSprite;

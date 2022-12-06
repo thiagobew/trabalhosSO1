@@ -75,19 +75,25 @@ void Window::draw()
             this->_playerShip->draw();
         }
 
-        // Para cada item para desenhar faz update e desenha
+        std::list<Drawable *> toRemove;
+        // Para cada item para desenhar faz update, desenha e caso já tenha terminado então coloca numa outra lista para remover
         for (auto listItem = this->drawableItens.begin(); listItem != this->drawableItens.end(); listItem++)
         {
             Drawable *drawableItem = *listItem;
             drawableItem->update(diffTime);
             drawableItem->draw();
+            if (!drawableItem->stillLive())
+                toRemove.push_front(drawableItem);
         }
+
+        // Para cada item que está nessa lista remove da lista original
+        for (auto listItem = toRemove.begin(); listItem != toRemove.end(); listItem++)
+            this->drawableItens.remove(*listItem);
 
         al_flip_display();
     }
 }
 
-// Update the game time
 void Window::updateBackGround(double dt)
 {
     this->bgMid = this->bgMid + this->bgSpeed * dt;
@@ -97,7 +103,6 @@ void Window::updateBackGround(double dt)
 
 void Window::drawBackground() { bgSprite->draw_parallax_background(bgMid.x, 0); }
 
-// initialize Allegro, the _display window, the addons, the timers, and event sources
 void Window::init()
 {
     db<Window>(TRC) << "Window Init started\n";

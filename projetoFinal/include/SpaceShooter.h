@@ -1,5 +1,5 @@
-#ifndef main_class_h
-#define main_class_h
+#ifndef SPACESHOOTER_H
+#define SPACESHOOTER_H
 
 #include <iostream>
 #include "threads/cpu.h"
@@ -41,19 +41,25 @@ private:
     {
         windowObj = new Window(GameConfigs::windowWidth, GameConfigs::windowHeight, GameConfigs::fps);
         windowObj->run();
+        delete windowObj;
     }
 
     static void playerShipFunc()
     {
         playerShipObj = new PlayerShip(SpaceShooter::kBoardObj);
+        // Nesse ponto, pela ordem de criação das threads, todos os objetos foram criados, então arrumamos as referências
         windowObj->setPlayerShip(playerShipObj);
+        playerShipObj->setWindowReference(windowObj);
+
         playerShipObj->run();
+        // delete playerShipObj;
     }
 
     static void keyBoardFunc()
     {
         kBoardObj = new Keyboard();
         kBoardObj->run();
+        // delete kBoardObj;
     }
 
     static Thread *playerShipThread;

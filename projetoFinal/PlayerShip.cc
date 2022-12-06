@@ -3,18 +3,35 @@
 
 #include "include/PlayerShip.h"
 #include "include/GameConfigs.h"
+#include "include/Laser.h"
 
 __BEGIN_API
+
+int PlayerShip::HALF_PLAYER_SIZE = 8;
+int PlayerShip::PLAYER_SIZE = 16;
+int PlayerShip::PLAYER_TRAVEL_SPEED = 250;
+int PlayerShip::WEAK_ATTACK_DELAY = 8;
+int PlayerShip::STRONG_ATTACK_DELAY = 20;
+Vector PlayerShip::PLAYER_PROJECTILE_SPEED = Vector(500, 0);
+ALLEGRO_COLOR PlayerShip::PLAYER_COLOR = al_map_rgb(150, 0, 0);
 
 PlayerShip::PlayerShip()
 {
 	this->loadSprites();
+	// Inicia o timer
+	this->laserTimer = std::make_shared<Timer>(GameConfigs::fps);
+	this->laserTimer->create();
+	this->laserTimer->startTimer();
 }
 
 PlayerShip::PlayerShip(Keyboard *kBoardHandler)
 {
 	this->_kBoardHandler = kBoardHandler;
 	this->loadSprites();
+	// Inicia o timer
+	this->laserTimer = std::make_shared<Timer>(GameConfigs::fps);
+	this->laserTimer->create();
+	this->laserTimer->startTimer();
 }
 
 PlayerShip::~PlayerShip()
@@ -22,12 +39,16 @@ PlayerShip::~PlayerShip()
 	shipSprite.reset();
 }
 
+void PlayerShip::hit() { this->life -= 1; }
+
+bool PlayerShip::isDead() { return this->life <= 0; }
+
+bool PlayerShip::stillLive() { return (!this->isDead()); }
+
 void PlayerShip::run()
 {
 	while (!GameConfigs::finished)
 	{
-		// db<PlayerShip>(TRC) << ">>>> PLAYER SHIP starting loop\n";
-		db<PlayerShip>(TRC) << this->shipPosition.x << " - " << this->shipPosition.y << "\n";
 
 		this->processAction();
 		Thread::yield();
@@ -52,13 +73,13 @@ void PlayerShip::processAction()
 	if (this->_kBoardHandler == nullptr)
 		return;
 	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::MOVE_UP))
-		this->speed.y -= 250;
+		this->speed.y -= PlayerShip::PLAYER_TRAVEL_SPEED;
 	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::MOVE_DOWN))
-		this->speed.y += 250;
+		this->speed.y += PlayerShip::PLAYER_TRAVEL_SPEED;
 	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::MOVE_LEFT))
-		this->speed.x -= 250;
+		this->speed.x -= PlayerShip::PLAYER_TRAVEL_SPEED;
 	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::MOVE_RIGHT))
-		this->speed.x += 250;
+		this->speed.x += PlayerShip::PLAYER_TRAVEL_SPEED;
 	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::NUM_1))
 		this->handleStrongAttack();
 	if (this->_kBoardHandler->getKbKeyIsPressed(KbKey::SPACE))
@@ -67,7 +88,13 @@ void PlayerShip::processAction()
 
 void PlayerShip::handleWeakAttack()
 {
-	std::cout << "Ataque normal\n";
+	// Verifica se já passou o delay do weak shot
+	if (this->laserTimer->getCount() > PlayerShip::WEAK_ATTACK_DELAY)
+	{
+		Laser *laserToShot = new Laser(this->shipPosition, PlayerShip::PLAYER_COLOR, PlayerShip::PLAYER_PROJECTILE_SPEED);
+		this->_window->addDrawableItem(laserToShot);
+		this->laserTimer->srsTimer();
+	}
 }
 
 void PlayerShip::handleStrongAttack()
@@ -102,28 +129,20 @@ void PlayerShip::updateShipAnimation()
 void PlayerShip::checkExceedingWindowLimit()
 {
 	// check x bound and adjust if out
-	if (this->shipPosition.x > 800 - 16)
-		this->shipPosition.x = 800 - 16;
-	else if (this->shipPosition.x < 16)
-		this->shipPosition.x = 16;
+	if (this->shipPosition.x > 800 - PlayerShip::PLAYER_SIZE)
+		this->shipPosition.x = 800 - PlayerShip::PLAYER_SIZE;
+	else if (this->shipPosition.x < PlayerShip::PLAYER_SIZE)
+		this->shipPosition.x = PlayerShip::PLAYER_SIZE;
 	// check y bound and adjust if out
-	if (this->shipPosition.y > 600 - 16)
-		this->shipPosition.y = 600 - 16;
-	else if (this->shipPosition.y < 16)
-		this->shipPosition.y = 16;
+	if (this->shipPosition.y > 600 - PlayerShip::PLAYER_SIZE)
+		this->shipPosition.y = 600 - PlayerShip::PLAYER_SIZE;
+	else if (this->shipPosition.y < PlayerShip::PLAYER_SIZE)
+		this->shipPosition.y = PlayerShip::PLAYER_SIZE;
 }
 
-Point PlayerShip::getBottomLeftPoint() { return Point(this->shipPosition.x - 8, this->shipPosition.y + 8); }
+int PlayerShip::getSize() { return PlayerShip::PLAYER_SIZE; }
 
-Point PlayerShip::getTopLeftPoint() { return Point(this->shipPosition.x - 8, this->shipPosition.y - 8); }
-
-Point PlayerShip::getBottomRightPoint() { return Point(this->shipPosition.x + 8, this->shipPosition.y + 8); }
-
-Point PlayerShip::getTopRightPoint() { return Point(this->shipPosition.x + 8, this->shipPosition.y - 8); }
-
-Point PlayerShip::getMidPoint() { return this->shipPosition; }
-
-bool PlayerShip::inWindow() { return true; }
+Point PlayerShip::getPosition() { return this->shipPosition; }
 
 void PlayerShip::loadSprites()
 {

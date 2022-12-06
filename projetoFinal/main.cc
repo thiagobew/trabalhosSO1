@@ -1,4 +1,4 @@
-#include "include/main_class.h"
+#include "include/SpaceShooter.h"
 #include "include/system.h"
 #include "include/threads/thread.h"
 
