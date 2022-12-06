@@ -19,7 +19,7 @@ class Thread;
 
 class System;
 
-class Main;
+class SpaceShooter;
 
 class Lists;
 
@@ -46,7 +46,7 @@ struct Traits<CPU>
 };
 
 template <>
-struct Traits<Main>
+struct Traits<SpaceShooter>
 {
     static const bool debugged = true;
 };

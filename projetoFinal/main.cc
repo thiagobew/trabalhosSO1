@@ -6,5 +6,5 @@ __USING_API
 
 int main(void)
 {
-   System::init(&Main::run);
+   System::init(&SpaceShooter::run);
 }

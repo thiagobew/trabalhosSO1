@@ -14,11 +14,11 @@
 
 __BEGIN_API
 
-class Main
+class SpaceShooter
 {
 public:
-    Main() {}
-    ~Main() {}
+    SpaceShooter() {}
+    ~SpaceShooter() {}
 
     // Essa função será passada para Thread::init()
     static void run(void *name)
@@ -45,7 +45,7 @@ private:
 
     static void playerShipFunc()
     {
-        playerShipObj = new PlayerShip(Main::kBoardObj);
+        playerShipObj = new PlayerShip(SpaceShooter::kBoardObj);
         windowObj->setPlayerShip(playerShipObj);
         playerShipObj->run();
     }
