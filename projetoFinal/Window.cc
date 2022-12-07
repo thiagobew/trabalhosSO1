@@ -88,7 +88,11 @@ void Window::draw()
 
         // Para cada item que está nessa lista remove da lista original
         for (auto listItem = toRemove.begin(); listItem != toRemove.end(); listItem++)
-            this->drawableItens.remove(*listItem);
+        {
+            Drawable *drawableItem = *listItem;
+            this->drawableItens.remove(drawableItem);
+            delete drawableItem;
+        }
 
         al_flip_display();
     }

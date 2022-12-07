@@ -14,14 +14,12 @@ __BEGIN_API
 class Laser : public Projectile
 {
 public:
-    Laser(Point p, ALLEGRO_COLOR c, Vector s);
+    Laser(Point point, ALLEGRO_COLOR color, Vector vector, bool isPlayerShot);
     ~Laser();
 
     void draw();
-    bool stillLive();
     void update(double diffTime);
     int getSize();
-    Point getPosition();
 };
 
 __END_API

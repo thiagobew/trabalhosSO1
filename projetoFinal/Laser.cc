@@ -3,10 +3,12 @@
 
 __BEGIN_API
 
-Laser::Laser(Point point, ALLEGRO_COLOR color, Vector speed) : Projectile(point, color, speed)
+Laser::Laser(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerShot) : Projectile(point, color, speed, isPlayerShot)
 {
     this->isActive = true;
 }
+
+Laser::~Laser() {}
 
 void Laser::draw()
 {
@@ -21,17 +23,5 @@ void Laser::update(double diffTime)
 }
 
 int Laser::getSize() { return 3; }
-
-Point Laser::getPosition() { return this->_point; }
-
-bool Laser::stillLive()
-{
-    if ((this->_point.x > GameConfigs::windowWidth) ||
-        (this->_point.x < 0) ||
-        (this->_point.y > GameConfigs::windowHeight) ||
-        (this->_point.y < 0))
-        return false;
-    return true;
-}
 
 __END_API

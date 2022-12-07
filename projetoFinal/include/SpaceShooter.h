@@ -55,6 +55,17 @@ private:
         // delete playerShipObj;
     }
 
+    static void collisionFunc()
+    {
+        playerShipObj = new PlayerShip(SpaceShooter::kBoardObj);
+        // Nesse ponto, pela ordem de criação das threads, todos os objetos foram criados, então arrumamos as referências
+        windowObj->setPlayerShip(playerShipObj);
+        playerShipObj->setWindowReference(windowObj);
+
+        playerShipObj->run();
+        // delete playerShipObj;
+    }
+
     static void keyBoardFunc()
     {
         kBoardObj = new Keyboard();
@@ -65,6 +76,7 @@ private:
     static Thread *playerShipThread;
     static Thread *windowThread;
     static Thread *keyboardThread;
+    static Thread *collisionThread;
 
     static PlayerShip *playerShipObj;
     static Window *windowObj;

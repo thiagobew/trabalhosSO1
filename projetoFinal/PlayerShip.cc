@@ -17,21 +17,14 @@ ALLEGRO_COLOR PlayerShip::PLAYER_COLOR = al_map_rgb(150, 0, 0);
 
 PlayerShip::PlayerShip()
 {
+	this->init();
 	this->loadSprites();
-	// Inicia o timer
-	this->laserTimer = std::make_shared<Timer>(GameConfigs::fps);
-	this->laserTimer->create();
-	this->laserTimer->startTimer();
 }
 
 PlayerShip::PlayerShip(Keyboard *kBoardHandler)
 {
 	this->_kBoardHandler = kBoardHandler;
-	this->loadSprites();
-	// Inicia o timer
-	this->laserTimer = std::make_shared<Timer>(GameConfigs::fps);
-	this->laserTimer->create();
-	this->laserTimer->startTimer();
+	this->init();
 }
 
 PlayerShip::~PlayerShip()
@@ -91,7 +84,7 @@ void PlayerShip::handleWeakAttack()
 	// Verifica se já passou o delay do weak shot
 	if (this->laserTimer->getCount() > PlayerShip::WEAK_ATTACK_DELAY)
 	{
-		Laser *laserToShot = new Laser(this->shipPosition, PlayerShip::PLAYER_COLOR, PlayerShip::PLAYER_PROJECTILE_SPEED);
+		Laser *laserToShot = new Laser(this->shipPosition, PlayerShip::PLAYER_COLOR, PlayerShip::PLAYER_PROJECTILE_SPEED, true);
 		this->_window->addDrawableItem(laserToShot);
 		this->laserTimer->srsTimer();
 	}
@@ -99,7 +92,13 @@ void PlayerShip::handleWeakAttack()
 
 void PlayerShip::handleStrongAttack()
 {
-	std::cout << "Missel\n";
+	// Verifica se já passou o delay do weak shot
+	if (this->missileTimer->getCount() > PlayerShip::STRONG_ATTACK_DELAY)
+	{
+		Missile *missileToShot = new Missile(this->shipPosition, PlayerShip::PLAYER_COLOR, PlayerShip::PLAYER_PROJECTILE_SPEED, true);
+		this->_window->addDrawableItem(missileToShot);
+		this->missileTimer->srsTimer();
+	}
 }
 
 void PlayerShip::updateShipAnimation()
@@ -143,6 +142,19 @@ void PlayerShip::checkExceedingWindowLimit()
 int PlayerShip::getSize() { return PlayerShip::PLAYER_SIZE; }
 
 Point PlayerShip::getPosition() { return this->shipPosition; }
+
+void PlayerShip::init()
+{
+	this->loadSprites();
+	// Create the timers for the weapons
+	this->laserTimer = std::make_shared<Timer>(GameConfigs::fps);
+	this->laserTimer->create();
+	this->laserTimer->startTimer();
+
+	this->missileTimer = std::make_shared<Timer>(GameConfigs::fps);
+	this->missileTimer->create();
+	this->missileTimer->startTimer();
+}
 
 void PlayerShip::loadSprites()
 {

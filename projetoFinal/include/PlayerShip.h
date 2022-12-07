@@ -21,6 +21,7 @@
 #include "Drawable.h"
 #include "Window.h"
 #include "Laser.h"
+#include "Missile.h"
 #include "Timer.h"
 
 __BEGIN_API
@@ -49,6 +50,8 @@ public:
 	Point getPosition();
 
 private:
+	void init();
+
 	// Logic variables
 	static int HALF_PLAYER_SIZE;
 	static int PLAYER_SIZE;
@@ -58,6 +61,8 @@ private:
 	static Vector PLAYER_PROJECTILE_SPEED;
 	static ALLEGRO_COLOR PLAYER_COLOR;
 	std::shared_ptr<Timer> laserTimer;
+	std::shared_ptr<Timer> missileTimer;
+	int life = 3;
 
 	// Logic methods
 	void checkExceedingWindowLimit();
@@ -65,8 +70,6 @@ private:
 	void processAction();
 	void handleWeakAttack();
 	void handleStrongAttack();
-
-	int life = 3;
 
 	// Objects variables
 	Keyboard *_kBoardHandler;
