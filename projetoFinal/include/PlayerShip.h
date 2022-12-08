@@ -18,15 +18,20 @@
 #include "Vector.h"
 #include "Action.h"
 #include "Point.h"
-#include "Drawable.h"
 #include "Window.h"
 #include "Laser.h"
 #include "Missile.h"
 #include "Timer.h"
+#include "Hittable.h"
+#include "Collision.h"
 
 __BEGIN_API
 
-class PlayerShip : public Drawable
+// https://stackoverflow.com/questions/48448283/how-to-use-instances-of-two-classes-in-each-others
+// Como aqui ocorre de dois headers estarem se importando, um deles deve declarar a classe para evitar erros de compilação
+class Collision;
+
+class PlayerShip : public Hittable
 {
 
 public:
@@ -36,7 +41,8 @@ public:
 	PlayerShip(Keyboard *kBoardHandler);
 	~PlayerShip();
 
-	void setWindowReference(Window *window) { _window = window; }
+	void setWindowReference(Window *window) { this->_window = window; }
+	void setCollisionReference(Collision *collision) { this->_collision = collision; }
 
 	void run();
 	void draw();
@@ -74,6 +80,7 @@ private:
 	// Objects variables
 	Keyboard *_kBoardHandler;
 	Window *_window;
+	Collision *_collision;
 
 	// Draw information
 	std::shared_ptr<Sprite> shipSprite;

@@ -13,6 +13,7 @@
 #include "KeyBoard.h"
 #include "Sprite.h"
 #include "Vector.h"
+#include "Drawable.h"
 
 __BEGIN_API
 
@@ -27,6 +28,7 @@ public:
     void setPlayerShip(PlayerShip *playerShip) { _playerShip = playerShip; }
     void setKeyboard(Keyboard *keyBoard) { _keyBoard = keyBoard; }
     void addDrawableItem(Drawable *item) { this->drawableItens.push_front(item); }
+    void removeDrawableItem(Drawable *item) { this->drawableItens.remove(item); }
 
 private:
     std::list<Drawable *> drawableItens;

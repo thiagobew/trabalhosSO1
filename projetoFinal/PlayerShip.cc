@@ -18,7 +18,6 @@ ALLEGRO_COLOR PlayerShip::PLAYER_COLOR = al_map_rgb(150, 0, 0);
 PlayerShip::PlayerShip()
 {
 	this->init();
-	this->loadSprites();
 }
 
 PlayerShip::PlayerShip(Keyboard *kBoardHandler)
@@ -42,6 +41,9 @@ void PlayerShip::run()
 {
 	while (!GameConfigs::finished)
 	{
+		// Não executa enquanto as referências não forem corretas
+		if (this->_window == nullptr || this->_collision == nullptr)
+			Thread::yield();
 
 		this->processAction();
 		Thread::yield();
@@ -85,8 +87,10 @@ void PlayerShip::handleWeakAttack()
 	if (this->laserTimer->getCount() > PlayerShip::WEAK_ATTACK_DELAY)
 	{
 		Laser *laserToShot = new Laser(this->shipPosition, PlayerShip::PLAYER_COLOR, PlayerShip::PLAYER_PROJECTILE_SPEED, true);
-		this->_window->addDrawableItem(laserToShot);
 		this->laserTimer->srsTimer();
+		// Coloca referência do tiro na classe Collision e Window
+		this->_window->addDrawableItem(laserToShot);
+		this->_collision->addPlayerShot(laserToShot);
 	}
 }
 
@@ -96,8 +100,10 @@ void PlayerShip::handleStrongAttack()
 	if (this->missileTimer->getCount() > PlayerShip::STRONG_ATTACK_DELAY)
 	{
 		Missile *missileToShot = new Missile(this->shipPosition, PlayerShip::PLAYER_COLOR, PlayerShip::PLAYER_PROJECTILE_SPEED, true);
-		this->_window->addDrawableItem(missileToShot);
 		this->missileTimer->srsTimer();
+		// Coloca referência do tiro na classe Collision e Window
+		this->_collision->addPlayerShot(missileToShot);
+		this->_window->addDrawableItem(missileToShot);
 	}
 }
 
