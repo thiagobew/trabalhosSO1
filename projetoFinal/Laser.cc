@@ -3,10 +3,7 @@
 
 __BEGIN_API
 
-Laser::Laser(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerShot) : Projectile(point, color, speed, isPlayerShot)
-{
-    this->isActive = true;
-}
+Laser::Laser(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerShot) : Projectile(point, color, speed, isPlayerShot) {}
 
 Laser::~Laser() {}
 
@@ -19,7 +16,6 @@ void Laser::draw()
 void Laser::update(double diffTime)
 {
     this->_point = this->_point + this->_speed * diffTime;
-    this->isActive = this->stillLive();
 }
 
 int Laser::getSize() { return 3; }

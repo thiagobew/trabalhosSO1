@@ -48,7 +48,7 @@ public:
 	void draw();
 	void hit();
 	bool isDead();
-	bool stillLive();
+	bool isOutside();
 	void update(double diffTime);
 
 	// Drawable methods

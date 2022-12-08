@@ -8,7 +8,6 @@ int Missile::SPRITES_VECTOR_MAX_INDEX = 7;
 
 Missile::Missile(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerShot) : Projectile(point, color, speed, isPlayerShot)
 {
-    this->isActive = true;
     this->loadSprites();
 
     if (isPlayerShot) // Corrige o sprite de míssil
@@ -33,7 +32,6 @@ void Missile::draw()
 void Missile::update(double diffTime)
 {
     this->_point = this->_point + this->_speed * diffTime;
-    this->isActive = this->stillLive();
 }
 
 int Missile::getSize() { return 3; }

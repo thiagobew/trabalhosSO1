@@ -35,7 +35,7 @@ void PlayerShip::hit() { this->life -= 1; }
 
 bool PlayerShip::isDead() { return this->life <= 0; }
 
-bool PlayerShip::stillLive() { return (!this->isDead()); }
+bool PlayerShip::isOutside() { return (!this->isDead()); }
 
 void PlayerShip::run()
 {

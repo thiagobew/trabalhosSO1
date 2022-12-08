@@ -75,23 +75,14 @@ void Window::draw()
             this->_playerShip->draw();
         }
 
-        std::list<Drawable *> toRemove;
         // Para cada item para desenhar faz update, desenha e caso já tenha terminado então coloca numa outra lista para remover
-        for (auto listItem = this->drawableItens.begin(); listItem != this->drawableItens.end(); listItem++)
+        for (auto listItem = this->drawableItens.begin(); listItem != this->drawableItens.end();)
         {
             Drawable *drawableItem = *listItem;
+            listItem++; // Já atualiza o ponteiro para o próximo
+
             drawableItem->update(diffTime);
             drawableItem->draw();
-            if (!drawableItem->stillLive())
-                toRemove.push_front(drawableItem);
-        }
-
-        // Para cada item que está nessa lista remove da lista original
-        for (auto listItem = toRemove.begin(); listItem != toRemove.end(); listItem++)
-        {
-            Drawable *drawableItem = *listItem;
-            this->drawableItens.remove(drawableItem);
-            delete drawableItem;
         }
 
         al_flip_display();

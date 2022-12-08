@@ -37,6 +37,8 @@ private:
     void init();
     void verifyCollisions();
     bool verifyIfHit(Projectile *projectile, Hittable *hittable);
+
+    void cleanOutsideObjects();
 };
 
 __END_API

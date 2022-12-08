@@ -13,7 +13,7 @@ class Projectile : public Drawable
 {
 public:
 	Projectile(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerShot) : _point(point), _color(color), _speed(speed),
-																					isPlayerShot(isPlayerShot), isActive(true) {}
+																					isPlayerShot(isPlayerShot) {}
 	virtual ~Projectile() {}
 
 	virtual void draw() = 0;
@@ -22,7 +22,7 @@ public:
 
 	Point getPosition() { return this->_point; }
 	bool getIsPlayerProjectile() { return this->isPlayerShot; }
-	bool stillLive()
+	bool isOutside()
 	{
 		if ((this->_point.x > GameConfigs::windowWidth) ||
 			(this->_point.x < 0) ||
@@ -37,7 +37,6 @@ protected:
 	ALLEGRO_COLOR _color;
 	Vector _speed;
 	bool isPlayerShot;
-	bool isActive;
 };
 
 __END_API
