@@ -2,17 +2,28 @@
 
 __BEGIN_API
 
-int PurpleEnemy::DELAY_BETWEEN_SHOTS = 20;
+int PurpleEnemy::DELAY_BETWEEN_SHOTS = 100;
 
-PurpleEnemy::PurpleEnemy(Point point, Vector vector, std::shared_ptr<Sprite> shipSprite, std::shared_ptr<Sprite> deathSprite) : Enemy(point, vector, 1)
+PurpleEnemy::PurpleEnemy(Point point, Vector vector, std::shared_ptr<Sprite> shipSprite, std::shared_ptr<Sprite> deathSprite, PurpleEnemiesControl *control) : Enemy(point, vector, 1)
 {
     this->_shipSprite = shipSprite;
     this->_deathSprite = deathSprite;
+    this->_control = control;
     this->deathSpriteTimer = 5;
+
     this->color = al_map_rgb(150, 0, 150);
     this->shotsTimer = std::make_shared<Timer>(GameConfigs::fps);
     this->shotsTimer->create();
     this->shotsTimer->startTimer();
+}
+
+// Quando o inimigo morre ele manda uma mensagem para o controle falando que ele morreu, isso é necessário
+// para removermos a referência ao objeto que vai ser destruído que está no controle
+// É necessário pq não tem como o objeto Collision passar essa informação diretamente
+PurpleEnemy::~PurpleEnemy()
+{
+    if (this->_control != nullptr)
+        this->_control->removeShip(this);
 }
 
 void PurpleEnemy::draw()

@@ -26,6 +26,7 @@ public:
     virtual bool canFire() = 0;
 
     Point getPosition() { return this->_point; }
+    Vector getVector() { return this->_speed; }
     void hit(int damage) { this->life -= damage; }
     bool isDead() { return this->life <= 0; }
     int getLife() { return this->life; }

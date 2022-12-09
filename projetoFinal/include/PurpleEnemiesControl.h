@@ -1,13 +1,16 @@
+#ifndef PURPLE_ENEMIES_CONTROL_H
+#define PURPLE_ENEMIES_CONTROL_H
+
 #include <list>
 #include <memory>
 #include "threads/thread.h"
 #include "threads/traits.h"
 
 #include "Sprite.h"
-#include "PurpleEnemy.h"
 #include "Window.h"
 #include "Collision.h"
 #include "GameConfigs.h"
+#include "PurpleEnemy.h"
 
 __BEGIN_API
 
@@ -16,8 +19,9 @@ class PurpleEnemiesControl
 public:
     PurpleEnemiesControl();
     ~PurpleEnemiesControl();
-    void setWindowReference(Window *window) { this->_window = window; }
-    void setCollisionReference(Collision *collision) { this->_collision = collision; }
+    void setWindowReference(Window *window);
+    void setCollisionReference(Collision *collision);
+    void removeShip(PurpleEnemy *enemy);
 
     void run();
 
@@ -40,3 +44,5 @@ private:
 };
 
 __END_API
+
+#endif
