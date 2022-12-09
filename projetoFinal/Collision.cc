@@ -70,6 +70,9 @@ void Collision::verifyCollisions()
                     this->enemies.remove(enemy);
                     delete enemy;
                 }
+
+                // Tiro já foi destruído então seguimos para o próximo tiro
+                break;
             }
         }
     }

@@ -38,7 +38,7 @@ void PurpleEnemy::update(double diffTime)
     }
 }
 
-int PurpleEnemy::getSize() { return 16; }
+int PurpleEnemy::getSize() { return 24; }
 
 bool PurpleEnemy::isOutside() { return this->_point.x < -40; }
 
