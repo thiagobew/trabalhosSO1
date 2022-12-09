@@ -12,6 +12,7 @@
 #include "PlayerShip.h"
 #include "Collision.h"
 #include "GameConfigs.h"
+#include "PurpleEnemiesControl.h"
 
 __BEGIN_API
 
@@ -28,16 +29,19 @@ public:
         keyboardThread = new Thread(keyBoardFunc);
         playerShipThread = new Thread(playerShipFunc);
         collisionThread = new Thread(collisionFunc);
+        purpleShipsControlThread = new Thread(purpleShipsFunc);
 
         playerShipThread->join();
         windowThread->join();
         keyboardThread->join();
         collisionThread->join();
+        purpleShipsControlThread->join();
 
         delete playerShipThread;
         delete windowThread;
         delete keyboardThread;
         delete collisionThread;
+        delete purpleShipsControlThread;
     }
 
 private:
@@ -75,15 +79,25 @@ private:
         collisionObj->run();
     }
 
+    static void purpleShipsFunc()
+    {
+        purpleShipsControlObj = new PurpleEnemiesControl();
+        purpleShipsControlObj->setCollisionReference(collisionObj);
+        purpleShipsControlObj->setWindowReference(windowObj);
+        purpleShipsControlObj->run();
+    }
+
     static Thread *playerShipThread;
     static Thread *windowThread;
     static Thread *keyboardThread;
     static Thread *collisionThread;
+    static Thread *purpleShipsControlThread;
 
     static PlayerShip *playerShipObj;
     static Window *windowObj;
     static Keyboard *kBoardObj;
     static Collision *collisionObj;
+    static PurpleEnemiesControl *purpleShipsControlObj;
 };
 
 __END_API

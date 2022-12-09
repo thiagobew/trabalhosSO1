@@ -31,7 +31,7 @@ PlayerShip::~PlayerShip()
 	shipSprite.reset();
 }
 
-void PlayerShip::hit() { this->life -= 1; }
+void PlayerShip::hit(int damage) { this->life -= damage; }
 
 bool PlayerShip::isDead() { return this->life <= 0; }
 

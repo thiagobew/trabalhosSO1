@@ -11,7 +11,7 @@ class Hittable : public Drawable
 public:
     virtual ~Hittable() {}
 
-    virtual void hit() = 0;
+    virtual void hit(int damage) = 0;
     virtual bool isDead() = 0;
     // Drawable
     virtual void draw() = 0;

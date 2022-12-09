@@ -14,7 +14,6 @@ void Collision::run()
 
         this->verifyCollisions();
         this->cleanOutsideObjects();
-        std::cout << this->playerShots.size() << "\n";
         Thread::yield();
     }
 }
@@ -30,7 +29,7 @@ void Collision::verifyCollisions()
         if (this->verifyIfHit(enemyShot, this->_playerShip))
         {
             // Dá o dano no player
-            this->_playerShip->hit();
+            this->_playerShip->hit(1);
             // Destrói o tiro
             this->_window->removeDrawableItem(enemyShot);
             this->enemiesShots.remove(enemyShot);
@@ -64,7 +63,7 @@ void Collision::verifyCollisions()
                 this->playerShots.remove(playerShot);
                 delete playerShot;
 
-                enemy->hit();
+                enemy->hit(1);
                 if (enemy->isDead())
                 {
                     this->_window->removeDrawableItem(enemy);
@@ -98,7 +97,7 @@ void Collision::cleanOutsideObjects()
         Enemy *enemy = *enemyItem;
         enemyItem++;
 
-        if (!(enemy->isOutside()))
+        if (enemy->isOutside())
         {
             this->_window->removeDrawableItem(enemy);
             this->enemies.remove(enemy);
@@ -112,7 +111,7 @@ void Collision::cleanOutsideObjects()
         Projectile *projectile = *enemyItem;
         enemyItem++;
 
-        if (!(projectile->isOutside()))
+        if (projectile->isOutside())
         {
             this->_window->removeDrawableItem(projectile);
             this->enemiesShots.remove(projectile);
@@ -126,7 +125,7 @@ void Collision::cleanOutsideObjects()
         Projectile *projectile = *playerShot;
         playerShot++;
 
-        if (!(projectile->isOutside()))
+        if (projectile->isOutside())
         {
             this->_window->removeDrawableItem(projectile);
             this->playerShots.remove(projectile);

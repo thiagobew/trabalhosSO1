@@ -30,7 +30,6 @@ void Window::run()
 {
     while (!GameConfigs::finished)
     {
-        db<Window>(TRC) << ">>>> WINDOW starting loop\n";
         this->handleEventQueue();
         Thread::yield();
     }

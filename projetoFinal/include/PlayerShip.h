@@ -46,7 +46,7 @@ public:
 
 	void run();
 	void draw();
-	void hit();
+	void hit(int damage);
 	bool isDead();
 	bool isOutside();
 	void update(double diffTime);
@@ -84,10 +84,10 @@ private:
 
 	// Draw information
 	std::shared_ptr<Sprite> shipSprite;
-	Point shipPosition;		/**< ship position */
-	SOLUTION::Vector speed; /**< movement speed in any direction */
-	int row;				/**<row of animation to be played */
-	int col;				/**< column of animation to be played */
+	Point shipPosition; /**< ship position */
+	Vector speed;		/**< movement speed in any direction */
+	int row;			/**<row of animation to be played */
+	int col;			/**< column of animation to be played */
 	void loadSprites();
 	bool spritesLoaded = false;
 };

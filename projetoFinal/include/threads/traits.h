@@ -31,6 +31,10 @@ class Keyboard;
 
 class Window;
 
+class PurpleEnemy;
+
+class PurpleEnemiesControl;
+
 template <typename T>
 struct Traits
 {
@@ -89,7 +93,7 @@ struct Traits<Thread> : public Traits<void>
 template <>
 struct Traits<Window> : public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template <>

@@ -28,8 +28,8 @@ public:
 			(this->_point.x < 0) ||
 			(this->_point.y > GameConfigs::windowHeight) ||
 			(this->_point.y < 0))
-			return false;
-		return true;
+			return true;
+		return false;
 	}
 
 protected:
