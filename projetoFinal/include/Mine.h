@@ -1,5 +1,5 @@
-#ifndef PURPLE_ENEMY_H
-#define PURPLE_ENEMY_H
+#ifndef MINE_H
+#define MINE_H
 
 #include <memory>
 #include "threads/thread.h"
@@ -12,6 +12,7 @@
 #include "MinesControl.h"
 
 __BEGIN_API
+class MinesControl; // Forward declaration, avoid compilation error
 
 class Mine : public Enemy
 {
@@ -19,7 +20,7 @@ public:
     Mine(Point point, Vector vector, std::shared_ptr<Sprite> mineSprite, std::shared_ptr<Sprite> deathSprite, MinesControl *control);
     ~Mine();
 
-    bool canFire() { return this->_canFire; }
+    bool canFire() { return false; }
     void draw();
     void attack();
     void update(double diffTime);
@@ -39,9 +40,6 @@ private:
     std::shared_ptr<Sprite> _deathSprite;
     ALLEGRO_COLOR color;
     int deathSpriteTimer;
-
-    // Methods
-    void explode();
 };
 
 __END_API

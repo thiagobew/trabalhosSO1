@@ -24,6 +24,7 @@ public:
     void addPlayerShot(Projectile *projectile) { this->playerShots.push_front(projectile); }
     void addEnemiesShot(Projectile *projectile) { this->enemiesShots.push_front(projectile); }
     void addEnemies(Enemy *enemy) { this->enemies.push_front(enemy); }
+    void removeEnemy(Enemy *enemy) { this->enemies.remove(enemy); }
     void run();
 
 private:

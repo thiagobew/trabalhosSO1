@@ -7,9 +7,9 @@ std::shared_ptr<Sprite> purpleMinesprite;
 MinesControl::MinesControl()
 {
     this->loadSprites();
-    this->DELAY_MINE_SPAWN = 3000;
+    this->DELAY_MINE_SPAWN = 500;
     this->DELAY_MINE_EXPLOSION = 500;
-	this->_color = al_map_rgb(255, 0, 0);
+	  this->_color = al_map_rgb(255, 0, 0);
     this->minesSpawnTimer = std::make_shared<Timer>(GameConfigs::fps);
     this->minesSpawnTimer->create();
     this->minesSpawnTimer->startTimer();
@@ -57,9 +57,13 @@ void MinesControl::handleMines()
 			for(int i = 0; i < 20; i++) {
 				Vector v = Vector(0, 0);
 				v.rollRandom();
-				Laser *laser = new Laser(mine->getPosition(), _color, v, this->mineExplosionSprite, false);
+				Laser *laser = new Laser(mine->getPosition(), _color, v, false);
 				this->_collision->addEnemiesShot(laser);
 			}
+
+			this->mines.remove(mine);
+			this->_collision->removeEnemy(mine);
+			delete mine;
 		}
     }
 }
@@ -68,12 +72,12 @@ void MinesControl::createMine()
 {
     this->mines.clear();
 
-	Point p = Point(0, 0);
-	p.rollRandom();
+    Point p = Point(0, 0);
+    p.rollRandom();
 
-    Mine* mine = new Mine(p, Vector(-180, 0), this->mineSprite, this->mineExplosionSprite, this->_collision, this->_window);
-	this->mines.push_back(mine);
-	this->_collision->addEnemies(mine);
+    Mine* mine = new Mine(p, Vector(-180, 0), this->mineSprite, this->mineExplosionSprite, this);
+    this->mines.push_back(mine);
+    this->_collision->addEnemies(mine);
 
     // Reset o timer
     this->minesSpawnTimer->srsTimer();

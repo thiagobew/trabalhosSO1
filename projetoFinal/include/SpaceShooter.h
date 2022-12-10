@@ -13,6 +13,7 @@
 #include "Collision.h"
 #include "GameConfigs.h"
 #include "PurpleEnemiesControl.h"
+#include "MinesControl.h"
 
 __BEGIN_API
 
@@ -30,18 +31,21 @@ public:
         playerShipThread = new Thread(playerShipFunc);
         collisionThread = new Thread(collisionFunc);
         purpleShipsControlThread = new Thread(purpleShipsFunc);
+        minesControlThread = new Thread(minesFunc);
 
         playerShipThread->join();
         windowThread->join();
         keyboardThread->join();
         collisionThread->join();
         purpleShipsControlThread->join();
+        minesControlThread->join();
 
         delete playerShipThread;
         delete windowThread;
         delete keyboardThread;
         delete collisionThread;
         delete purpleShipsControlThread;
+        delete minesControlThread;
     }
 
 private:
@@ -87,17 +91,27 @@ private:
         purpleShipsControlObj->run();
     }
 
+    static void minesFunc()
+    {
+        minesControlObj = new MinesControl();
+        minesControlObj->setCollisionReference(collisionObj);
+        minesControlObj->setWindowReference(windowObj);
+        minesControlObj->run();
+    }
+
     static Thread *playerShipThread;
     static Thread *windowThread;
     static Thread *keyboardThread;
     static Thread *collisionThread;
     static Thread *purpleShipsControlThread;
+    static Thread *minesControlThread;
 
     static PlayerShip *playerShipObj;
     static Window *windowObj;
     static Keyboard *kBoardObj;
     static Collision *collisionObj;
     static PurpleEnemiesControl *purpleShipsControlObj;
+    static MinesControl *minesControlObj;
 };
 
 __END_API
