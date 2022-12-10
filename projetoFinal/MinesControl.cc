@@ -58,16 +58,15 @@ void MinesControl::handleMines()
         {
             // Executa o ataque
             mine->attack();
-            for (int i = 0; i < 10; i++)
+            for (int i = -500; i <= 500; i += 325)
             {
-                // Gera vetores aleatórios
-                Vector vetor = Vector(0, 0);
-                vetor.rollReallyRandom();
-
-                // Cria o tiro a adiciona nas listas
-                Laser *laser = new Laser(mine->getPosition(), this->_color, vetor, false);
-                this->_collision->addEnemiesShot(laser);
-                this->_window->addDrawableItem(laser);
+                for (int j = -500; j <= 500; j += 325)
+                {
+                    // Cria o tiro a adiciona nas listas
+                    Laser *laser = new Laser(mine->getPosition(), this->_color, Vector(i, j), false);
+                    this->_collision->addEnemiesShot(laser);
+                    this->_window->addDrawableItem(laser);
+                }
             }
         }
     }

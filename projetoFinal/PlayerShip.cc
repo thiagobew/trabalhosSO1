@@ -12,6 +12,7 @@ int PlayerShip::PLAYER_SIZE = 16;
 int PlayerShip::PLAYER_TRAVEL_SPEED = 250;
 int PlayerShip::WEAK_ATTACK_DELAY = 8;
 int PlayerShip::STRONG_ATTACK_DELAY = 20;
+int PlayerShip::INVULNERABILITY_DELAY = 60;
 Vector PlayerShip::PLAYER_PROJECTILE_SPEED = Vector(500, 0);
 ALLEGRO_COLOR PlayerShip::PLAYER_COLOR = al_map_rgb(150, 0, 0);
 
@@ -31,7 +32,14 @@ PlayerShip::~PlayerShip()
 	shipSprite.reset();
 }
 
-void PlayerShip::hit(int damage) { this->life -= damage; }
+void PlayerShip::hit(int damage)
+{
+	if (this->wasShot)
+		return;
+
+	this->life -= damage;
+	this->wasShot = true;
+}
 
 bool PlayerShip::isDead() { return this->life <= 0; }
 
@@ -52,7 +60,14 @@ void PlayerShip::run()
 
 void PlayerShip::draw()
 {
-	this->shipSprite->draw_region(this->row, this->col, 47.0, 40.0, this->shipPosition, 0);
+	if (this->wasShot)
+	{
+		if (this->currentInvulnerabilityDelay % 5 == 0 || this->currentInvulnerabilityDelay % 6 == 0)
+			this->shipSprite->draw_region(this->row, this->col, 47.0, 40.0, this->shipPosition, 0);
+	}
+	else
+
+		this->shipSprite->draw_region(this->row, this->col, 47.0, 40.0, this->shipPosition, 0);
 }
 
 void PlayerShip::update(double diffTime)
@@ -61,6 +76,15 @@ void PlayerShip::update(double diffTime)
 	this->updateShipAnimation(); // must happen before we reset our speed
 	this->speed = Vector(0, 0);	 // reset our speed
 	this->checkExceedingWindowLimit();
+
+	// Caso tenha tomado um tiro lida com o counter até desativar o boolean wasShot
+	if (this->wasShot)
+		this->currentInvulnerabilityDelay--;
+	if (this->currentInvulnerabilityDelay == 0)
+	{
+		this->wasShot = false;
+		this->currentInvulnerabilityDelay = PlayerShip::INVULNERABILITY_DELAY;
+	}
 }
 
 void PlayerShip::processAction()
@@ -83,6 +107,9 @@ void PlayerShip::processAction()
 
 void PlayerShip::handleWeakAttack()
 {
+	if (this->wasShot)
+		return;
+
 	// Verifica se já passou o delay do weak shot
 	if (this->laserTimer->getCount() > PlayerShip::WEAK_ATTACK_DELAY)
 	{
@@ -96,6 +123,9 @@ void PlayerShip::handleWeakAttack()
 
 void PlayerShip::handleStrongAttack()
 {
+	if (this->wasShot)
+		return;
+
 	// Verifica se já passou o delay do weak shot
 	if (this->missileTimer->getCount() > PlayerShip::STRONG_ATTACK_DELAY)
 	{
@@ -160,6 +190,8 @@ void PlayerShip::init()
 	this->missileTimer = std::make_shared<Timer>(GameConfigs::fps);
 	this->missileTimer->create();
 	this->missileTimer->startTimer();
+
+	this->currentInvulnerabilityDelay = PlayerShip::INVULNERABILITY_DELAY;
 }
 
 void PlayerShip::loadSprites()

@@ -30,6 +30,12 @@ void Window::run()
 {
     while (!GameConfigs::finished)
     {
+        if (this->_playerShip == nullptr)
+        {
+            Thread::yield();
+            continue;
+        }
+
         this->handleEventQueue();
         Thread::yield();
     }
@@ -67,6 +73,7 @@ void Window::draw()
         // Update e draw
         this->updateBackGround(diffTime);
         this->drawBackground();
+        this->drawPlayerLife();
 
         if (this->_playerShip != nullptr)
         {
@@ -96,6 +103,25 @@ void Window::updateBackGround(double dt)
 }
 
 void Window::drawBackground() { bgSprite->draw_parallax_background(bgMid.x, 0); }
+
+void Window::drawPlayerLife()
+{
+    int playerLife = this->_playerShip->getLife();
+    int windowWidth = GameConfigs::windowWidth;
+
+    if (playerLife > 0)
+    {
+        al_draw_rectangle(windowWidth - 70, 50, windowWidth - 50, 70, al_map_rgb(0, 255, 0), 5);
+    }
+    if (playerLife > 1)
+    {
+        al_draw_rectangle(windowWidth - 110, 50, windowWidth - 90, 70, al_map_rgb(0, 255, 0), 5);
+    }
+    if (playerLife > 2)
+    {
+        al_draw_rectangle(windowWidth - 150, 50, windowWidth - 130, 70, al_map_rgb(0, 255, 0), 5);
+    }
+}
 
 void Window::init()
 {

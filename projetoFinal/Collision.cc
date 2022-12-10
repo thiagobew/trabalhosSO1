@@ -87,6 +87,32 @@ void Collision::verifyCollisions()
             }
         }
     }
+
+    // Verifica impacto entre o player ship e os inimigos
+    for (auto listItem = this->enemies.begin(); listItem != this->enemies.end();)
+    {
+        Enemy *enemy = *listItem;
+        listItem++;
+
+        if (this->verifyIfHit(enemy, this->_playerShip))
+        {
+            enemy->hit(1);
+
+            if (enemy->isDead())
+            {
+                this->_window->removeDrawableItem(enemy);
+                this->enemies.remove(enemy);
+                delete enemy;
+            }
+
+            this->_playerShip->hit(1);
+            if (this->_playerShip->isDead())
+            {
+                GameConfigs::finished = true;
+                return;
+            }
+        }
+    }
 }
 
 bool Collision::verifyIfHit(Projectile *projectile, Hittable *hittable)
@@ -101,6 +127,17 @@ bool Collision::verifyIfHit(Projectile *projectile, Hittable *hittable)
         (projectilePos.y < hittablePos.y + hittableSize))
         return true;
     return false;
+}
+
+bool Collision::verifyIfHit(Drawable *first, Drawable *second)
+{
+    int firstSize = first->getSize();
+    Point firstPos = first->getPosition();
+    int secondSize = second->getSize();
+    Point secondPos = second->getPosition();
+
+    return (abs(firstPos.x - secondPos.x) < (firstSize + secondSize) && 
+            abs(firstPos.y - secondPos.y) < (firstSize + secondSize));
 }
 
 void Collision::cleanOutsideObjects()

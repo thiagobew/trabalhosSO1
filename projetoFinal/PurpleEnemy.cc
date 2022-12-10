@@ -2,7 +2,7 @@
 
 __BEGIN_API
 
-int PurpleEnemy::DELAY_BETWEEN_SHOTS = 100;
+int PurpleEnemy::DELAY_BETWEEN_SHOTS = 50;
 
 PurpleEnemy::PurpleEnemy(Point point, Vector vector, std::shared_ptr<Sprite> shipSprite, std::shared_ptr<Sprite> deathSprite, PurpleEnemiesControl *control) : Enemy(point, vector, 1)
 {
@@ -49,7 +49,7 @@ void PurpleEnemy::update(double diffTime)
     }
 }
 
-int PurpleEnemy::getSize() { return 24; }
+int PurpleEnemy::getSize() { return 20; }
 
 bool PurpleEnemy::isOutside() { return this->_point.x < -40; }
 

@@ -50,6 +50,7 @@ public:
 	bool isDead();
 	bool isOutside();
 	void update(double diffTime);
+	int getLife() { return this->life; }
 
 	// Drawable methods
 	int getSize();
@@ -69,6 +70,10 @@ private:
 	std::shared_ptr<Timer> laserTimer;
 	std::shared_ptr<Timer> missileTimer;
 	int life = 3;
+	// Logic for invulnerability
+	bool wasShot;
+	int currentInvulnerabilityDelay;
+	static int INVULNERABILITY_DELAY;
 
 	// Logic methods
 	void checkExceedingWindowLimit();

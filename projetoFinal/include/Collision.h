@@ -36,9 +36,9 @@ private:
     Window *_window;
 
     // Methods
-    void init();
     void verifyCollisions();
     bool verifyIfHit(Projectile *projectile, Hittable *hittable);
+    bool verifyIfHit(Drawable *first, Drawable *second);
 
     void cleanOutsideObjects();
 };

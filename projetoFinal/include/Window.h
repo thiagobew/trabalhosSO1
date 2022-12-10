@@ -41,6 +41,7 @@ private:
     void draw();
     void loadSprites();
     void drawBackground();
+    void drawPlayerLife();
     void handleEventQueue();
     void updateBackGround(double diffTime);
 
