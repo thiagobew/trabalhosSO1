@@ -30,6 +30,9 @@ public:
     void addDrawableItem(Drawable *item) { this->drawableItens.push_front(item); }
     void removeDrawableItem(Drawable *item) { this->drawableItens.remove(item); }
 
+    int displayWidth() { return _displayWidth; }
+    int displayHeight() { return _displayHeight; }
+
 private:
     std::list<Drawable *> drawableItens;
 
