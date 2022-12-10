@@ -3,7 +3,10 @@
 
 __BEGIN_API
 
-Laser::Laser(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerShot) : Projectile(point, color, speed, isPlayerShot) {}
+Laser::Laser(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerShot) : Projectile(point, color, speed, isPlayerShot)
+{
+    this->hitUntilDestroyed = 1;
+}
 
 Laser::~Laser() {}
 
@@ -19,5 +22,11 @@ void Laser::update(double diffTime)
 }
 
 int Laser::getSize() { return 3; }
+
+void Laser::ackHitSomething() { this->hitUntilDestroyed -= 1; }
+
+bool Laser::wasDestroyed() { return this->hitUntilDestroyed == 0; }
+
+int Laser::getDamage() { return 1; }
 
 __END_API

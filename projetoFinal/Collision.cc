@@ -28,12 +28,19 @@ void Collision::verifyCollisions()
 
         if (this->verifyIfHit(enemyShot, this->_playerShip))
         {
+            // Notifica o objeto tiro que ele acertou algo
+            enemyShot->ackHitSomething();
             // Dá o dano no player
-            this->_playerShip->hit(1);
-            // Destrói o tiro
-            this->_window->removeDrawableItem(enemyShot);
-            this->enemiesShots.remove(enemyShot);
-            delete enemyShot;
+            this->_playerShip->hit(enemyShot->getDamage());
+
+            // Se o tiro foi destruído deleta ele
+            if (enemyShot->wasDestroyed())
+            {
+                // Destrói o tiro
+                this->_window->removeDrawableItem(enemyShot);
+                this->enemiesShots.remove(enemyShot);
+                delete enemyShot;
+            }
 
             if (this->_playerShip->isDead())
             {
@@ -58,12 +65,7 @@ void Collision::verifyCollisions()
 
             if (this->verifyIfHit(playerShot, enemy))
             {
-                // Remove o tiro do jogador da tela e destrói
-                this->_window->removeDrawableItem(playerShot);
-                this->playerShots.remove(playerShot);
-                delete playerShot;
-
-                enemy->hit(1);
+                enemy->hit(playerShot->getDamage());
                 if (enemy->isDead())
                 {
                     this->_window->removeDrawableItem(enemy);
@@ -71,8 +73,17 @@ void Collision::verifyCollisions()
                     delete enemy;
                 }
 
-                // Tiro já foi destruído então seguimos para o próximo tiro
-                break;
+                // Notifica o projetil que acertou alguma coisa
+                playerShot->ackHitSomething();
+                // Verifica se foi destruído no hit
+                if (playerShot->wasDestroyed())
+                {
+                    // Remove o tiro do jogador da tela e destrói
+                    this->_window->removeDrawableItem(playerShot);
+                    this->playerShots.remove(playerShot);
+                    delete playerShot;
+                    break;
+                }
             }
         }
     }

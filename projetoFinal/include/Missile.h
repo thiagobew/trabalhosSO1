@@ -20,6 +20,10 @@ public:
     Missile(Point point, ALLEGRO_COLOR color, Vector vector, bool isPlayerShot);
     ~Missile();
 
+    int getDamage();
+    void ackHitSomething();
+    bool wasDestroyed();
+
     void draw();
     void update(double diffTime);
     int getSize();
@@ -32,6 +36,7 @@ private:
     int currentSpriteIndex = 0;
     static std::vector<std::shared_ptr<Sprite>> sprites;
     static int SPRITES_VECTOR_MAX_INDEX;
+    static int DAMAGE;
 };
 
 __END_API

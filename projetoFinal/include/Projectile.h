@@ -20,6 +20,10 @@ public:
 	virtual void update(double diffTime) = 0;
 	virtual int getSize() = 0;
 
+	virtual int getDamage() = 0;
+	virtual void ackHitSomething() = 0;
+	virtual bool wasDestroyed() = 0;
+
 	Point getPosition() { return this->_point; }
 	bool getIsPlayerProjectile() { return this->isPlayerShot; }
 	bool isOutside()

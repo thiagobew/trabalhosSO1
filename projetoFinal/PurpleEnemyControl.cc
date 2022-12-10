@@ -7,7 +7,7 @@ std::shared_ptr<Sprite> purpleShipSprite;
 PurpleEnemiesControl::PurpleEnemiesControl()
 {
     this->loadSprites();
-    this->DELAY_SHIPS_SPAWN = 500;
+    this->DELAY_SHIPS_SPAWN = 250;
     this->shipsSpawnTimer = std::make_shared<Timer>(GameConfigs::fps);
     this->shipsSpawnTimer->create();
     this->shipsSpawnTimer->startTimer();
@@ -69,8 +69,6 @@ void PurpleEnemiesControl::handleShips()
 
 void PurpleEnemiesControl::createShips()
 {
-    this->ships.clear();
-
     // Cria os 5 ships purple
     PurpleEnemy *ship1 = new PurpleEnemy(Point(800, 300), Vector(-180, 0), this->purpleShipSprite, this->enemyExplosionSprite, this);
     PurpleEnemy *ship2 = new PurpleEnemy(Point(900, 350), Vector(-180, 0), this->purpleShipSprite, this->enemyExplosionSprite, this);

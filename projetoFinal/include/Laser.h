@@ -17,9 +17,16 @@ public:
     Laser(Point point, ALLEGRO_COLOR color, Vector vector, bool isPlayerShot);
     ~Laser();
 
+    int getDamage();
+    void ackHitSomething();
+    bool wasDestroyed();
+
     void draw();
     void update(double diffTime);
     int getSize();
+
+private:
+    int hitUntilDestroyed;
 };
 
 __END_API
