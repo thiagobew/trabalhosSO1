@@ -1,8 +1,8 @@
 #include "include/MinesControl.h"
 
 __BEGIN_API
-
-int MinesControl::DELAY_MINE_SPAWN = 500;
+// 30 segundos
+int MinesControl::DELAY_MINE_SPAWN = GameConfigs::fps * 30;
 
 MinesControl::MinesControl()
 {
@@ -74,9 +74,10 @@ void MinesControl::handleMines()
 
 void MinesControl::createMine()
 {
-    // Gera um ponto aleatório para a mina aparecer
+    // Gera um ponto aleatório em y para a bomba aparecer
     Point point = Point(0, 0);
     point.rollRandom();
+    point.x = GameConfigs::windowWidth;
 
     // Cria uma mina
     Mine *mine = new Mine(point, Vector(-100, 0), this->mineSprite, this->mineExplosionSprite, this);

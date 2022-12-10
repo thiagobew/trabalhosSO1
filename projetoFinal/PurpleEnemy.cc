@@ -42,7 +42,9 @@ void PurpleEnemy::draw()
 void PurpleEnemy::update(double diffTime)
 {
     this->_point = this->_point + this->_speed * diffTime;
-    if (this->shotsTimer->getCount() > PurpleEnemy::DELAY_BETWEEN_SHOTS)
+    // Generate random number to have different delays between shots
+    int moreDelay = rand() % 60;
+    if (this->shotsTimer->getCount() > PurpleEnemy::DELAY_BETWEEN_SHOTS + moreDelay)
     {
         this->_canFire = true;
         this->shotsTimer->srsTimer();

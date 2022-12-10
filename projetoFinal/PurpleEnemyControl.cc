@@ -7,7 +7,7 @@ std::shared_ptr<Sprite> purpleShipSprite;
 PurpleEnemiesControl::PurpleEnemiesControl()
 {
     this->loadSprites();
-    this->DELAY_SHIPS_SPAWN = 250;
+    this->DELAY_SHIPS_SPAWN = GameConfigs::fps * 5; // 5seg
     this->shipsSpawnTimer = std::make_shared<Timer>(GameConfigs::fps);
     this->shipsSpawnTimer->create();
     this->shipsSpawnTimer->startTimer();
@@ -55,8 +55,14 @@ void PurpleEnemiesControl::handleShips()
             // Chama o método attack do ship mas essa função aqui que vai lidar com a criação dos vetores
             ship->attack();
 
-            Laser *laser1 = new Laser(ship->getPosition(), ship->getColor(), ship->getVector() + Vector(0, -40), false);
-            Laser *laser2 = new Laser(ship->getPosition(), ship->getColor(), ship->getVector() + Vector(0, 40), false);
+            int yVector = 60;
+            if (this->shipsSpawnTimer->getCount() % 4 == 0)
+                yVector = 100;
+            else if (this->shipsSpawnTimer->getCount() % 5 == 0)
+                yVector = 140;
+
+            Laser *laser1 = new Laser(ship->getPosition(), ship->getColor(), ship->getVector() + Vector(-200, (-1 * yVector)), false);
+            Laser *laser2 = new Laser(ship->getPosition(), ship->getColor(), ship->getVector() + Vector(-250, yVector), false);
 
             this->_collision->addEnemiesShot(laser1);
             this->_collision->addEnemiesShot(laser2);

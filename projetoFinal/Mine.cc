@@ -1,8 +1,8 @@
 #include "include/Mine.h"
 
 __BEGIN_API
-
-int Mine::MINE_EXPLOSION_DELAY = 350;
+// 5 seg
+int Mine::MINE_EXPLOSION_DELAY = GameConfigs::fps * 5;
 int Mine::MINE_LIFE = 6;
 
 Mine::Mine(Point point, Vector vector, std::shared_ptr<Sprite> mineSprite, std::shared_ptr<Sprite> deathSprite, MinesControl *control) : Enemy(point, vector, Mine::MINE_LIFE)

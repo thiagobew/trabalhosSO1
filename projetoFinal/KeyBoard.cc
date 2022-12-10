@@ -20,6 +20,12 @@ Keyboard::Keyboard()
     al_register_event_source(this->_eventQueue, al_get_keyboard_event_source());
 }
 
+Keyboard::~Keyboard()
+{
+    if (this->_eventQueue != NULL)
+        al_destroy_event_queue(this->_eventQueue);
+}
+
 void Keyboard::run()
 {
     while (!GameConfigs::finished)
