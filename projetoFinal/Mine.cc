@@ -2,18 +2,32 @@
 
 __BEGIN_API
 
-Mine::Mine(Point point, Vector vector, std::shared_ptr<Sprite> mineSprite, std::shared_ptr<Sprite> deathSprite, MinesControl *control) : Enemy(point, vector, 1)
+int Mine::MINE_EXPLOSION_DELAY = 350;
+int Mine::MINE_LIFE = 6;
+
+Mine::Mine(Point point, Vector vector, std::shared_ptr<Sprite> mineSprite, std::shared_ptr<Sprite> deathSprite, MinesControl *control) : Enemy(point, vector, Mine::MINE_LIFE)
 {
     this->_mineSprite = mineSprite;
     this->_deathSprite = deathSprite;
     this->_control = control;
-    this->deathSpriteTimer = 5;    
-	this->color = al_map_rgb(150, 0, 150);
+    this->color = al_map_rgb(150, 0, 150);
+    this->deathSpriteTimer = 5;
+    this->wasExploded = false;
+
+    this->row = 0;
+    this->col = 0;
+
+    this->explodeTimer = std::make_shared<Timer>(GameConfigs::fps);
+    this->explodeTimer->create();
+    this->explodeTimer->startTimer();
 }
 
-// Quando o inimigo morre ele manda uma mensagem para o controle falando que ele morreu, isso é necessário
-// para removermos a referência ao objeto que vai ser destruído que está no controle
-// É necessário pq não tem como o objeto Collision passar essa informação diretamente
+void Mine::hit(int damage)
+{
+    this->life -= damage;
+    this->col++;
+}
+
 Mine::~Mine()
 {
     if (this->_control != nullptr)
@@ -29,17 +43,33 @@ void Mine::draw()
     }
     else
     {
-        this->_mineSprite->draw_tinted(this->_point, this->color, 0);
+        this->_mineSprite->draw_region(this->row, this->col, 40, 41, this->_point, 0);
     }
+}
+
+bool Mine::canFire()
+{
+    return this->explodeTimer->getCount() > Mine::MINE_EXPLOSION_DELAY;
+}
+
+void Mine::attack()
+{
+    this->wasExploded = true;
 }
 
 void Mine::update(double diffTime)
 {
     this->_point = this->_point + this->_speed * diffTime;
+
+    if (this->_point.x < 670 && this->row == 0)
+        this->row++;
+
+    if (this->_point.x < 540 && this->row == 1)
+        this->row++;
 }
 
-int Mine::getSize() { return 24; }
+int Mine::getSize() { return 20; }
 
-bool Mine::isOutside() { return this->_point.x < -40; }
+bool Mine::isOutside() { return this->wasExploded; }
 
 __END_API

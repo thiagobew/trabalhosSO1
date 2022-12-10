@@ -2,14 +2,12 @@
 
 __BEGIN_API
 
-std::shared_ptr<Sprite> purpleMinesprite;
+int MinesControl::DELAY_MINE_SPAWN = 500;
 
 MinesControl::MinesControl()
 {
     this->loadSprites();
-    this->DELAY_MINE_SPAWN = 500;
-    this->DELAY_MINE_EXPLOSION = 500;
-	  this->_color = al_map_rgb(255, 0, 0);
+    this->_color = al_map_rgb(255, 0, 0);
     this->minesSpawnTimer = std::make_shared<Timer>(GameConfigs::fps);
     this->minesSpawnTimer->create();
     this->minesSpawnTimer->startTimer();
@@ -39,7 +37,6 @@ void MinesControl::run()
 
 void MinesControl::processLoop()
 {
-    // Há uma dependência aqui do timer ser maior do que o tempo para o ultimo sair da tela por causa de referência de ponteiros
     if (this->minesSpawnTimer->getCount() > this->DELAY_MINE_SPAWN)
         this->createMine();
     this->handleMines();
@@ -52,32 +49,43 @@ void MinesControl::handleMines()
         Mine *mine = *mineItem;
         mineItem++;
 
-        if (this->minesSpawnTimer->getCount() > this->DELAY_MINE_EXPLOSION)
-		{
-			for(int i = 0; i < 20; i++) {
-				Vector v = Vector(0, 0);
-				v.rollRandom();
-				Laser *laser = new Laser(mine->getPosition(), _color, v, false);
-				this->_collision->addEnemiesShot(laser);
-			}
+        // Caso a mina já tenha sido destruída mas não foi removida ainda
+        if (mine->isDead() || mine->isOutside())
+            continue;
 
-			this->mines.remove(mine);
-			this->_collision->removeEnemy(mine);
-			delete mine;
-		}
+        // Caso a mina já esteja pronta para atacar
+        if (mine->canFire())
+        {
+            // Executa o ataque
+            mine->attack();
+            for (int i = 0; i < 10; i++)
+            {
+                // Gera vetores aleatórios
+                Vector vetor = Vector(0, 0);
+                vetor.rollReallyRandom();
+
+                // Cria o tiro a adiciona nas listas
+                Laser *laser = new Laser(mine->getPosition(), this->_color, vetor, false);
+                this->_collision->addEnemiesShot(laser);
+                this->_window->addDrawableItem(laser);
+            }
+        }
     }
 }
 
 void MinesControl::createMine()
 {
-    this->mines.clear();
+    // Gera um ponto aleatório para a mina aparecer
+    Point point = Point(0, 0);
+    point.rollRandom();
 
-    Point p = Point(0, 0);
-    p.rollRandom();
+    // Cria uma mina
+    Mine *mine = new Mine(point, Vector(-100, 0), this->mineSprite, this->mineExplosionSprite, this);
 
-    Mine* mine = new Mine(p, Vector(-180, 0), this->mineSprite, this->mineExplosionSprite, this);
+    // Adiciona referência dela nas listas
     this->mines.push_back(mine);
     this->_collision->addEnemies(mine);
+    this->_window->addDrawableItem(mine);
 
     // Reset o timer
     this->minesSpawnTimer->srsTimer();

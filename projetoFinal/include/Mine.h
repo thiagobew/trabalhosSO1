@@ -20,19 +20,22 @@ public:
     Mine(Point point, Vector vector, std::shared_ptr<Sprite> mineSprite, std::shared_ptr<Sprite> deathSprite, MinesControl *control);
     ~Mine();
 
-    bool canFire() { return false; }
+    bool canFire();
     void draw();
     void attack();
     void update(double diffTime);
     bool isOutside();
+    void hit(int damage);
     ALLEGRO_COLOR getColor() { return this->color; }
     int getSize();
 
 private:
     // Logic
     std::shared_ptr<Timer> explodeTimer;
+    static int MINE_EXPLOSION_DELAY;
+    static int MINE_LIFE;
+    bool wasExploded;
 
-    // Controle do mine, é necessário essa referência para que quando o mine for destruído ele avisar para o control que foi destruido
     MinesControl *_control;
 
     // Sprites
@@ -40,6 +43,8 @@ private:
     std::shared_ptr<Sprite> _deathSprite;
     ALLEGRO_COLOR color;
     int deathSpriteTimer;
+    int row;
+    int col;
 };
 
 __END_API

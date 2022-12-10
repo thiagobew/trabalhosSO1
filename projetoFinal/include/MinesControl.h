@@ -36,15 +36,14 @@ private:
     Window *_window;
     Collision *_collision;
 
-    int DELAY_MINE_SPAWN;
-    int DELAY_MINE_EXPLOSION;
+    static int DELAY_MINE_SPAWN;
 
     // Sprites
     std::list<Mine *> mines;
     std::shared_ptr<Timer> minesSpawnTimer;
     std::shared_ptr<Sprite> mineSprite;
     std::shared_ptr<Sprite> mineExplosionSprite;
-	  ALLEGRO_COLOR _color;
+    ALLEGRO_COLOR _color;
 };
 
 __END_API
