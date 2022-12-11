@@ -12,7 +12,7 @@ int PlayerShip::PLAYER_SIZE = 16;
 int PlayerShip::PLAYER_TRAVEL_SPEED = 250;
 int PlayerShip::WEAK_ATTACK_DELAY = 8;
 int PlayerShip::STRONG_ATTACK_DELAY = 20;
-int PlayerShip::INVULNERABILITY_DELAY = 60;
+int PlayerShip::INVULNERABILITY_DELAY = 100;
 Vector PlayerShip::PLAYER_PROJECTILE_SPEED = Vector(500, 0);
 ALLEGRO_COLOR PlayerShip::PLAYER_COLOR = al_map_rgb(150, 0, 0);
 

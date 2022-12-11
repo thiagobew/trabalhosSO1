@@ -2,7 +2,7 @@
 
 __BEGIN_API
 
-int BossControl::DELAY_UNTIL_BOSS = GameConfigs::fps * 60;
+int BossControl::DELAY_UNTIL_BOSS = GameConfigs::fps * 5;
 
 BossControl::BossControl()
 {
@@ -12,6 +12,8 @@ BossControl::BossControl()
 
     this->bossWasSpawned = false;
 }
+
+BossControl::~BossControl() {}
 
 void BossControl::setWindowReference(Window *window) { this->_window = window; }
 

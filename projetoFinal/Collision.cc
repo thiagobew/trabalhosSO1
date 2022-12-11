@@ -45,6 +45,7 @@ void Collision::verifyCollisions()
             if (this->_playerShip->isDead())
             {
                 GameConfigs::finished = true;
+                std::cout << ">>>>>>>>>>>>>>>>>>>>>>>> Player is Dead by Lasers\n";
                 return;
             }
         }
@@ -108,6 +109,7 @@ void Collision::verifyCollisions()
             this->_playerShip->hit(1);
             if (this->_playerShip->isDead())
             {
+                std::cout << ">>>>>>>>>>>>>>>>>>>>>>>> Player is Dead by Collision\n";
                 GameConfigs::finished = true;
                 return;
             }
@@ -136,7 +138,7 @@ bool Collision::verifyIfHit(Drawable *first, Drawable *second)
     int secondSize = second->getSize();
     Point secondPos = second->getPosition();
 
-    return (abs(firstPos.x - secondPos.x) < (firstSize + secondSize) && 
+    return (abs(firstPos.x - secondPos.x) < (firstSize + secondSize) &&
             abs(firstPos.y - secondPos.y) < (firstSize + secondSize));
 }
 

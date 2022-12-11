@@ -3,7 +3,7 @@
 __BEGIN_API
 // 5 seg
 int Mine::MINE_EXPLOSION_DELAY = GameConfigs::fps * 5;
-int Mine::MINE_LIFE = 6;
+int Mine::MINE_LIFE = 5;
 
 Mine::Mine(Point point, Vector vector, std::shared_ptr<Sprite> mineSprite, std::shared_ptr<Sprite> deathSprite, MinesControl *control) : Enemy(point, vector, Mine::MINE_LIFE)
 {
@@ -25,7 +25,8 @@ Mine::Mine(Point point, Vector vector, std::shared_ptr<Sprite> mineSprite, std::
 void Mine::hit(int damage)
 {
     this->life -= damage;
-    this->col++;
+    if (this->col < 2)
+        this->col++;
 }
 
 Mine::~Mine()

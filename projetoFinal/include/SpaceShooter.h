@@ -35,21 +35,36 @@ public:
         minesControlThread = new Thread(minesFunc);
         bossSpawnThread = new Thread(bossFunc);
 
+        std::cout << "Esperando PlayerShip\n";
         playerShipThread->join();
+        std::cout << "Esperando windowThread\n";
         windowThread->join();
+        std::cout << "Esperando keyboardThread\n";
         keyboardThread->join();
+        std::cout << "Esperando collisionThread\n";
         collisionThread->join();
+        std::cout << "Esperando purpleShipsControlThread\n";
         purpleShipsControlThread->join();
+        std::cout << "Esperando minesControlThread\n";
         minesControlThread->join();
+        std::cout << "Esperando bossSpawnThread\n";
         bossSpawnThread->join();
 
+        std::cout << "Deletando PlayerShip\n";
         delete playerShipThread;
+        std::cout << "Deletando Window\n";
         delete windowThread;
+        std::cout << "Deletando KeyBoard\n";
         delete keyboardThread;
+        std::cout << "Deletando Collision\n";
         delete collisionThread;
+        std::cout << "Deletando Purple\n";
         delete purpleShipsControlThread;
+        std::cout << "Deletando Mines\n";
         delete minesControlThread;
+        std::cout << "Deletando Boss\n";
         delete bossSpawnThread;
+        std::cout << "Terminou\n";
     }
 
 private:
@@ -57,8 +72,8 @@ private:
     {
         windowObj = new Window(GameConfigs::windowWidth, GameConfigs::windowHeight, GameConfigs::fps);
         windowObj->run();
-        std::cout << "BBB\n";
         delete windowObj;
+        windowThread->thread_exit(0);
     }
 
     static void playerShipFunc()
@@ -69,14 +84,16 @@ private:
         playerShipObj->setWindowReference(windowObj);
 
         playerShipObj->run();
-        // delete playerShipObj;
+        delete playerShipObj;
+        playerShipThread->thread_exit(0);
     }
 
     static void keyBoardFunc()
     {
         kBoardObj = new Keyboard();
         kBoardObj->run();
-        // delete kBoardObj;
+        delete kBoardObj;
+        keyboardThread->thread_exit(0);
     }
 
     static void collisionFunc()
@@ -84,8 +101,12 @@ private:
         collisionObj = new Collision();
         collisionObj->setPlayerShip(playerShipObj);
         collisionObj->setWindow(windowObj);
+
         playerShipObj->setCollisionReference(collisionObj);
+
         collisionObj->run();
+        delete collisionObj;
+        collisionThread->thread_exit(0);
     }
 
     static void purpleShipsFunc()
@@ -94,6 +115,8 @@ private:
         purpleShipsControlObj->setCollisionReference(collisionObj);
         purpleShipsControlObj->setWindowReference(windowObj);
         purpleShipsControlObj->run();
+        delete purpleShipsControlObj;
+        purpleShipsControlThread->thread_exit(0);
     }
 
     static void minesFunc()
@@ -102,6 +125,8 @@ private:
         minesControlObj->setCollisionReference(collisionObj);
         minesControlObj->setWindowReference(windowObj);
         minesControlObj->run();
+        delete minesControlObj;
+        minesControlThread->thread_exit(0);
     }
 
     static void bossFunc()
@@ -111,6 +136,8 @@ private:
         bossControlObj->setWindowReference(windowObj);
         bossControlObj->setPlayerReference(playerShipObj);
         bossControlObj->run();
+        delete bossControlObj;
+        bossSpawnThread->thread_exit(0);
     }
 
     static Thread *playerShipThread;

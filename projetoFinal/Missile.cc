@@ -5,7 +5,7 @@ __BEGIN_API
 
 std::vector<std::shared_ptr<Sprite>> Missile::sprites;
 int Missile::SPRITES_VECTOR_MAX_INDEX = 7;
-int Missile::DAMAGE = 5;
+int Missile::DAMAGE = 2;
 
 Missile::Missile(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerShot) : Projectile(point, color, speed, isPlayerShot)
 {

@@ -16,6 +16,7 @@ Window::Window(int width, int height, int fps) : _displayWidth(width), _displayH
 
 Window::~Window()
 {
+    std::cout << "Desconstrutor Window\n";
     if (this->_timer != NULL)
         al_destroy_timer(this->_timer);
     if (this->_eventQueue != NULL)
