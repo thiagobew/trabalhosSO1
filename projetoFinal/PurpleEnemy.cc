@@ -28,10 +28,11 @@ PurpleEnemy::~PurpleEnemy()
 
 void PurpleEnemy::draw()
 {
-    if (this->isDead())
+    if (this->life <= 0)
     {
         this->deathSpriteTimer -= 1;
         this->_deathSprite->draw_death_anim(this->deathSpriteTimer, this->_point, 0);
+        _dead = true;
     }
     else
     {
@@ -41,6 +42,10 @@ void PurpleEnemy::draw()
 
 void PurpleEnemy::update(double diffTime)
 {
+    if (_dead) {
+        return;
+    }
+
     this->_point = this->_point + this->_speed * diffTime;
     // Generate random number to have different delays between shots
     int moreDelay = rand() % 60;
