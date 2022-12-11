@@ -35,6 +35,14 @@ class PurpleEnemy;
 
 class PurpleEnemiesControl;
 
+class Mines;
+
+class MinesControl;
+
+class Boss;
+
+class BossControl;
+
 template <typename T>
 struct Traits
 {
