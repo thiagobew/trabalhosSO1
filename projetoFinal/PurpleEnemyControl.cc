@@ -39,7 +39,11 @@ void PurpleEnemiesControl::processLoop()
 {
     // Há uma dependência aqui do timer ser maior do que o tempo para o ultimo sair da tela por causa de referência de ponteiros
     if (this->shipsSpawnTimer->getCount() > this->DELAY_SHIPS_SPAWN)
+    {
         this->createShips();
+        // Reset o timer
+        this->shipsSpawnTimer->srsTimer();
+    }
     this->handleShips();
 }
 
@@ -75,6 +79,9 @@ void PurpleEnemiesControl::handleShips()
 
 void PurpleEnemiesControl::createShips()
 {
+    if (GameConfigs::bossExists)
+        return;
+
     // Cria os 5 ships purple
     PurpleEnemy *ship1 = new PurpleEnemy(Point(800, 300), Vector(-180, 0), this->purpleShipSprite, this->enemyExplosionSprite, this);
     PurpleEnemy *ship2 = new PurpleEnemy(Point(900, 350), Vector(-180, 0), this->purpleShipSprite, this->enemyExplosionSprite, this);
@@ -110,9 +117,6 @@ void PurpleEnemiesControl::createShips()
     this->ships.push_front(ship5);
     this->ships.push_front(ship6);
     this->ships.push_front(ship7);
-
-    // Reset o timer
-    this->shipsSpawnTimer->srsTimer();
 }
 
 void PurpleEnemiesControl::loadSprites()

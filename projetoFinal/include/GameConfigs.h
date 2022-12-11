@@ -21,7 +21,7 @@ public:
     static int windowHeight;
     static int fps;
     static bool finished;
-    static bool bossHasAppeared;
+    static bool bossExists;
 };
 
 __END_API

@@ -12,6 +12,7 @@
 #include "Timer.h"
 #include "Window.h"
 #include "Collision.h"
+#include "PlayerShip.h"
 
 __BEGIN_API
 
@@ -23,6 +24,7 @@ public:
 
     void setWindowReference(Window *window);
     void setCollisionReference(Collision *collision);
+    void setPlayerReference(PlayerShip *playerShip);
 
     void run();
 
@@ -30,11 +32,13 @@ private:
     void loadSprites();
     void createBoss();
     static int DELAY_UNTIL_BOSS;
+    bool bossWasSpawned;
 
     Boss *boss;
     // Referências de Window e Collision para passar para o boss
     Window *_window;
     Collision *_collision;
+    PlayerShip *_playerShip;
 
     // Sprites
     std::shared_ptr<Timer> bossSpawnTimer;

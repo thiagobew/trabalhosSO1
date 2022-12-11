@@ -14,6 +14,7 @@
 #include "GameConfigs.h"
 #include "PurpleEnemiesControl.h"
 #include "MinesControl.h"
+#include "BossControl.h"
 
 __BEGIN_API
 
@@ -32,6 +33,7 @@ public:
         collisionThread = new Thread(collisionFunc);
         purpleShipsControlThread = new Thread(purpleShipsFunc);
         minesControlThread = new Thread(minesFunc);
+        bossSpawnThread = new Thread(bossFunc);
 
         playerShipThread->join();
         windowThread->join();
@@ -39,6 +41,7 @@ public:
         collisionThread->join();
         purpleShipsControlThread->join();
         minesControlThread->join();
+        bossSpawnThread->join();
 
         delete playerShipThread;
         delete windowThread;
@@ -46,6 +49,7 @@ public:
         delete collisionThread;
         delete purpleShipsControlThread;
         delete minesControlThread;
+        delete bossSpawnThread;
     }
 
 private:
@@ -53,6 +57,7 @@ private:
     {
         windowObj = new Window(GameConfigs::windowWidth, GameConfigs::windowHeight, GameConfigs::fps);
         windowObj->run();
+        std::cout << "BBB\n";
         delete windowObj;
     }
 
@@ -99,12 +104,22 @@ private:
         minesControlObj->run();
     }
 
+    static void bossFunc()
+    {
+        bossControlObj = new BossControl();
+        bossControlObj->setCollisionReference(collisionObj);
+        bossControlObj->setWindowReference(windowObj);
+        bossControlObj->setPlayerReference(playerShipObj);
+        bossControlObj->run();
+    }
+
     static Thread *playerShipThread;
     static Thread *windowThread;
     static Thread *keyboardThread;
     static Thread *collisionThread;
     static Thread *purpleShipsControlThread;
     static Thread *minesControlThread;
+    static Thread *bossSpawnThread;
 
     static PlayerShip *playerShipObj;
     static Window *windowObj;
@@ -112,6 +127,7 @@ private:
     static Collision *collisionObj;
     static PurpleEnemiesControl *purpleShipsControlObj;
     static MinesControl *minesControlObj;
+    static BossControl *bossControlObj;
 };
 
 __END_API
