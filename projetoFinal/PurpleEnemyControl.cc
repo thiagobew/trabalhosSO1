@@ -17,7 +17,11 @@ PurpleEnemiesControl::~PurpleEnemiesControl() {}
 
 void PurpleEnemiesControl::setWindowReference(Window *window) { this->_window = window; }
 void PurpleEnemiesControl::setCollisionReference(Collision *collision) { this->_collision = collision; }
-void PurpleEnemiesControl::removeShip(PurpleEnemy *enemy) { this->ships.remove(enemy); }
+void PurpleEnemiesControl::removeShip(PurpleEnemy *enemy)
+{
+    if (this->ships.size() > 0)
+        this->ships.remove(enemy);
+}
 
 void PurpleEnemiesControl::run()
 {

@@ -82,6 +82,12 @@ void Window::draw()
             this->_playerShip->draw();
         }
 
+        if (this->_boss != nullptr && GameConfigs::bossExists)
+        {
+            this->_boss->update(diffTime);
+            this->_boss->draw();
+        }
+
         // Para cada item para desenhar faz update, desenha e caso já tenha terminado então coloca numa outra lista para remover
         for (auto listItem = this->drawableItens.begin(); listItem != this->drawableItens.end();)
         {
@@ -126,7 +132,6 @@ void Window::drawPlayerLife()
 
 void Window::init()
 {
-    db<Window>(TRC) << "Window Init started\n";
     // initialize allegro
     al_init();
 

@@ -3,7 +3,6 @@
 
 __BEGIN_API
 
-std::vector<std::shared_ptr<Sprite>> Missile::sprites;
 int Missile::SPRITES_VECTOR_MAX_INDEX = 7;
 int Missile::DAMAGE = 2;
 
@@ -20,7 +19,10 @@ Missile::Missile(Point point, ALLEGRO_COLOR color, Vector speed, bool isPlayerSh
     this->_point = this->_point + this->_speed * 0.1;
 }
 
-Missile::~Missile() {}
+Missile::~Missile()
+{
+    this->sprites.clear();
+}
 
 void Missile::draw()
 {
@@ -49,14 +51,14 @@ void Missile::loadSprites()
     al_append_path_component(path, "resources");
     al_change_directory(al_path_cstr(path, '/'));
 
-    Missile::sprites.push_back(std::make_shared<Sprite>("m1.png"));
-    Missile::sprites.push_back(std::make_shared<Sprite>("m2.png"));
-    Missile::sprites.push_back(std::make_shared<Sprite>("m3.png"));
-    Missile::sprites.push_back(std::make_shared<Sprite>("m4.png"));
-    Missile::sprites.push_back(std::make_shared<Sprite>("m5.png"));
-    Missile::sprites.push_back(std::make_shared<Sprite>("m6.png"));
-    Missile::sprites.push_back(std::make_shared<Sprite>("m7.png"));
-    Missile::sprites.push_back(std::make_shared<Sprite>("m8.png"));
+    this->sprites.push_back(std::make_shared<Sprite>("m1.png"));
+    this->sprites.push_back(std::make_shared<Sprite>("m2.png"));
+    this->sprites.push_back(std::make_shared<Sprite>("m3.png"));
+    this->sprites.push_back(std::make_shared<Sprite>("m4.png"));
+    this->sprites.push_back(std::make_shared<Sprite>("m5.png"));
+    this->sprites.push_back(std::make_shared<Sprite>("m6.png"));
+    this->sprites.push_back(std::make_shared<Sprite>("m7.png"));
+    this->sprites.push_back(std::make_shared<Sprite>("m8.png"));
 
     al_destroy_path(path);
 }

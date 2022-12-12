@@ -14,6 +14,7 @@
 #include "Sprite.h"
 #include "Vector.h"
 #include "Drawable.h"
+#include "Boss.h"
 
 __BEGIN_API
 
@@ -25,9 +26,13 @@ public:
     ~Window();
     void run();
 
+    void receiveBoss(Boss *boss) { this->_boss = boss; };
     void setPlayerShip(PlayerShip *playerShip) { _playerShip = playerShip; }
     void setKeyboard(Keyboard *keyBoard) { _keyBoard = keyBoard; }
-    void addDrawableItem(Drawable *item) { this->drawableItens.push_front(item); }
+    void addDrawableItem(Drawable *item)
+    {
+        this->drawableItens.push_front(item);
+    }
     void removeDrawableItem(Drawable *item) { this->drawableItens.remove(item); }
 
     int displayWidth() { return _displayWidth; }
@@ -53,6 +58,7 @@ private:
     // Game object
     PlayerShip *_playerShip;
     Keyboard *_keyBoard;
+    Boss *_boss;
 
     // Time variables
     float previousTime;

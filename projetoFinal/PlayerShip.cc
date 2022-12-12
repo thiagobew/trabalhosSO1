@@ -196,8 +196,6 @@ void PlayerShip::init()
 
 void PlayerShip::loadSprites()
 {
-	db<PlayerShip>(TRC) << "Player Ship loading sprites\n";
-
 	this->spritesLoaded = true;
 
 	// Create Ship

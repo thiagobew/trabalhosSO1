@@ -5,12 +5,9 @@ __BEGIN_API
 int Boss::BOSS_LIFE = 50;
 int Boss::BOSS_FIRE_SPEED = 50;
 
-Boss::Boss(Point point, Vector vector, std::shared_ptr<Sprite> bossSprites, Window *window, Collision *collision, PlayerShip *playerShip) : Enemy(point, vector, Boss::BOSS_LIFE)
+Boss::Boss(Point point, Vector vector, std::shared_ptr<Sprite> bossSprites) : Enemy(point, vector, Boss::BOSS_LIFE)
 {
     this->bossSprites = bossSprites;
-    this->_window = window;
-    this->_playerShip = playerShip;
-    this->_collision = collision;
     this->color = al_map_rgb(0, 0, 0);
 
     this->shotsTimer = std::make_shared<Timer>(GameConfigs::fps);
@@ -26,6 +23,8 @@ Boss::Boss(Point point, Vector vector, std::shared_ptr<Sprite> bossSprites, Wind
 
 Boss::~Boss()
 {
+    this->shotsTimer.reset();
+    this->bossSprites.reset();
     GameConfigs::bossExists = false;
 }
 
@@ -44,27 +43,6 @@ void Boss::draw()
 
 void Boss::attack()
 {
-    if (!this->_canFire)
-        return;
-
-    Point playerPos = this->_playerShip->getPosition();
-
-    Vector vectorAim(0, 0);
-    // Mira no player um pouco acima do player
-    vectorAim.Angle(playerPos, this->_point + Point(0, 50), 0.9);
-
-    Missile *missile1 = new Missile(this->_point, this->color, vectorAim, false);
-
-    // Mira no player um pouco abaixo do player
-    vectorAim.Angle(playerPos, this->_point + Point(0, -50), 0.9);
-    Missile *missile2 = new Missile(this->_point, this->color, vectorAim, false);
-
-    this->_collision->addEnemiesShot(missile1);
-    this->_collision->addEnemiesShot(missile2);
-
-    this->_window->addDrawableItem(missile1);
-    this->_window->addDrawableItem(missile2);
-
     this->_canFire = false;
 }
 
@@ -93,7 +71,6 @@ void Boss::update(double diffTime)
     if (this->shotsTimer->getCount() > this->BOSS_FIRE_SPEED)
     {
         this->_canFire = true;
-        this->attack();
         this->shotsTimer->srsTimer();
     }
 }

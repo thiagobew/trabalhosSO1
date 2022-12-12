@@ -16,6 +16,8 @@
 
 __BEGIN_API
 
+class Collision;
+
 class BossControl
 {
 public:

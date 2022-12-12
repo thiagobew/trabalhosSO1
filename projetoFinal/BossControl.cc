@@ -13,7 +13,10 @@ BossControl::BossControl()
     this->bossWasSpawned = false;
 }
 
-BossControl::~BossControl() {}
+BossControl::~BossControl()
+{
+    this->bossSpawnTimer.reset();
+}
 
 void BossControl::setWindowReference(Window *window) { this->_window = window; }
 
@@ -23,30 +26,51 @@ void BossControl::setPlayerReference(PlayerShip *player) { this->_playerShip = p
 
 void BossControl::run()
 {
-    while (!GameConfigs::finished)
+    this->loadSprites();
+
+    while (this->bossSpawnTimer->getCount() < BossControl::DELAY_UNTIL_BOSS && GameConfigs::finished == false)
+        Thread::yield();
+
+    if (GameConfigs::finished == false)
     {
-        if (this->bossWasSpawned)
-        {
-            Thread::yield();
-            continue;
-        }
-
-        while (this->bossSpawnTimer->getCount() < BossControl::DELAY_UNTIL_BOSS)
-            Thread::yield();
-
-        this->loadSprites();
         this->createBoss();
         this->bossWasSpawned = true;
         GameConfigs::bossExists = true;
-        Thread::yield();
+
+        // Loop enquanto o boss estiver vivo
+        while (!GameConfigs::finished && GameConfigs::bossExists)
+        {
+            if (this->boss->canFire())
+            {
+                this->boss->attack();
+                Point playerPos = this->_playerShip->getPosition();
+
+                Vector vectorAim(0, 0);
+                // Mira no player um pouco acima do player
+                vectorAim.Angle(playerPos, this->boss->getPosition() + Point(0, 30), 0.9);
+
+                Missile *missile1 = new Missile(this->boss->getPosition(), this->boss->getColor(), vectorAim, false);
+
+                // Mira no player um pouco abaixo do player
+                vectorAim.Angle(playerPos, this->boss->getPosition() + Point(0, -30), 0.9);
+                Missile *missile2 = new Missile(this->boss->getPosition(), this->boss->getColor(), vectorAim, false);
+
+                this->_collision->addEnemiesShot(missile1);
+                this->_collision->addEnemiesShot(missile2);
+
+                this->_window->addDrawableItem(missile1);
+                this->_window->addDrawableItem(missile2);
+            }
+
+            Thread::yield();
+        }
     }
 }
 
 void BossControl::createBoss()
 {
-    Boss *boss = new Boss(Point(GameConfigs::windowWidth, GameConfigs::windowHeight / 2),
-                          Vector(-50, 0), this->bossSprite, this->_window, this->_collision, this->_playerShip);
-    this->_window->addDrawableItem(boss);
+    this->boss = new Boss(Point(800, 300), Vector(-50, 0), this->bossSprite);
+    this->_window->receiveBoss(boss);
     this->_collision->addEnemies(boss);
 }
 

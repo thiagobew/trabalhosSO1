@@ -34,7 +34,7 @@ private:
     // Sprites
     void loadSprites();
     int currentSpriteIndex = 0;
-    static std::vector<std::shared_ptr<Sprite>> sprites;
+    std::vector<std::shared_ptr<Sprite>> sprites;
     static int SPRITES_VECTOR_MAX_INDEX;
     static int DAMAGE;
 };

@@ -47,7 +47,7 @@ template <typename T>
 struct Traits
 {
     // Booleano para permitir o print das mensagens ou não, por padrão está bloqueado para todas as classes
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template <>

@@ -20,7 +20,7 @@ __BEGIN_API
 class Boss : public Enemy
 {
 public:
-    Boss(Point point, Vector vector, std::shared_ptr<Sprite> bossSprites, Window *window, Collision *collision, PlayerShip *playerShip);
+    Boss(Point point, Vector vector, std::shared_ptr<Sprite> bossSprites);
     ~Boss();
 
     bool canFire() { return this->_canFire; }
@@ -42,11 +42,6 @@ private:
     void updateSprite();
     int size;
     bool invincible;
-
-    // Referências de Window e Collision para passar para as Ships
-    Window *_window;
-    Collision *_collision;
-    PlayerShip *_playerShip;
 
     // Sprites
     int spritesIndex;

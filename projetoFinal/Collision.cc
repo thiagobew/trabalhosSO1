@@ -5,7 +5,44 @@ __BEGIN_API
 
 Collision::Collision() {}
 
-Collision::~Collision() {}
+Collision::~Collision()
+{
+    std::cout << "A\n";
+    for (auto listItem = this->enemiesShots.begin(); listItem != this->enemiesShots.end();)
+    {
+        // Não é necessário remover a referência de outros lugares pois os objetos ja estão sendo destruídos
+        Projectile *shot = *listItem;
+        listItem++;
+
+        this->enemiesShots.remove(shot);
+        delete shot;
+    }
+
+    std::cout << "B\n";
+    for (auto listItem = this->playerShots.begin(); listItem != this->playerShots.end();)
+    {
+        Projectile *shot = *listItem;
+        listItem++;
+
+        this->playerShots.remove(shot);
+        delete shot;
+    }
+
+    std::cout << "C\n";
+    for (auto listItem = this->enemies.begin(); listItem != this->enemies.end();)
+    {
+        Enemy *enemy = *listItem;
+        listItem++;
+
+        this->enemies.remove(enemy);
+        delete enemy;
+    }
+
+    std::cout << "D\n";
+    this->enemiesShots.clear();
+    this->enemies.clear();
+    this->playerShots.clear();
+}
 
 void Collision::run()
 {
