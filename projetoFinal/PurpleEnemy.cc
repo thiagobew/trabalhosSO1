@@ -32,13 +32,16 @@ PurpleEnemy::~PurpleEnemy()
 
 void PurpleEnemy::draw()
 {
+    if (this->_dead)
+        return;
+
     if (this->life <= 0)
     {
         this->deathSpriteTimer -= 1;
         this->_deathSprite->draw_death_anim(this->deathSpriteTimer, this->_point, 0);
         if (this->deathSpriteTimer <= 0)
-            _dead = true;
-    }
+            this->_dead = true;
+        }
     else
     {
         this->_shipSprite->draw_tinted(this->_point, this->color, 0);

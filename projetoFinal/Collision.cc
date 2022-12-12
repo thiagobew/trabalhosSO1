@@ -29,7 +29,6 @@ Collision::~Collision()
     }
 
     std::cout << "C\n";
-    std::cout << this->enemies.size() << "\n";
     for (auto listItem = this->enemies.begin(); listItem != this->enemies.end();)
     {
 
@@ -107,6 +106,15 @@ void Collision::verifyCollisions()
             // Para cada um dos inimigos verifica se ele tomou o tiro
             Enemy *enemy = *enemyItem;
             enemyItem++;
+
+            // Adicionei essa verificação para remover inimigos que morreram faz alguns ticks mas estavam em animação de morte
+            if (enemy->isDead())
+            {
+                this->_window->removeDrawableItem(enemy);
+                this->enemies.remove(enemy);
+                delete enemy;
+                continue;
+            }
 
             if (this->verifyIfHit(playerShot, enemy))
             {
