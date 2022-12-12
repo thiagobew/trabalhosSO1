@@ -22,7 +22,7 @@ PurpleEnemy::PurpleEnemy(Point point, Vector vector, std::shared_ptr<Sprite> shi
 // É necessário pq não tem como o objeto Collision passar essa informação diretamente
 PurpleEnemy::~PurpleEnemy()
 {
-    if (this->_control != nullptr)
+    if (this->_control != nullptr && GameConfigs::finished == false)
         this->_control->removeShip(this);
 }
 
@@ -32,7 +32,8 @@ void PurpleEnemy::draw()
     {
         this->deathSpriteTimer -= 1;
         this->_deathSprite->draw_death_anim(this->deathSpriteTimer, this->_point, 0);
-        _dead = true;
+        if (this->deathSpriteTimer <= 0)
+            _dead = true;
     }
     else
     {
@@ -42,7 +43,8 @@ void PurpleEnemy::draw()
 
 void PurpleEnemy::update(double diffTime)
 {
-    if (_dead) {
+    if (_dead)
+    {
         return;
     }
 

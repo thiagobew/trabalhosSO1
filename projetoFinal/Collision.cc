@@ -29,12 +29,19 @@ Collision::~Collision()
     }
 
     std::cout << "C\n";
+    std::cout << this->enemies.size() << "\n";
     for (auto listItem = this->enemies.begin(); listItem != this->enemies.end();)
     {
-        Enemy *enemy = *listItem;
-        listItem++;
 
+        std::cout << "1\n";
+        Enemy *enemy = *listItem;
+        std::cout << "2\n";
+        listItem++;
+        std::cout << "3\n";
+
+        std::cout << this->enemies.size() << "\n";
         this->enemies.remove(enemy);
+        std::cout << "4\n";
         delete enemy;
     }
 

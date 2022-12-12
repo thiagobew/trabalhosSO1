@@ -2,7 +2,7 @@
 
 __BEGIN_API
 
-int BossControl::DELAY_UNTIL_BOSS = GameConfigs::fps * 5;
+int BossControl::DELAY_UNTIL_BOSS = GameConfigs::fps * 60;
 
 BossControl::BossControl()
 {

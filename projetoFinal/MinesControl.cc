@@ -2,7 +2,7 @@
 
 __BEGIN_API
 // 30 segundos
-int MinesControl::DELAY_MINE_SPAWN = GameConfigs::fps * 30;
+int MinesControl::DELAY_MINE_SPAWN = GameConfigs::fps * 5;
 
 MinesControl::MinesControl()
 {
@@ -17,7 +17,16 @@ MinesControl::~MinesControl() {}
 
 void MinesControl::setWindowReference(Window *window) { this->_window = window; }
 void MinesControl::setCollisionReference(Collision *collision) { this->_collision = collision; }
-void MinesControl::removeMine(Mine *enemy) { this->mines.remove(enemy); }
+void MinesControl::removeMine(Mine *enemy)
+{
+    if (this->mines.size() == 0)
+        return;
+
+    if (!GameConfigs::finished)
+        this->mines.remove(enemy);
+    else
+        this->mines.clear();
+}
 
 void MinesControl::run()
 {

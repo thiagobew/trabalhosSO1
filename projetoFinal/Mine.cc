@@ -31,7 +31,7 @@ void Mine::hit(int damage)
 
 Mine::~Mine()
 {
-    if (this->_control != nullptr)
+    if (this->_control != nullptr && GameConfigs::finished == false)
         this->_control->removeMine(this);
 }
 
@@ -41,7 +41,8 @@ void Mine::draw()
     {
         this->deathSpriteTimer -= 1;
         this->_deathSprite->draw_death_anim(this->deathSpriteTimer, this->_point, 0);
-        _dead = true;
+        if (this->deathSpriteTimer <= 0)
+            _dead = true;
     }
     else
     {
@@ -60,11 +61,12 @@ void Mine::attack()
 }
 
 void Mine::update(double diffTime)
-{   
-    if (_dead) {
+{
+    if (_dead)
+    {
         return;
     }
-    
+
     this->_point = this->_point + this->_speed * diffTime;
 
     if (this->_point.x < 670 && this->row == 0)
