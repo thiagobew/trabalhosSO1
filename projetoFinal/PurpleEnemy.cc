@@ -24,6 +24,10 @@ PurpleEnemy::~PurpleEnemy()
 {
     if (this->_control != nullptr && GameConfigs::finished == false)
         this->_control->removeShip(this);
+
+    this->shotsTimer.reset();
+    this->_shipSprite.reset();
+    this->_deathSprite.reset();
 }
 
 void PurpleEnemy::draw()

@@ -13,7 +13,11 @@ MinesControl::MinesControl()
     this->minesSpawnTimer->startTimer();
 }
 
-MinesControl::~MinesControl() {}
+MinesControl::~MinesControl() {
+    this->minesSpawnTimer.reset();
+    this->mineSprite.reset();
+    this->mineExplosionSprite.reset();
+}
 
 void MinesControl::setWindowReference(Window *window) { this->_window = window; }
 void MinesControl::setCollisionReference(Collision *collision) { this->_collision = collision; }

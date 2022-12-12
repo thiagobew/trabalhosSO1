@@ -13,7 +13,11 @@ PurpleEnemiesControl::PurpleEnemiesControl()
     this->shipsSpawnTimer->startTimer();
 }
 
-PurpleEnemiesControl::~PurpleEnemiesControl() {}
+PurpleEnemiesControl::~PurpleEnemiesControl() {
+    this->shipsSpawnTimer.reset();
+    this->purpleShipSprite.reset();
+    this->enemyExplosionSprite.reset();
+}
 
 void PurpleEnemiesControl::setWindowReference(Window *window) { this->_window = window; }
 void PurpleEnemiesControl::setCollisionReference(Collision *collision) { this->_collision = collision; }

@@ -30,6 +30,8 @@ PlayerShip::PlayerShip(Keyboard *kBoardHandler)
 PlayerShip::~PlayerShip()
 {
 	shipSprite.reset();
+    laserTimer.reset();
+    missileTimer.reset();
 }
 
 void PlayerShip::hit(int damage)

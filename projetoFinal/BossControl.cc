@@ -16,6 +16,7 @@ BossControl::BossControl()
 BossControl::~BossControl()
 {
     this->bossSpawnTimer.reset();
+    this->bossSprite.reset();
 }
 
 void BossControl::setWindowReference(Window *window) { this->_window = window; }

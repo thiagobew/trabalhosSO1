@@ -33,6 +33,10 @@ Mine::~Mine()
 {
     if (this->_control != nullptr && GameConfigs::finished == false)
         this->_control->removeMine(this);
+    
+    this->explodeTimer.reset();
+    this->_mineSprite.reset();
+    this->_deathSprite.reset();
 }
 
 void Mine::draw()
