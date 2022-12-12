@@ -108,6 +108,15 @@ void Collision::verifyCollisions()
             Enemy *enemy = *enemyItem;
             enemyItem++;
 
+            // Adicionei essa verificação para remover inimigos que morreram faz alguns ticks mas estavam em animação de morte
+            if (enemy->isDead())
+            {
+                this->_window->removeDrawableItem(enemy);
+                this->enemies.remove(enemy);
+                delete enemy;
+                continue;
+            }
+
             if (this->verifyIfHit(playerShot, enemy))
             {
                 enemy->hit(playerShot->getDamage());

@@ -29,7 +29,7 @@ public:
     Point getPosition() { return this->_point; }
     Vector getVector() { return this->_speed; }
     void hit(int damage) { this->life -= damage; }
-    bool isDead() { return _dead && this->life <= 0; }
+    bool isDead() { return this->_dead && this->life <= 0; }
     int getLife() { return this->life; }
 
 protected:
@@ -37,7 +37,6 @@ protected:
     Vector _speed;
     int life;
     bool _dead;
-
 };
 
 __END_API
