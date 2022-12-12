@@ -2,7 +2,7 @@
 
 __BEGIN_API
 // 30 segundos
-int MinesControl::DELAY_MINE_SPAWN = GameConfigs::fps * 5;
+int MinesControl::DELAY_MINE_SPAWN = GameConfigs::fps * 30;
 
 MinesControl::MinesControl()
 {
@@ -13,7 +13,8 @@ MinesControl::MinesControl()
     this->minesSpawnTimer->startTimer();
 }
 
-MinesControl::~MinesControl() {
+MinesControl::~MinesControl()
+{
     this->minesSpawnTimer.reset();
     this->mineSprite.reset();
     this->mineExplosionSprite.reset();
