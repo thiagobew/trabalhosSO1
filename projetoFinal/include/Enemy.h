@@ -17,6 +17,7 @@ public:
         this->life = lifeQuant;
         this->_point = point;
         this->_speed = vector;
+        this->_dead = false;
     }
 
     virtual void draw() = 0;
@@ -28,13 +29,15 @@ public:
     Point getPosition() { return this->_point; }
     Vector getVector() { return this->_speed; }
     void hit(int damage) { this->life -= damage; }
-    bool isDead() { return this->life <= 0; }
+    bool isDead() { return _dead && this->life <= 0; }
     int getLife() { return this->life; }
 
 protected:
     Point _point;
     Vector _speed;
     int life;
+    bool _dead;
+
 };
 
 __END_API

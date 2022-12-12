@@ -37,10 +37,11 @@ Mine::~Mine()
 
 void Mine::draw()
 {
-    if (this->isDead())
+    if (this->life <= 0)
     {
         this->deathSpriteTimer -= 1;
         this->_deathSprite->draw_death_anim(this->deathSpriteTimer, this->_point, 0);
+        _dead = true;
     }
     else
     {
@@ -59,7 +60,11 @@ void Mine::attack()
 }
 
 void Mine::update(double diffTime)
-{
+{   
+    if (_dead) {
+        return;
+    }
+    
     this->_point = this->_point + this->_speed * diffTime;
 
     if (this->_point.x < 670 && this->row == 0)
