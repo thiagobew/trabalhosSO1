@@ -35,36 +35,36 @@ public:
         minesControlThread = new Thread(minesFunc);
         bossSpawnThread = new Thread(bossFunc);
 
-        std::cout << "Esperando PlayerShip\n";
+        // std::cout << "Esperando PlayerShip\n";
         playerShipThread->join();
-        std::cout << "Esperando windowThread\n";
+        // std::cout << "Esperando windowThread\n";
         windowThread->join();
-        std::cout << "Esperando keyboardThread\n";
+        // std::cout << "Esperando keyboardThread\n";
         keyboardThread->join();
-        std::cout << "Esperando collisionThread\n";
+        // std::cout << "Esperando collisionThread\n";
         collisionThread->join();
-        std::cout << "Esperando purpleShipsControlThread\n";
+        // std::cout << "Esperando purpleShipsControlThread\n";
         purpleShipsControlThread->join();
-        std::cout << "Esperando minesControlThread\n";
+        // std::cout << "Esperando minesControlThread\n";
         minesControlThread->join();
-        std::cout << "Esperando bossSpawnThread\n";
+        // std::cout << "Esperando bossSpawnThread\n";
         bossSpawnThread->join();
 
-        std::cout << "Deletando PlayerShip\n";
+        // std::cout << "Deletando PlayerShip\n";
         delete playerShipThread;
-        std::cout << "Deletando Window\n";
+        // std::cout << "Deletando Window\n";
         delete windowThread;
-        std::cout << "Deletando KeyBoard\n";
+        // std::cout << "Deletando KeyBoard\n";
         delete keyboardThread;
-        std::cout << "Deletando Collision\n";
+        // std::cout << "Deletando Collision\n";
         delete collisionThread;
-        std::cout << "Deletando Purple\n";
+        // std::cout << "Deletando Purple\n";
         delete purpleShipsControlThread;
-        std::cout << "Deletando Mines\n";
+        // std::cout << "Deletando Mines\n";
         delete minesControlThread;
-        std::cout << "Deletando Boss\n";
+        // std::cout << "Deletando Boss\n";
         delete bossSpawnThread;
-        std::cout << "Terminou\n";
+        // std::cout << "Terminou\n";
     }
 
 private:

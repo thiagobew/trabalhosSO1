@@ -7,7 +7,7 @@ Collision::Collision() {}
 
 Collision::~Collision()
 {
-    std::cout << "A\n";
+    // std::cout << "A\n";
     for (auto listItem = this->enemiesShots.begin(); listItem != this->enemiesShots.end();)
     {
         // Não é necessário remover a referência de outros lugares pois os objetos ja estão sendo destruídos
@@ -18,7 +18,7 @@ Collision::~Collision()
         delete shot;
     }
 
-    std::cout << "B\n";
+    // std::cout << "B\n";
     for (auto listItem = this->playerShots.begin(); listItem != this->playerShots.end();)
     {
         Projectile *shot = *listItem;
@@ -28,24 +28,24 @@ Collision::~Collision()
         delete shot;
     }
 
-    std::cout << "C\n";
-    std::cout << this->enemies.size() << "\n";
+    // std::cout << "C\n";
+    // std::cout << this->enemies.size() << "\n";
     for (auto listItem = this->enemies.begin(); listItem != this->enemies.end();)
     {
 
-        std::cout << "1\n";
+        // std::cout << "1\n";
         Enemy *enemy = *listItem;
-        std::cout << "2\n";
+        // std::cout << "2\n";
         listItem++;
-        std::cout << "3\n";
+        // std::cout << "3\n";
 
-        std::cout << this->enemies.size() << "\n";
+        // std::cout << this->enemies.size() << "\n";
         this->enemies.remove(enemy);
-        std::cout << "4\n";
+        // std::cout << "4\n";
         delete enemy;
     }
 
-    std::cout << "D\n";
+    // std::cout << "D\n";
     this->enemiesShots.clear();
     this->enemies.clear();
     this->playerShots.clear();
@@ -89,7 +89,7 @@ void Collision::verifyCollisions()
             if (this->_playerShip->isDead())
             {
                 GameConfigs::finished = true;
-                std::cout << ">>>>>>>>>>>>>>>>>>>>>>>> Player is Dead by Lasers\n";
+                // std::cout << ">>>>>>>>>>>>>>>>>>>>>>>> Player is Dead by Lasers\n";
                 return;
             }
         }
@@ -153,7 +153,7 @@ void Collision::verifyCollisions()
             this->_playerShip->hit(1);
             if (this->_playerShip->isDead())
             {
-                std::cout << ">>>>>>>>>>>>>>>>>>>>>>>> Player is Dead by Collision\n";
+                // std::cout << ">>>>>>>>>>>>>>>>>>>>>>>> Player is Dead by Collision\n";
                 GameConfigs::finished = true;
                 return;
             }
